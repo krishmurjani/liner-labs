@@ -12,7 +12,7 @@ interface Props {
 export function ResultsList({ results, totalCount, status, query }: Props) {
   if (status === 'idle') {
     return (
-      <p className="text-center text-zinc-600 text-sm mt-8">
+      <p className="text-center text-zinc-400 dark:text-zinc-600 text-sm mt-8">
         Type a word or phrase to search the lyrics
       </p>
     )
@@ -21,14 +21,14 @@ export function ResultsList({ results, totalCount, status, query }: Props) {
   if (results.length === 0) {
     return (
       <p className="text-center text-zinc-500 text-sm mt-8">
-        No matches for <span className="text-zinc-300 font-mono">"{query}"</span>
+        No matches for <span className="text-zinc-700 dark:text-zinc-300 font-mono">"{query}"</span>
       </p>
     )
   }
 
   return (
     <div className="space-y-3">
-      <p className="text-zinc-500 text-xs">
+      <p className="text-zinc-400 dark:text-zinc-500 text-xs">
         {totalCount > results.length
           ? `Showing ${results.length} of ${totalCount} matches — try a more specific phrase`
           : `${totalCount} match${totalCount !== 1 ? 'es' : ''}`}

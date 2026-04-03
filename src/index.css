@@ -1,1 +1,24 @@
 @import "tailwindcss";
+
+/* Class-based dark mode — applied via .dark on <html> */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* View Transition: circular reveal from the toggle button position */
+::view-transition-old(root) {
+  animation: none;
+  z-index: 0;
+}
+
+::view-transition-new(root) {
+  animation: theme-reveal 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  z-index: 1;
+}
+
+@keyframes theme-reveal {
+  from {
+    clip-path: circle(0px at var(--reveal-x, 50%) var(--reveal-y, 50%));
+  }
+  to {
+    clip-path: circle(200vmax at var(--reveal-x, 50%) var(--reveal-y, 50%));
+  }
+}
