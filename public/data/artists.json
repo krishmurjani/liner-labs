@@ -1,8 +1,10 @@
 [
-  {
-    "slug": "bleachers",
-    "name": "Bleachers",
-    "songsPath": "/data/songs.json",
-    "indexPath": "/data/index.json"
-  }
+  {"slug": "bleachers", "name": "Bleachers", "songsPath": "/data/bleachers/songs.json", "indexPath": "/data/bleachers/index.json"},
+  {"slug": "taylor-swift", "name": "Taylor Swift", "songsPath": "/data/taylor-swift/songs.json", "indexPath": "/data/taylor-swift/index.json"},
+  {"slug": "sabrina-carpenter", "name": "Sabrina Carpenter", "songsPath": "/data/sabrina-carpenter/songs.json", "indexPath": "/data/sabrina-carpenter/index.json"},
+  {"slug": "lana-del-rey", "name": "Lana Del Rey", "songsPath": "/data/lana-del-rey/songs.json", "indexPath": "/data/lana-del-rey/index.json"},
+  {"slug": "olivia-rodrigo", "name": "Olivia Rodrigo", "songsPath": "/data/olivia-rodrigo/songs.json", "indexPath": "/data/olivia-rodrigo/index.json"},
+  {"slug": "ed-sheeran", "name": "Ed Sheeran", "songsPath": "/data/ed-sheeran/songs.json", "indexPath": "/data/ed-sheeran/index.json"},
+  {"slug": "gracie-abrams", "name": "Gracie Abrams", "songsPath": "/data/gracie-abrams/songs.json", "indexPath": "/data/gracie-abrams/index.json"},
+  {"slug": "the-weeknd", "name": "The Weeknd", "songsPath": "/data/the-weeknd/songs.json", "indexPath": "/data/the-weeknd/index.json"}
 ]
