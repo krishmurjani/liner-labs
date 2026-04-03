@@ -24,7 +24,7 @@ interface UseSearchResult {
 export function useSearch(
   indexData: IndexData | null,
   rawQuery: string,
-  albumFilter: string | null,
+  albumFilter: Set<string> | null,
 ): UseSearchResult {
   const [results, setResults] = useState<SearchResult[]>([])
   const [totalCount, setTotalCount] = useState(0)

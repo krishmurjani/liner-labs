@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { SearchBar } from './components/SearchBar'
 import { ResultsList } from './components/ResultsList'
 import { ThemeToggle } from './components/ThemeToggle'
+import { AlbumFilter, albumsFromSongs } from './components/AlbumFilter'
 import { useSearch } from './hooks/useSearch'
 import type { IndexData, SongMeta } from './types'
 
@@ -16,6 +17,7 @@ export default function App() {
   const [indexData, setIndexData] = useState<IndexData | null>(null)
   const [loadError, setLoadError] = useState<string | null>(null)
   const [query, setQuery] = useState('')
+  const [selectedAlbums, setSelectedAlbums] = useState<Set<string>>(new Set())
 
   // Apply theme class to <html> whenever theme changes
   useEffect(() => {
@@ -40,7 +42,8 @@ export default function App() {
       )
   }, [])
 
-  const { results, totalCount, status } = useSearch(indexData, query, null)
+  const albumFilter = selectedAlbums.size > 0 ? selectedAlbums : null
+  const { results, totalCount, status } = useSearch(indexData, query, albumFilter)
 
   return (
     <div className="min-h-screen bg-white dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100 transition-colors duration-300">
@@ -63,6 +66,13 @@ export default function App() {
           ) : (
             <>
               <SearchBar value={query} onChange={setQuery} disabled={!indexData} />
+              {indexData && (
+                <AlbumFilter
+                  albums={albumsFromSongs(indexData.songs)}
+                  selected={selectedAlbums}
+                  onChange={setSelectedAlbums}
+                />
+              )}
               <ResultsList results={results} totalCount={totalCount} status={status} query={query} />
             </>
           )}
