@@ -149,6 +149,8 @@ ARTISTS = {
             {"name": "No.6 Collaborations Project",               "year": 2019, "genius_id": 531308, "art_override": "https://is1-ssl.mzstatic.com/image/thumb/Music122/v4/18/21/a8/1821a833-e95a-0491-8ff6-dd31fb85ab61/789577214590.png/1000x1000bb.jpg"},
             {"name": "=",                                          "year": 2021, "genius_id": 859330, "art_override": "https://is1-ssl.mzstatic.com/image/thumb/Music122/v4/53/4a/01/534a01d1-d7c6-db04-7e00-b78cd4e50bfc/5054197180880.jpg/1000x1000bb.jpg"},
             {"name": "-",                                          "year": 2023, "genius_id": 1015321, "art_override": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/c2/4c/36/c24c3631-08b8-b576-345a-259b395f8dbd/5054197591464.jpg/1000x1000bb.jpg"},
+            {"name": "Autumn Variations",                            "year": 2023, "genius_id": 1015304, "art_override": "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/a5/48/07/a5480772-8c87-b4f7-7c09-c0c8ca32a90a/5054197787171.jpg/1000x1000bb.jpg"},
+            {"name": "Play",                                         "year": 2025, "genius_id": 1391245, "art_override": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/e5/40/89/e54089a9-5bc7-71c0-d7aa-93abadde2eb1/5021732960962.jpg/1000x1000bb.jpg"},
         ],
     },
     "gracie-abrams": {
