@@ -48,6 +48,9 @@ ARTISTS = {
             {"name": "Bleachers",                                  "year": 2024, "genius_id": 1183217},
             {"name": "everyone for ten minutes",                   "year": 2026, "genius_id": 1581240},
         ],
+        "individual_songs": [
+            {"genius_id": 8659765, "title": "Merry Christmas, Please Don't Call", "album": "Non-album single", "year": 2023},
+        ],
     },
     "taylor-swift": {
         "name": "Taylor Swift",
@@ -99,6 +102,10 @@ ARTISTS = {
     "sabrina-carpenter": {
         "name": "Sabrina Carpenter",
         "albums": [
+            {"name": "Eyes Wide Open",                              "year": 2015, "genius_id": 121108},
+            {"name": "EVOLution",                                  "year": 2016, "genius_id": 168270},
+            {"name": "Singular: Act I",                             "year": 2018, "genius_id": 923516},
+            {"name": "Singular: Act II",                            "year": 2019, "genius_id": 927206},
             {"name": "emails i can't send",                        "year": 2022, "genius_id": 1008706},
             {"name": "Short n' Sweet",                             "year": 2024, "genius_id": 1330959},
         ],
@@ -138,8 +145,22 @@ ARTISTS = {
     "gracie-abrams": {
         "name": "Gracie Abrams",
         "albums": [
+            {"name": "Minor",                                       "year": 2020, "genius_id": 637845},
+            {"name": "This Is What It Feels Like",                  "year": 2021, "genius_id": 820478},
             {"name": "Good Riddance",                              "year": 2023, "genius_id": 1028415},
             {"name": "The Secret of Us",                           "year": 2024, "genius_id": 1269000},
+        ],
+        "individual_songs": [
+            {"genius_id": 4966804, "title": "Mean It", "album": "Non-album single", "year": 2019},
+            {"genius_id": 5035258, "title": "Stay", "album": "Lonely Songs", "year": 2019},
+            {"genius_id": 5437170, "title": "I Miss You, I'm Sorry", "album": "Non-album single", "year": 2020},
+            {"genius_id": 5548061, "title": "Long Sleeves", "album": "Non-album single", "year": 2020},
+            {"genius_id": 6257537, "title": "Brush Fire", "album": "Non-album single", "year": 2020},
+            {"genius_id": 6780913, "title": "Mess It Up", "album": "Non-album single", "year": 2021},
+            {"genius_id": 8444672, "title": "Where Do We Go Now?", "album": "Non-album single", "year": 2023},
+            {"genius_id": 8250951, "title": "Difficult", "album": "Non-album single", "year": 2023},
+            {"genius_id": 9647185, "title": "Risk", "album": "Non-album single", "year": 2024},
+            {"genius_id": 11494841, "title": "Call Me When You Break Up", "album": "Non-album single", "year": 2025},
         ],
     },
     "the-weeknd": {
@@ -150,7 +171,7 @@ ARTISTS = {
             {"name": "Starboy",                                    "year": 2016, "genius_id": 1011213},
             {"name": "After Hours",                                "year": 2020, "genius_id": 828696},
             {"name": "Dawn FM",                                    "year": 2022, "genius_id": 947480},
-            {"name": "Hurry Up Tomorrow",                          "year": 2025, "genius_id": 1070978},
+            {"name": "Hurry Up Tomorrow (00XO Edition)",         "year": 2025, "genius_id": 1322479},
         ],
     },
 }
