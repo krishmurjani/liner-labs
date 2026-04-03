@@ -1,0 +1,53 @@
+import { HighlightedLine } from './HighlightedLine'
+import { tokenize } from '../lib/tokenize'
+import type { SearchResult } from '../types'
+
+const MAX_LINES_SHOWN = 3
+
+interface Props {
+  result: SearchResult
+  query: string
+}
+
+export function ResultCard({ result, query }: Props) {
+  const { song, matchedLineIndices, positions } = result
+  const queryTokens = tokenize(query)
+  const shown = matchedLineIndices.slice(0, MAX_LINES_SHOWN)
+  const extra = matchedLineIndices.length - MAX_LINES_SHOWN
+
+  // Build a map from lineIndex → startWordIndex of the match on that line
+  const lineToWordIdx = new Map<number, number>()
+  for (const [lineIdx, wordIdx] of positions) {
+    if (!lineToWordIdx.has(lineIdx)) lineToWordIdx.set(lineIdx, wordIdx)
+  }
+
+  return (
+    <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-4 space-y-2">
+      {/* Song header */}
+      <div className="flex items-start justify-between gap-2">
+        <div>
+          <p className="font-semibold text-white text-sm">{song.title}</p>
+          <p className="text-zinc-500 text-xs mt-0.5">{song.album} · {song.year}</p>
+        </div>
+      </div>
+
+      {/* Matched lines */}
+      <div className="space-y-1 pt-1 border-t border-zinc-800">
+        {shown.map(lineIdx => (
+          <p key={lineIdx} className="text-zinc-300 text-sm leading-relaxed font-mono">
+            <HighlightedLine
+              line={song.lines[lineIdx]}
+              queryTokens={queryTokens}
+              phraseLength={queryTokens.length}
+            />
+          </p>
+        ))}
+        {extra > 0 && (
+          <p className="text-zinc-600 text-xs italic">
+            …and {extra} more line{extra !== 1 ? 's' : ''}
+          </p>
+        )}
+      </div>
+    </div>
+  )
+}
