@@ -142,12 +142,13 @@ ARTISTS = {
     "ed-sheeran": {
         "name": "Ed Sheeran",
         "albums": [
+            # Art from iTunes API (better quality than Genius)
             {"name": "+",                                          "year": 2011, "genius_id": 970831, "art_override": "https://images.genius.com/9b8a648fd5e435308a8ec6a09f47f025.1000x1000x1.png"},
-            {"name": "×",                                          "year": 2014, "genius_id": 954671},
-            {"name": "÷",                                          "year": 2017, "genius_id": 1409684},
-            {"name": "No.6 Collaborations Project",               "year": 2019, "genius_id": 531308},
-            {"name": "=",                                          "year": 2021, "genius_id": 859330},
-            {"name": "-",                                          "year": 2023, "genius_id": 1015321},
+            {"name": "×",                                          "year": 2014, "genius_id": 954671, "art_override": "https://is1-ssl.mzstatic.com/image/thumb/Features125/v4/a7/7b/92/a77b92fc-d331-dd1b-8772-80597dc51fd0/dj.xllwtvne.jpg/1000x1000bb.jpg"},
+            {"name": "÷",                                          "year": 2017, "genius_id": 1409684, "art_override": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/15/e6/e8/15e6e8a4-4190-6a8b-86c3-ab4a51b88288/190295851286.jpg/1000x1000bb.jpg"},
+            {"name": "No.6 Collaborations Project",               "year": 2019, "genius_id": 531308, "art_override": "https://is1-ssl.mzstatic.com/image/thumb/Music122/v4/18/21/a8/1821a833-e95a-0491-8ff6-dd31fb85ab61/789577214590.png/1000x1000bb.jpg"},
+            {"name": "=",                                          "year": 2021, "genius_id": 859330, "art_override": "https://is1-ssl.mzstatic.com/image/thumb/Music122/v4/53/4a/01/534a01d1-d7c6-db04-7e00-b78cd4e50bfc/5054197180880.jpg/1000x1000bb.jpg"},
+            {"name": "-",                                          "year": 2023, "genius_id": 1015321, "art_override": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/c2/4c/36/c24c3631-08b8-b576-345a-259b395f8dbd/5054197591464.jpg/1000x1000bb.jpg"},
         ],
     },
     "gracie-abrams": {
