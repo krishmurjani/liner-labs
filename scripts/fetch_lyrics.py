@@ -199,6 +199,12 @@ GENIUS_API = "https://api.genius.com"
 LRCLIB_API = "https://lrclib.net/api"
 SECTION_RE = re.compile(r'^\[.*\]$')
 DEMO_ALBUM_NAME = "Voice Memos & Demos"
+# Skip commentary/interview versions — these are not unique songs
+SKIP_PATTERNS = {
+    "commentary",
+    "long pond studio sessions",
+    "track by track",
+}
 
 
 def clean_lyrics(raw: str) -> list[str]:
@@ -296,7 +302,12 @@ def main():
 
         for track in info["tracks"]:
             title = track["title"]
-            canonical = title.lower().strip()
+            title_lower = title.lower()
+            # Skip commentary/studio session versions (not unique songs)
+            if any(pattern in title_lower for pattern in SKIP_PATTERNS):
+                print(f"  SKIP (commentary): {title}")
+                continue
+            canonical = title_lower.strip()
             if canonical in seen_titles:
                 print(f"  SKIP (duplicate): {title}")
                 continue
@@ -332,7 +343,12 @@ def main():
         print(f"\n── Individual songs ──")
     for song_config in artist_data.get("individual_songs", []):
         title = song_config["title"]
-        canonical = title.lower().strip()
+        title_lower = title.lower()
+        # Skip commentary/studio session versions (not unique songs)
+        if any(pattern in title_lower for pattern in SKIP_PATTERNS):
+            print(f"  SKIP (commentary): {title}")
+            continue
+        canonical = title_lower.strip()
         if canonical in seen_titles:
             print(f"  SKIP (duplicate): {title}")
             continue
