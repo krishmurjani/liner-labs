@@ -22,9 +22,18 @@ export function ResultCard({ result, query }: Props) {
 
   return (
     <div className="bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl p-4 space-y-2">
-      <div>
-        <p className="font-semibold text-zinc-900 dark:text-white text-sm">{song.title}</p>
-        <p className="text-zinc-400 dark:text-zinc-500 text-xs mt-0.5">{song.album} · {song.year}</p>
+      <div className="flex items-center gap-3">
+        {song.albumArt && (
+          <img
+            src={song.albumArt}
+            alt={song.album}
+            className="w-10 h-10 rounded-md object-cover shrink-0 shadow-sm"
+          />
+        )}
+        <div>
+          <p className="font-semibold text-zinc-900 dark:text-white text-sm">{song.title}</p>
+          <p className="text-zinc-400 dark:text-zinc-500 text-xs mt-0.5">{song.album} · {song.year}</p>
+        </div>
       </div>
 
       <div className="space-y-1 pt-1 border-t border-zinc-200 dark:border-zinc-800">

@@ -4,6 +4,7 @@ export interface SongMeta {
   title: string
   album: string
   year: number
+  albumArt?: string
   lines: string[]
 }
 

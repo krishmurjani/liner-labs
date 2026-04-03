@@ -67,14 +67,20 @@ def clean_lyrics(raw: str) -> list[str]:
     return lines
 
 
-def get_album_tracks(headers: dict, album_id: int) -> list[dict]:
-    """Fetch all tracks for a Genius album. Returns [{id, title}]."""
-    resp = requests.get(f"{GENIUS_API}/albums/{album_id}/tracks", headers=headers)
+def get_album_info(headers: dict, album_id: int) -> dict:
+    """Fetch album metadata (cover art URL) and track list from Genius."""
+    resp = requests.get(f"{GENIUS_API}/albums/{album_id}", headers=headers)
     resp.raise_for_status()
-    return [
+    album = resp.json()["response"]["album"]
+    art_url = album.get("cover_art_url", "")
+
+    resp2 = requests.get(f"{GENIUS_API}/albums/{album_id}/tracks", headers=headers)
+    resp2.raise_for_status()
+    tracks = [
         {"id": t["song"]["id"], "title": t["song"]["title"]}
-        for t in resp.json()["response"]["tracks"]
+        for t in resp2.json()["response"]["tracks"]
     ]
+    return {"art_url": art_url, "tracks": tracks}
 
 
 def fetch_lyrics_from_lrclib(artist: str, title: str) -> list[str] | None:
@@ -119,12 +125,16 @@ def main():
         print(f"\nFetching: {album_meta['name']} ({album_meta['year']})")
 
         try:
-            tracks = get_album_tracks(genius_headers, album_meta["genius_id"])
+            album_info = get_album_info(genius_headers, album_meta["genius_id"])
         except Exception as e:
-            print(f"  WARNING: could not fetch album tracks from Genius — {e}")
+            print(f"  WARNING: could not fetch album info from Genius — {e}")
             continue
 
+        art_url = album_info["art_url"]
+        tracks = album_info["tracks"]
         print(f"  {len(tracks)} tracks found via Genius API")
+        if art_url:
+            print(f"  Art: {art_url[:60]}...")
 
         for track in tracks:
             title = track["title"]
@@ -141,11 +151,12 @@ def main():
                 continue
 
             songs_output.append({
-                "id":    track["id"],
-                "title": title,
-                "album": album_meta["name"],
-                "year":  album_meta["year"],
-                "lines": lines,
+                "id":      track["id"],
+                "title":   title,
+                "album":   album_meta["name"],
+                "year":    album_meta["year"],
+                "albumArt": art_url,
+                "lines":   lines,
             })
             print(f"  OK  {title} ({len(lines)} lines)")
             time.sleep(0.2)
