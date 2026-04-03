@@ -10,7 +10,7 @@
 }
 
 ::view-transition-new(root) {
-  animation: theme-reveal 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  animation: theme-reveal 1.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
   z-index: 1;
 }
 
