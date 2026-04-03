@@ -1,0 +1,8 @@
+[
+  {
+    "slug": "bleachers",
+    "name": "Bleachers",
+    "songsPath": "/data/songs.json",
+    "indexPath": "/data/index.json"
+  }
+]
