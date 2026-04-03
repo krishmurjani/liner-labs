@@ -1,7 +1,7 @@
 import { tokenize } from './tokenize'
 import type { IndexData, SearchResult, Position } from '../types'
 
-const MAX_RESULTS = 50
+const MAX_RESULTS = 500
 
 function albumMatches(album: string, filter: Set<string> | null): boolean {
   return !filter || filter.size === 0 || filter.has(album)

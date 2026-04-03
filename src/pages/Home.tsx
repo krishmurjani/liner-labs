@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { ThemeToggle } from '../components/ThemeToggle'
+import { Navbar } from '../components/Navbar'
 
 interface Artist {
   slug: string
@@ -28,8 +28,10 @@ export default function Home({ theme, onToggleTheme }: Props) {
     fetch('/data/artists.json')
       .then(r => r.json())
       .then(async (list: Artist[]) => {
-        const cards = await Promise.all(list.map(async artist => {
-          const songs = await fetch(artist.songsPath).then(r => r.json())
+        const results = await Promise.allSettled(list.map(async artist => {
+          const r = await fetch(artist.songsPath)
+          if (!r.ok) throw new Error(`${artist.slug} not ready`)
+          const songs = await r.json()
           // Unique albums in release order
           const albumMap = new Map<string, string>()
           for (const s of songs) {
@@ -42,21 +44,19 @@ export default function Home({ theme, onToggleTheme }: Props) {
             albumCovers: Array.from(albumMap.values()).slice(0, 4),
           }
         }))
+        const cards = results
+          .filter((r): r is PromiseFulfilledResult<ArtistCardData> => r.status === 'fulfilled')
+          .map(r => r.value)
         setArtists(cards)
       })
   }, [])
 
   return (
     <div className="min-h-screen bg-white dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100">
-      <div className="fixed top-4 right-4">
-        <ThemeToggle theme={theme} onToggle={onToggleTheme} />
-      </div>
-      <div className="max-w-3xl mx-auto px-4 py-16">
-        <header className="mb-12">
-          <h1 className="text-3xl font-bold tracking-tight text-zinc-900 dark:text-white">
-            Liner Labs
-          </h1>
-          <p className="text-zinc-400 dark:text-zinc-500 mt-1 text-sm">
+      <Navbar theme={theme} onToggle={onToggleTheme} />
+      <div className="max-w-3xl mx-auto px-4 py-6">
+        <header className="mb-6">
+          <p className="text-zinc-400 dark:text-zinc-500 text-sm">
             Search lyrics across your favourite artists
           </p>
         </header>

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { SearchBar } from '../components/SearchBar'
 import { ResultsList } from '../components/ResultsList'
-import { ThemeToggle } from '../components/ThemeToggle'
+import { Navbar } from '../components/Navbar'
 import { AlbumFilter, albumsFromSongs } from '../components/AlbumFilter'
 import { useSearch } from '../hooks/useSearch'
 import type { IndexData, SongMeta } from '../types'
@@ -60,11 +60,8 @@ export default function Search({ theme, onToggleTheme }: Props) {
 
   return (
     <div className="min-h-screen bg-white dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100 transition-colors duration-300">
-      <div className="flex flex-col items-center px-4 py-12">
-
-        <div className="fixed top-4 right-4">
-          <ThemeToggle theme={theme} onToggle={onToggleTheme} />
-        </div>
+      <Navbar theme={theme} onToggle={onToggleTheme} />
+      <div className="flex flex-col items-center px-4 py-10">
 
         <header className="mb-8 text-center">
           <Link
