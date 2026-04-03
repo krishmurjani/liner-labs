@@ -18,6 +18,7 @@ export default function App() {
   const [loadError, setLoadError] = useState<string | null>(null)
   const [query, setQuery] = useState('')
   const [selectedAlbums, setSelectedAlbums] = useState<Set<string>>(new Set())
+  const [showFilters, setShowFilters] = useState(false)
 
   // Apply theme class to <html> whenever theme changes
   useEffect(() => {
@@ -65,14 +66,34 @@ export default function App() {
             <p className="text-red-500 text-sm text-center">{loadError}</p>
           ) : (
             <>
-              <SearchBar value={query} onChange={setQuery} disabled={!indexData} />
-              {indexData && (
-                <AlbumFilter
-                  albums={albumsFromSongs(indexData.songs)}
-                  selected={selectedAlbums}
-                  onChange={setSelectedAlbums}
-                />
-              )}
+              <div className="space-y-3">
+                <div className="flex items-center gap-2">
+                  <SearchBar value={query} onChange={setQuery} disabled={!indexData} />
+                  {indexData && (
+                    <button
+                      onClick={() => setShowFilters(v => !v)}
+                      className={`shrink-0 flex items-center gap-1.5 px-3 py-3 rounded-xl border text-xs
+                                  transition-colors duration-150
+                                  ${showFilters || selectedAlbums.size > 0
+                                    ? 'border-zinc-400 dark:border-zinc-400 bg-zinc-200 dark:bg-zinc-700 text-zinc-900 dark:text-zinc-100'
+                                    : 'border-zinc-300 dark:border-zinc-700 text-zinc-400 dark:text-zinc-500 hover:border-zinc-400 dark:hover:border-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300'
+                                  }`}
+                    >
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                        <line x1="4" y1="6" x2="20" y2="6" /><line x1="8" y1="12" x2="16" y2="12" /><line x1="11" y1="18" x2="13" y2="18" />
+                      </svg>
+                      {selectedAlbums.size > 0 ? `${selectedAlbums.size}` : 'Filter'}
+                    </button>
+                  )}
+                </div>
+                {showFilters && indexData && (
+                  <AlbumFilter
+                    albums={albumsFromSongs(indexData.songs)}
+                    selected={selectedAlbums}
+                    onChange={setSelectedAlbums}
+                  />
+                )}
+              </div>
               <ResultsList results={results} totalCount={totalCount} status={status} query={query} />
             </>
           )}
