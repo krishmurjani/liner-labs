@@ -40,6 +40,8 @@ ALBUMS = [
     {"name": "Take the Sadness Out of Saturday Night",      "year": 2021, "genius_id": 701041},
     # Genius indexes the 2024 self-titled album as the Deluxe edition
     {"name": "Bleachers",                                   "year": 2024, "genius_id": 1183217},
+    # Pre-release: only released singles will be fetched until album drops May 22 2026
+    {"name": "everyone for ten minutes",                    "year": 2026, "genius_id": 1581240},
 ]
 
 SECTION_HEADER_RE = re.compile(r'^\[.*\]$')
