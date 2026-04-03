@@ -59,7 +59,7 @@ ARTISTS = {
             {"name": "Taylor Swift",                               "year": 2006, "genius_id": 1034551},
             {"name": "The Taylor Swift Holiday Collection",        "year": 2007, "genius_id": 39094},
             {"name": "Fearless (Taylor's Version)",                "year": 2008, "genius_id": 734107},
-            {"name": "Speak Now (Taylor's Version)",               "year": 2010, "genius_id": 1058580},
+            {"name": "Speak Now (Taylor's Version)",               "year": 2010, "genius_id": 1058580, "art_override": "https://images.genius.com/3d048ad18f20891252348edbdd6a940d.1000x1000x1.jpg"},
             {"name": "Red (Taylor's Version)",                     "year": 2012, "genius_id": 758022},
             {"name": "1989 (Taylor's Version)",                    "year": 2014, "genius_id": 1082316},
             {"name": "reputation",                                 "year": 2017, "genius_id": 1492663},
@@ -108,6 +108,7 @@ ARTISTS = {
             {"name": "Singular: Act II",                            "year": 2019, "genius_id": 927206},
             {"name": "emails i can't send",                        "year": 2022, "genius_id": 1008706},
             {"name": "Short n' Sweet",                             "year": 2024, "genius_id": 1330959},
+            {"name": "Man's Best Friend (Bonus Track Version)",     "year": 2025, "genius_id": 1456877},
         ],
     },
     "lana-del-rey": {
@@ -134,7 +135,7 @@ ARTISTS = {
     "ed-sheeran": {
         "name": "Ed Sheeran",
         "albums": [
-            {"name": "+",                                          "year": 2011, "genius_id": 970831},
+            {"name": "+",                                          "year": 2011, "genius_id": 970831, "art_override": "https://images.genius.com/9b8a648fd5e435308a8ec6a09f47f025.1000x1000x1.png"},
             {"name": "×",                                          "year": 2014, "genius_id": 954671},
             {"name": "÷",                                          "year": 2017, "genius_id": 1409684},
             {"name": "No.6 Collaborations Project",               "year": 2019, "genius_id": 531308},
@@ -161,6 +162,8 @@ ARTISTS = {
             {"genius_id": 8250951, "title": "Difficult", "album": "Non-album single", "year": 2023},
             {"genius_id": 9647185, "title": "Risk", "album": "Non-album single", "year": 2024},
             {"genius_id": 11494841, "title": "Call Me When You Break Up", "album": "Non-album single", "year": 2025},
+            {"genius_id": 10541726, "title": "That's So True", "album": "The Secret of Us (Digital Deluxe)", "year": 2024},
+            {"genius_id": 11570039, "title": "Death Wish", "album": "Non-album single", "year": 2025},
         ],
     },
     "the-weeknd": {
@@ -169,9 +172,18 @@ ARTISTS = {
             {"name": "Kiss Land",                                  "year": 2013, "genius_id": 501331},
             {"name": "Beauty Behind the Madness",                  "year": 2015, "genius_id": 828707},
             {"name": "Starboy",                                    "year": 2016, "genius_id": 1011213},
+            {"name": "My Dear Melancholy, (Spotify Reissue)",      "year": 2019, "genius_id": 1427990},
             {"name": "After Hours",                                "year": 2020, "genius_id": 828696},
             {"name": "Dawn FM",                                    "year": 2022, "genius_id": 947480},
             {"name": "Hurry Up Tomorrow (00XO Edition)",         "year": 2025, "genius_id": 1322479},
+        ],
+        "individual_songs": [
+            {"genius_id": 3614919, "title": "Call Out My Name", "album": "My Dear Melancholy,", "year": 2018},
+            {"genius_id": 3614925, "title": "Try Me", "album": "My Dear Melancholy,", "year": 2018},
+            {"genius_id": 3614873, "title": "Wasted Times", "album": "My Dear Melancholy,", "year": 2018},
+            {"genius_id": 3614926, "title": "I Was Never There", "album": "My Dear Melancholy,", "year": 2018},
+            {"genius_id": 3614927, "title": "Hurt You", "album": "My Dear Melancholy,", "year": 2018},
+            {"genius_id": 3614928, "title": "Privilege", "album": "My Dear Melancholy,", "year": 2018},
         ],
     },
 }
@@ -229,6 +241,8 @@ def fetch_lyrics(artist_name: str, title: str) -> list[str] | None:
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--slug", required=True, help="Artist slug, e.g. taylor-swift")
+    parser.add_argument("--incremental", action="store_true",
+                        help="Keep existing lyrics; only fetch new songs + refresh metadata")
     args = parser.parse_args()
 
     slug = args.slug
@@ -246,6 +260,14 @@ def main():
     output_dir = Path(__file__).parent.parent / "public" / "data" / slug
     output_dir.mkdir(parents=True, exist_ok=True)
     output_path = output_dir / "songs.json"
+
+    # Load existing songs when running incrementally (keyed by Genius song ID)
+    existing_by_id: dict[str, dict] = {}
+    if args.incremental and output_path.exists():
+        with open(output_path, encoding="utf-8") as f:
+            for s in json.load(f):
+                existing_by_id[str(s["id"])] = s
+        print(f"Incremental mode — {len(existing_by_id)} songs cached, skipping lrclib for those\n")
 
     songs_output = []
     seen_titles: set[str] = set()
@@ -272,6 +294,15 @@ def main():
                 print(f"  SKIP (duplicate): {title}")
                 continue
             seen_titles.add(canonical)
+
+            song_id_str = str(track["id"])
+            if song_id_str in existing_by_id:
+                # Song already fetched — refresh metadata, keep lyrics
+                kept = {**existing_by_id[song_id_str],
+                        "albumArt": art, "album": display_album, "year": album_meta["year"]}
+                songs_output.append(kept)
+                print(f"  KEEP {title}")
+                continue
 
             lines = fetch_lyrics(artist_name, title)
             if lines is None:
@@ -300,6 +331,15 @@ def main():
             continue
         seen_titles.add(canonical)
 
+        song_id_str = str(song_config["genius_id"])
+        if song_id_str in existing_by_id:
+            kept = {**existing_by_id[song_id_str],
+                    "album": song_config.get("album", "Collaborations & Features"),
+                    "year":  song_config.get("year", 0)}
+            songs_output.append(kept)
+            print(f"  KEEP {title}")
+            continue
+
         search_artist = song_config.get("search_artist", artist_name)
         lines = fetch_lyrics(search_artist, title)
         if lines is None:
@@ -325,8 +365,13 @@ def main():
     with open(output_path, "w", encoding="utf-8") as f:
         json.dump(songs_output, f, ensure_ascii=False, indent=2)
 
+    kept_count = sum(1 for s in songs_output if str(s["id"]) in existing_by_id)
+    new_count  = len(songs_output) - kept_count
     total = len(songs_output)
-    print(f"\nDone. {total} songs → {output_path}")
+    if args.incremental:
+        print(f"\nDone. {total} songs ({kept_count} kept, {new_count} new) → {output_path}")
+    else:
+        print(f"\nDone. {total} songs → {output_path}")
 
 
 if __name__ == "__main__":
