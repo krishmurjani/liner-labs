@@ -157,8 +157,10 @@ ARTISTS = {
         "name": "Harry Styles",
         "albums": [
             # Art from iTunes API
-            {"name": "Harry Styles",                               "year": 2017, "genius_id": 339829, "art_override": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/3d/5e/aa/3d5eaaa3-9a86-c264-5cd5-7fac83f99a59/886446451978.jpg/1000x1000bb.jpg"},
-            {"name": "Fine Line",                                  "year": 2019, "genius_id": 568792, "art_override": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/2b/c4/c9/2bc4c9d4-3bc6-ab13-3f71-df0b89b173de/886448022213.jpg/1000x1000bb.jpg"},
+            {"name": "Harry Styles",                               "year": 2017, "genius_id": 339829,  "art_override": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/3d/5e/aa/3d5eaaa3-9a86-c264-5cd5-7fac83f99a59/886446451978.jpg/1000x1000bb.jpg"},
+            {"name": "Fine Line",                                  "year": 2019, "genius_id": 568792,  "art_override": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/2b/c4/c9/2bc4c9d4-3bc6-ab13-3f71-df0b89b173de/886448022213.jpg/1000x1000bb.jpg"},
+            {"name": "Harry's House",                              "year": 2022, "genius_id": 886451,  "art_override": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/2a/19/fb/2a19fb85-2f70-9e44-f2a9-82abe679b88e/886449990061.jpg/1000x1000bb.jpg"},
+            {"name": "Kiss All The Time. Disco, Occasionally.",    "year": 2025, "genius_id": 1552425, "art_override": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/07/41/6a/07416a78-38b9-2d47-7ce8-8a52a44c510f/196874010112.jpg/1000x1000bb.jpg"},
         ],
     },
     "gracie-abrams": {
