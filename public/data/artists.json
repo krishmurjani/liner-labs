@@ -6,5 +6,6 @@
   {"slug": "olivia-rodrigo", "name": "Olivia Rodrigo", "songsPath": "/data/olivia-rodrigo/songs.json", "indexPath": "/data/olivia-rodrigo/index.json"},
   {"slug": "ed-sheeran", "name": "Ed Sheeran", "songsPath": "/data/ed-sheeran/songs.json", "indexPath": "/data/ed-sheeran/index.json"},
   {"slug": "gracie-abrams", "name": "Gracie Abrams", "songsPath": "/data/gracie-abrams/songs.json", "indexPath": "/data/gracie-abrams/index.json"},
-  {"slug": "the-weeknd", "name": "The Weeknd", "songsPath": "/data/the-weeknd/songs.json", "indexPath": "/data/the-weeknd/index.json"}
+  {"slug": "the-weeknd", "name": "The Weeknd", "songsPath": "/data/the-weeknd/songs.json", "indexPath": "/data/the-weeknd/index.json"},
+  {"slug": "harry-styles", "name": "Harry Styles", "songsPath": "/data/harry-styles/songs.json", "indexPath": "/data/harry-styles/index.json"}
 ]
