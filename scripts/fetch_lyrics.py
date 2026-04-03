@@ -153,6 +153,14 @@ ARTISTS = {
             {"name": "Play",                                         "year": 2025, "genius_id": 1391245, "art_override": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/e5/40/89/e54089a9-5bc7-71c0-d7aa-93abadde2eb1/5021732960962.jpg/1000x1000bb.jpg"},
         ],
     },
+    "harry-styles": {
+        "name": "Harry Styles",
+        "albums": [
+            # Art from iTunes API
+            {"name": "Harry Styles",                               "year": 2017, "genius_id": 339829, "art_override": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/3d/5e/aa/3d5eaaa3-9a86-c264-5cd5-7fac83f99a59/886446451978.jpg/1000x1000bb.jpg"},
+            {"name": "Fine Line",                                  "year": 2019, "genius_id": 568792, "art_override": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/2b/c4/c9/2bc4c9d4-3bc6-ab13-3f71-df0b89b173de/886448022213.jpg/1000x1000bb.jpg"},
+        ],
+    },
     "gracie-abrams": {
         "name": "Gracie Abrams",
         "albums": [
@@ -182,7 +190,7 @@ ARTISTS = {
             {"name": "Kiss Land",                                  "year": 2013, "genius_id": 501331},
             {"name": "Beauty Behind the Madness",                  "year": 2015, "genius_id": 828707},
             {"name": "Starboy",                                    "year": 2016, "genius_id": 1011213},
-            {"name": "My Dear Melancholy, (Spotify Reissue)",      "year": 2019, "genius_id": 1427990},
+            {"name": "My Dear Melancholy,",                        "year": 2018, "genius_id": 1427990, "art_override": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/db/22/4e/db224ee0-b058-5d06-9a8c-fa10662bd58e/18UMGIM17205.rgb.jpg/1000x1000bb.jpg"},
             {"name": "After Hours",                                "year": 2020, "genius_id": 828696},
             {"name": "Dawn FM",                                    "year": 2022, "genius_id": 947480},
             {"name": "Hurry Up Tomorrow (00XO Edition)",         "year": 2025, "genius_id": 1322479},
