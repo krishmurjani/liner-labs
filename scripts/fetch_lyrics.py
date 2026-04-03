@@ -72,7 +72,7 @@ ARTISTS = {
             {"name": "The Tortured Poets Department",              "year": 2024, "genius_id": 1260317},
             # The Life of a Showgirl + acoustic (one album entry, acoustic tracks
             # have different titles so they won't dedup with the originals)
-            {"name": "The Life of a Showgirl",                    "year": 2025, "genius_id": 1517950},
+            {"name": "The Life of a Showgirl",                    "year": 2025, "genius_id": 1517950, "art_override": "https://images.genius.com/44d300dcac42f9a7d974049795c9fa6d.1000x1000x1.png"},  # already correct
             # Voice memos & demos — is_demo=True overrides album name in output
             # 1498620 = LoaS "So Punk on Internet" version: main songs dedup, only memos pass through
             {"name": "The Life of a Showgirl (Voice Memos)",      "year": 2025, "genius_id": 1498620, "is_demo": True},
@@ -91,7 +91,6 @@ ARTISTS = {
             {"genius_id": 182948,  "title": "Half of My Heart",           "album": "Collaborations & Features", "year": 2010, "search_artist": "John Mayer"},
             {"genius_id": 70979,   "title": "Both of Us",                 "album": "Collaborations & Features", "year": 2012, "search_artist": "B.o.B"},
             {"genius_id": 154241,  "title": "Highway Don't Care",         "album": "Collaborations & Features", "year": 2013, "search_artist": "Tim McGraw"},
-            {"genius_id": 3646550, "title": "Babe",                       "album": "Collaborations & Features", "year": 2018, "search_artist": "Sugarland"},
             {"genius_id": 2927948, "title": "I Don't Wanna Live Forever", "album": "Collaborations & Features", "year": 2017, "search_artist": "ZAYN"},
             {"genius_id": 6959851, "title": "Renegade",                   "album": "Collaborations & Features", "year": 2021, "search_artist": "Big Red Machine"},
             {"genius_id": 6959849, "title": "Birch",                      "album": "Collaborations & Features", "year": 2021, "search_artist": "Big Red Machine"},
