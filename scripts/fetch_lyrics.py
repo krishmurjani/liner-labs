@@ -59,7 +59,7 @@ ARTISTS = {
             {"name": "Taylor Swift",                               "year": 2006, "genius_id": 1034551},
             {"name": "The Taylor Swift Holiday Collection",        "year": 2007, "genius_id": 39094},
             {"name": "Fearless (Taylor's Version)",                "year": 2008, "genius_id": 734107},
-            {"name": "Speak Now (Taylor's Version)",               "year": 2010, "genius_id": 1058580, "art_override": "https://images.genius.com/3d048ad18f20891252348edbdd6a940d.1000x1000x1.jpg"},
+            {"name": "Speak Now (Taylor's Version)",               "year": 2010, "genius_id": 1058580},
             {"name": "Red (Taylor's Version)",                     "year": 2012, "genius_id": 758022},
             {"name": "1989 (Taylor's Version)",                    "year": 2014, "genius_id": 1082316},
             {"name": "reputation",                                 "year": 2017, "genius_id": 1492663},
