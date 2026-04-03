@@ -32,3 +32,6 @@ scripts/*.pyc
 
 # Claude Code internal config
 .claude/
+
+# Local learning/notes
+learning/
