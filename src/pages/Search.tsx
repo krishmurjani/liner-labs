@@ -5,14 +5,7 @@ import { ResultsList } from '../components/ResultsList'
 import { Navbar } from '../components/Navbar'
 import { AlbumFilter, albumsFromSongs } from '../components/AlbumFilter'
 import { useSearch } from '../hooks/useSearch'
-import type { IndexData, SongMeta } from '../types'
-
-interface Artist {
-  slug: string
-  name: string
-  songsPath: string
-  indexPath: string
-}
+import type { Artist, IndexData, SongMeta } from '../types'
 
 interface Props {
   theme: 'dark' | 'light'

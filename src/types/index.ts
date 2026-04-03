@@ -1,3 +1,11 @@
+// Artist metadata for listing and routing
+export interface Artist {
+  slug: string
+  name: string
+  songsPath: string
+  indexPath: string
+}
+
 // A single song with its metadata and lyrics split into lines.
 export interface SongMeta {
   id: number

@@ -1,13 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Navbar } from '../components/Navbar'
-
-interface Artist {
-  slug: string
-  name: string
-  songsPath: string
-  indexPath: string
-}
+import type { Artist } from '../types'
 
 interface ArtistCardData extends Artist {
   songCount: number
