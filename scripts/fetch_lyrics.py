@@ -56,23 +56,24 @@ ARTISTS = {
         "name": "Taylor Swift",
         "albums": [
             # Studio albums — in release order so dedup favours earlier versions
-            {"name": "Taylor Swift",                               "year": 2006, "genius_id": 1034551},
-            {"name": "The Taylor Swift Holiday Collection",        "year": 2007, "genius_id": 39094},
-            {"name": "Fearless (Taylor's Version)",                "year": 2008, "genius_id": 734107},
+            # Art URLs from iTunes API (better quality than Genius)
+            {"name": "Taylor Swift",                               "year": 2006, "genius_id": 1034551, "art_override": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/2b/14/dc/2b14dc4d-5173-7b38-b0ff-1c30daf5fa32/26UMGIM37308.rgb.jpg/1000x1000bb.jpg"},
+            {"name": "The Taylor Swift Holiday Collection",        "year": 2007, "genius_id": 39094, "art_override": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/c6/01/8b/c6018b3e-ae83-e5ed-9003-5ddb70f4d237/18OPBMR00132.rgb.jpg/1000x1000bb.jpg"},
+            {"name": "Fearless (Taylor's Version)",                "year": 2008, "genius_id": 734107, "art_override": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/c3/d0/1c/c3d01c88-73e7-187e-fd62-e1744de979a6/21UMGIM09915.rgb.jpg/1000x1000bb.jpg"},
             {"name": "Speak Now (Taylor's Version)",               "year": 2010, "genius_id": 1058580, "art_override": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/9f/3c/0a/9f3c0a60-f9e0-a34e-60e5-0be1f182896b/23UMGIM63932.rgb.jpg/1000x1000bb.jpg"},
-            {"name": "Red (Taylor's Version)",                     "year": 2012, "genius_id": 758022},
-            {"name": "1989 (Taylor's Version)",                    "year": 2014, "genius_id": 1082316},
-            {"name": "reputation",                                 "year": 2017, "genius_id": 1492663},
-            {"name": "Lover",                                      "year": 2019, "genius_id": 832267},
+            {"name": "Red (Taylor's Version)",                     "year": 2012, "genius_id": 758022, "art_override": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/c6/27/9c/c6279c07-9329-827d-31c4-f5d4c7d99ff4/21UM1IM25046.rgb.jpg/1000x1000bb.jpg"},
+            {"name": "1989 (Taylor's Version)",                    "year": 2014, "genius_id": 1082316, "art_override": "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/8e/35/6c/8e356cc2-0be4-b83b-d29e-b578623df2ac/23UM1IM34052.rgb.jpg/1000x1000bb.jpg"},
+            {"name": "reputation",                                 "year": 2017, "genius_id": 1492663, "art_override": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/eb/e6/06/ebe606da-e00f-82d3-47f3-b79904eed541/17UM1IM24651.rgb.jpg/1000x1000bb.jpg"},
+            {"name": "Lover",                                      "year": 2019, "genius_id": 832267, "art_override": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/49/3d/ab/493dab54-f920-9043-6181-80993b8116c9/19UMGIM53909.rgb.jpg/1000x1000bb.jpg"},
             # Christmas Tree Farm single
             {"name": "The Taylor Swift Holiday Collection",        "year": 2019, "genius_id": 1271655},
-            {"name": "folklore",                                   "year": 2020, "genius_id": 704621},
-            {"name": "evermore",                                   "year": 2020, "genius_id": 726425},
-            {"name": "Midnights",                                  "year": 2022, "genius_id": 1040211},
-            {"name": "The Tortured Poets Department",              "year": 2024, "genius_id": 1260317},
+            {"name": "folklore",                                   "year": 2020, "genius_id": 704621, "art_override": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/7c/04/ba/7c04ba17-2ff8-21b3-0ac0-7d141f86e924/20UMGIM64216.rgb.jpg/1000x1000bb.jpg"},
+            {"name": "evermore",                                   "year": 2020, "genius_id": 726425, "art_override": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/18/93/99/189399a7-95e1-324b-e40a-bd9e3ea22a95/20UM1IM14847.rgb.jpg/1000x1000bb.jpg"},
+            {"name": "Midnights",                                  "year": 2022, "genius_id": 1040211, "art_override": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/fb/b7/5d/fbb75d98-3b52-2fa5-ca82-658194f3c498/23UMGIM58157.rgb.jpg/1000x1000bb.jpg"},
+            {"name": "The Tortured Poets Department",              "year": 2024, "genius_id": 1260317, "art_override": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/a3/8a/8d/a38a8de5-ae11-154c-dca5-221e6549caee/24UMGIM44778.rgb.jpg/1000x1000bb.jpg"},
             # The Life of a Showgirl + acoustic (one album entry, acoustic tracks
             # have different titles so they won't dedup with the originals)
-            {"name": "The Life of a Showgirl",                    "year": 2025, "genius_id": 1517950, "art_override": "https://images.genius.com/44d300dcac42f9a7d974049795c9fa6d.1000x1000x1.png"},  # already correct
+            {"name": "The Life of a Showgirl",                    "year": 2025, "genius_id": 1517950, "art_override": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/30/0c/5a/300c5a57-d3be-a170-f880-f63380ca6312/25UM1IM19577.rgb.jpg/1000x1000bb.jpg"},
             # Voice memos & demos — is_demo=True overrides album name in output
             # 1498620 = LoaS "So Punk on Internet" version: main songs dedup, only memos pass through
             {"name": "The Life of a Showgirl (Voice Memos)",      "year": 2025, "genius_id": 1498620, "is_demo": True},
