@@ -57,7 +57,7 @@ ARTISTS = {
         "albums": [
             # Studio albums — in release order so dedup favours earlier versions
             # Art URLs from iTunes API (better quality than Genius)
-            {"name": "Taylor Swift",                               "year": 2006, "genius_id": 1034551, "art_override": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/2b/14/dc/2b14dc4d-5173-7b38-b0ff-1c30daf5fa32/26UMGIM37308.rgb.jpg/1000x1000bb.jpg"},
+            {"name": "Taylor Swift",                               "year": 2006, "genius_id": 1034551, "art_override": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/be/e1/48/bee148d6-d16c-d8f7-0173-d6cf6d684aa1/08PNDIM00678.rgb.jpg/1000x1000bb.jpg"},
             {"name": "The Taylor Swift Holiday Collection",        "year": 2007, "genius_id": 39094, "art_override": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/c6/01/8b/c6018b3e-ae83-e5ed-9003-5ddb70f4d237/18OPBMR00132.rgb.jpg/1000x1000bb.jpg"},
             {"name": "Fearless (Taylor's Version)",                "year": 2008, "genius_id": 734107, "art_override": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/c3/d0/1c/c3d01c88-73e7-187e-fd62-e1744de979a6/21UMGIM09915.rgb.jpg/1000x1000bb.jpg"},
             {"name": "Speak Now (Taylor's Version)",               "year": 2010, "genius_id": 1058580, "art_override": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/9f/3c/0a/9f3c0a60-f9e0-a34e-60e5-0be1f182896b/23UMGIM63932.rgb.jpg/1000x1000bb.jpg"},
@@ -82,8 +82,9 @@ ARTISTS = {
             # willow webstore single (has lonely witch version + original songwriting demo)
             {"name": "willow demos",                              "year": 2020, "genius_id": 1513411, "is_demo": True},
         ],
-        # Songs on other artists' albums where Taylor is a feature/collab
+        # Songs on other artists' albums where Taylor is a feature/collab, plus standalone singles
         "individual_songs": [
+            # Collaborations & features
             {"genius_id": 187143,  "title": "Crazier",                    "album": "Collaborations & Features", "year": 2009},
             {"genius_id": 187250,  "title": "I'd Lie",                    "album": "Collaborations & Features", "year": 2006},
             {"genius_id": 187203,  "title": "I Heart ?",                  "album": "Collaborations & Features", "year": 2009},
@@ -97,6 +98,12 @@ ARTISTS = {
             {"genius_id": 6959849, "title": "Birch",                      "album": "Collaborations & Features", "year": 2021, "search_artist": "Big Red Machine"},
             {"genius_id": 8714086, "title": "The Alcott",                 "album": "Collaborations & Features", "year": 2023, "search_artist": "The National"},
             {"genius_id": 6453633, "title": "Gasoline (Remix)",           "album": "Collaborations & Features", "year": 2021, "search_artist": "HAIM"},
+            # Standalone singles & vault tracks
+            {"genius_id": 5651833, "title": "All of the Girls You Loved Before", "album": "Non-album single", "year": 2014},
+            {"genius_id": 9157489, "title": "You're Losing Me (From The Vault)",  "album": "The Tortured Poets Department", "year": 2024},
+            {"genius_id": 8924398, "title": "Eyes Open (Taylor's Version)",       "album": "Fearless (Taylor's Version)", "year": 2021},
+            {"genius_id": 8924411, "title": "Safe & Sound (Taylor's Version)",    "album": "The Hunger Games: Catching Fire", "year": 2013},
+            {"genius_id": 6688373, "title": "If This Was a Movie (Taylor's Version)", "album": "Speak Now (Taylor's Version)", "year": 2021},
         ],
     },
     "sabrina-carpenter": {
