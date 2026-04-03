@@ -99,11 +99,11 @@ ARTISTS = {
             {"genius_id": 8714086, "title": "The Alcott",                 "album": "Collaborations & Features", "year": 2023, "search_artist": "The National"},
             {"genius_id": 6453633, "title": "Gasoline (Remix)",           "album": "Collaborations & Features", "year": 2021, "search_artist": "HAIM"},
             # Standalone singles & vault tracks
-            {"genius_id": 5651833, "title": "All of the Girls You Loved Before", "album": "Non-album single", "year": 2014},
-            {"genius_id": 9157489, "title": "You're Losing Me (From The Vault)",  "album": "The Tortured Poets Department", "year": 2024},
-            {"genius_id": 8924398, "title": "Eyes Open (Taylor's Version)",       "album": "Fearless (Taylor's Version)", "year": 2021},
-            {"genius_id": 8924411, "title": "Safe & Sound (Taylor's Version)",    "album": "The Hunger Games: Catching Fire", "year": 2013},
-            {"genius_id": 6688373, "title": "If This Was a Movie (Taylor's Version)", "album": "Speak Now (Taylor's Version)", "year": 2021},
+            {"genius_id": 5651833, "title": "All of the Girls You Loved Before", "album": "Lover", "year": 2019},
+            {"genius_id": 9157489, "title": "You're Losing Me (From The Vault)",  "album": "Midnights", "year": 2022},
+            {"genius_id": 8924398, "title": "Eyes Open (Taylor's Version)",       "album": "Red (Taylor's Version)", "year": 2012},
+            {"genius_id": 8924411, "title": "Safe & Sound (Taylor's Version)",    "album": "Red (Taylor's Version)", "year": 2012},
+            {"genius_id": 6688373, "title": "If This Was a Movie (Taylor's Version)", "album": "Fearless (Taylor's Version)", "year": 2023},
         ],
     },
     "sabrina-carpenter": {
