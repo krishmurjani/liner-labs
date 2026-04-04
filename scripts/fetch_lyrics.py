@@ -89,7 +89,7 @@ ARTISTS = {
             {"genius_id": 187250,  "title": "I'd Lie",                    "album": "Collaborations & Features", "year": 2006},
             {"genius_id": 187203,  "title": "I Heart ?",                  "album": "Collaborations & Features", "year": 2009},
             {"genius_id": 4968964, "title": "Beautiful Ghosts",           "album": "Collaborations & Features", "year": 2019},
-            {"genius_id": 1633487944, "title": "Carolina",                "album": "Where the Crawdads Sing - OST", "year": 2022},
+            {"genius_id": 1633487944, "title": "Carolina",                "album": "Where the Crawdads Sing - OST", "year": 2022, "art_override": "https://is1-ssl.mzstatic.com/image/thumb/Music122/v4/51/5f/41/515f417f-19d6-ea22-e1fb-acebc2ba4f23/22UMGIM67563.rgb.jpg/600x600bb.jpg"},
             {"genius_id": 642957,  "title": "Two Is Better Than One",     "album": "Collaborations & Features", "year": 2009, "search_artist": "Boys Like Girls"},
             {"genius_id": 182948,  "title": "Half of My Heart",           "album": "Collaborations & Features", "year": 2010, "search_artist": "John Mayer"},
             {"genius_id": 70979,   "title": "Both of Us",                 "album": "Collaborations & Features", "year": 2012, "search_artist": "B.o.B"},
@@ -213,11 +213,18 @@ GENIUS_API = "https://api.genius.com"
 LRCLIB_API = "https://lrclib.net/api"
 SECTION_RE = re.compile(r'^\[.*\]$')
 DEMO_ALBUM_NAME = "Voice Memos & Demos"
+LONG_POND_ART_URL = "https://is1-ssl.mzstatic.com/image/thumb/Music114/v4/0f/a0/14/0fa0144d-6cd5-792a-1589-3e1f0c25db49/20UM1IM08851.rgb.jpg/600x600bb.jpg"
 # Skip commentary/interview versions — these are not unique songs
 SKIP_PATTERNS = {
     "commentary",
     "track by track",
 }
+
+
+def resolve_album_art(default_art: str, title: str) -> str:
+    if "long pond studio sessions" in title.lower():
+        return LONG_POND_ART_URL
+    return default_art
 
 
 def clean_lyrics(raw: str) -> list[str]:
@@ -327,10 +334,11 @@ def main():
             seen_titles.add(canonical)
 
             song_id_str = str(track["id"])
+            song_art = resolve_album_art(art, title)
             if song_id_str in existing_by_id:
                 # Song already fetched — refresh metadata, keep lyrics
                 kept = {**existing_by_id[song_id_str],
-                        "albumArt": art, "album": display_album, "year": album_meta["year"]}
+                        "albumArt": song_art, "album": display_album, "year": album_meta["year"]}
                 songs_output.append(kept)
                 print(f"  KEEP {title}")
                 continue
@@ -345,7 +353,7 @@ def main():
                 "title":    title,
                 "album":    display_album,
                 "year":     album_meta["year"],
-                "albumArt": art,
+                "albumArt": song_art,
                 "lines":    lines,
             })
             print(f"  OK  {title} ({len(lines)} lines)")
@@ -370,6 +378,7 @@ def main():
         song_id_str = str(song_config["genius_id"])
         if song_id_str in existing_by_id:
             kept = {**existing_by_id[song_id_str],
+                    "albumArt": song_config.get("art_override", existing_by_id[song_id_str].get("albumArt", "")),
                     "album": song_config.get("album", "Collaborations & Features"),
                     "year":  song_config.get("year", 0)}
             songs_output.append(kept)
@@ -385,7 +394,7 @@ def main():
             print(f"  SKIP (no lyrics): {title}")
             continue
 
-        art = get_song_art(headers, song_config["genius_id"])
+        art = song_config.get("art_override") or get_song_art(headers, song_config["genius_id"])
 
         songs_output.append({
             "id":       song_config["genius_id"],
