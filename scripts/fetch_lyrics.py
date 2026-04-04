@@ -216,7 +216,6 @@ DEMO_ALBUM_NAME = "Voice Memos & Demos"
 # Skip commentary/interview versions — these are not unique songs
 SKIP_PATTERNS = {
     "commentary",
-    "long pond studio sessions",
     "track by track",
 }
 
