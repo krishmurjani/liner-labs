@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import { HighlightedLine } from './HighlightedLine'
 import { tokenize } from '../lib/tokenize'
 import type { SearchResult } from '../types'
@@ -32,7 +33,20 @@ export function ResultCard({ result, query }: Props) {
         )}
         <div>
           <p className="font-semibold text-zinc-900 dark:text-white text-sm">{song.title}</p>
-          <p className="text-zinc-400 dark:text-zinc-500 text-xs mt-0.5">{song.album} · {song.year}</p>
+          <p className="text-zinc-400 dark:text-zinc-500 text-xs mt-0.5 flex flex-wrap items-center gap-1">
+            {song.artistName && song.artistSlug && (
+              <>
+                <Link
+                  to={`/${song.artistSlug}`}
+                  className="text-zinc-500 dark:text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 transition-colors"
+                >
+                  {song.artistName}
+                </Link>
+                <span aria-hidden="true">·</span>
+              </>
+            )}
+            <span>{song.album} · {song.year}</span>
+          </p>
         </div>
       </div>
 

@@ -8,11 +8,13 @@ export interface Artist {
 
 // A single song with its metadata and lyrics split into lines.
 export interface SongMeta {
-  id: number
+  id: number | string
   title: string
   album: string
   year: number
   albumArt?: string
+  artistName?: string
+  artistSlug?: string
   lines: string[]
 }
 
