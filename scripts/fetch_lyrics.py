@@ -35,6 +35,8 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+NON_ALBUM_COLLABS_NAME = "Non-album Singles & Collaborations"
+
 # ---------------------------------------------------------------------------
 # Artist catalogue — add new artists here.
 # ---------------------------------------------------------------------------
@@ -85,20 +87,20 @@ ARTISTS = {
         # Songs on other artists' albums where Taylor is a feature/collab, plus standalone singles
         "individual_songs": [
             # Collaborations & features
-            {"genius_id": 187143,  "title": "Crazier",                    "album": "Collaborations & Features", "year": 2009},
-            {"genius_id": 187250,  "title": "I'd Lie",                    "album": "Collaborations & Features", "year": 2006},
-            {"genius_id": 187203,  "title": "I Heart ?",                  "album": "Collaborations & Features", "year": 2009},
-            {"genius_id": 4968964, "title": "Beautiful Ghosts",           "album": "Collaborations & Features", "year": 2019},
-            {"genius_id": 1633487944, "title": "Carolina",                "album": "Where the Crawdads Sing - OST", "year": 2022, "art_override": "https://is1-ssl.mzstatic.com/image/thumb/Music122/v4/51/5f/41/515f417f-19d6-ea22-e1fb-acebc2ba4f23/22UMGIM67563.rgb.jpg/600x600bb.jpg"},
-            {"genius_id": 642957,  "title": "Two Is Better Than One",     "album": "Collaborations & Features", "year": 2009, "search_artist": "Boys Like Girls"},
-            {"genius_id": 182948,  "title": "Half of My Heart",           "album": "Collaborations & Features", "year": 2010, "search_artist": "John Mayer"},
-            {"genius_id": 70979,   "title": "Both of Us",                 "album": "Collaborations & Features", "year": 2012, "search_artist": "B.o.B"},
-            {"genius_id": 154241,  "title": "Highway Don't Care",         "album": "Collaborations & Features", "year": 2013, "search_artist": "Tim McGraw"},
-            {"genius_id": 2927948, "title": "I Don't Wanna Live Forever", "album": "Collaborations & Features", "year": 2017, "search_artist": "ZAYN"},
-            {"genius_id": 6959851, "title": "Renegade",                   "album": "Collaborations & Features", "year": 2021, "search_artist": "Big Red Machine"},
-            {"genius_id": 6959849, "title": "Birch",                      "album": "Collaborations & Features", "year": 2021, "search_artist": "Big Red Machine"},
-            {"genius_id": 8714086, "title": "The Alcott",                 "album": "Collaborations & Features", "year": 2023, "search_artist": "The National"},
-            {"genius_id": 6453633, "title": "Gasoline (Remix)",           "album": "Collaborations & Features", "year": 2021, "search_artist": "HAIM"},
+            {"genius_id": 187143,  "title": "Crazier",                    "album": NON_ALBUM_COLLABS_NAME, "year": 2009},
+            {"genius_id": 187250,  "title": "I'd Lie",                    "album": NON_ALBUM_COLLABS_NAME, "year": 2006},
+            {"genius_id": 187203,  "title": "I Heart ?",                  "album": NON_ALBUM_COLLABS_NAME, "year": 2009},
+            {"genius_id": 4968964, "title": "Beautiful Ghosts",           "album": NON_ALBUM_COLLABS_NAME, "year": 2019},
+            {"genius_id": 1633487944, "title": "Carolina",                "album": NON_ALBUM_COLLABS_NAME, "year": 2022, "art_override": "https://is1-ssl.mzstatic.com/image/thumb/Music122/v4/51/5f/41/515f417f-19d6-ea22-e1fb-acebc2ba4f23/22UMGIM67563.rgb.jpg/600x600bb.jpg"},
+            {"genius_id": 642957,  "title": "Two Is Better Than One",     "album": NON_ALBUM_COLLABS_NAME, "year": 2009, "search_artist": "Boys Like Girls"},
+            {"genius_id": 182948,  "title": "Half of My Heart",           "album": NON_ALBUM_COLLABS_NAME, "year": 2010, "search_artist": "John Mayer"},
+            {"genius_id": 70979,   "title": "Both of Us",                 "album": NON_ALBUM_COLLABS_NAME, "year": 2012, "search_artist": "B.o.B"},
+            {"genius_id": 154241,  "title": "Highway Don't Care",         "album": NON_ALBUM_COLLABS_NAME, "year": 2013, "search_artist": "Tim McGraw"},
+            {"genius_id": 2927948, "title": "I Don't Wanna Live Forever", "album": NON_ALBUM_COLLABS_NAME, "year": 2017, "search_artist": "ZAYN"},
+            {"genius_id": 6959851, "title": "Renegade",                   "album": NON_ALBUM_COLLABS_NAME, "year": 2021, "search_artist": "Big Red Machine"},
+            {"genius_id": 6959849, "title": "Birch",                      "album": NON_ALBUM_COLLABS_NAME, "year": 2021, "search_artist": "Big Red Machine"},
+            {"genius_id": 8714086, "title": "The Alcott",                 "album": NON_ALBUM_COLLABS_NAME, "year": 2023, "search_artist": "The National"},
+            {"genius_id": 6453633, "title": "Gasoline (Remix)",           "album": NON_ALBUM_COLLABS_NAME, "year": 2021, "search_artist": "HAIM"},
             # Standalone singles & vault tracks
             {"genius_id": 5651833, "title": "All of the Girls You Loved Before", "album": "Lover", "year": 2019},
             {"genius_id": 9157489, "title": "You're Losing Me (From The Vault)",  "album": "Midnights", "year": 2022},
@@ -379,7 +381,7 @@ def main():
         if song_id_str in existing_by_id:
             kept = {**existing_by_id[song_id_str],
                     "albumArt": song_config.get("art_override", existing_by_id[song_id_str].get("albumArt", "")),
-                    "album": song_config.get("album", "Collaborations & Features"),
+                    "album": song_config.get("album", NON_ALBUM_COLLABS_NAME),
                     "year":  song_config.get("year", 0)}
             songs_output.append(kept)
             print(f"  KEEP {title}")
@@ -399,7 +401,7 @@ def main():
         songs_output.append({
             "id":       song_config["genius_id"],
             "title":    title,
-            "album":    song_config.get("album", "Collaborations & Features"),
+            "album":    song_config.get("album", NON_ALBUM_COLLABS_NAME),
             "year":     song_config.get("year", 0),
             "albumArt": art,
             "lines":    lines,
