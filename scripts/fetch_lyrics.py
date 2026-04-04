@@ -89,6 +89,7 @@ ARTISTS = {
             {"genius_id": 187250,  "title": "I'd Lie",                    "album": "Collaborations & Features", "year": 2006},
             {"genius_id": 187203,  "title": "I Heart ?",                  "album": "Collaborations & Features", "year": 2009},
             {"genius_id": 4968964, "title": "Beautiful Ghosts",           "album": "Collaborations & Features", "year": 2019},
+            {"genius_id": 1633487944, "title": "Carolina",                "album": "Where the Crawdads Sing - OST", "year": 2022},
             {"genius_id": 642957,  "title": "Two Is Better Than One",     "album": "Collaborations & Features", "year": 2009, "search_artist": "Boys Like Girls"},
             {"genius_id": 182948,  "title": "Half of My Heart",           "album": "Collaborations & Features", "year": 2010, "search_artist": "John Mayer"},
             {"genius_id": 70979,   "title": "Both of Us",                 "album": "Collaborations & Features", "year": 2012, "search_artist": "B.o.B"},
