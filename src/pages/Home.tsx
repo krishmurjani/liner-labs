@@ -254,17 +254,18 @@ function ArtistCard({ artist, index, isDragging, onDragStart, onDragEnd, onDrop,
   const [justDropped, setJustDropped] = useState(false)
 
   return (
-    <style>{`
-      @keyframes dropBounce {
-        0% { transform: scale(1.08); opacity: 0.7; }
-        60% { transform: scale(0.96); }
-        100% { transform: scale(1); opacity: 1; }
-      }
-      .drop-bounce {
-        animation: dropBounce 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-      }
-    `}</style>
-    <button
+    <>
+      <style>{`
+        @keyframes dropBounce {
+          0% { transform: scale(1.08); opacity: 0.7; }
+          60% { transform: scale(0.96); }
+          100% { transform: scale(1); opacity: 1; }
+        }
+        .drop-bounce {
+          animation: dropBounce 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+      `}</style>
+      <button
       draggable
       onDragStart={(e) => {
         e.dataTransfer!.effectAllowed = 'move'
@@ -317,6 +318,7 @@ function ArtistCard({ artist, index, isDragging, onDragStart, onDragEnd, onDrop,
           {artist.albums.length} albums · {artist.songCount} songs
         </p>
       </div>
-    </button>
+      </button>
+    </>
   )
 }
