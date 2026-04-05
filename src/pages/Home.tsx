@@ -251,8 +251,19 @@ interface ArtistCardProps {
 
 function ArtistCard({ artist, index, isDragging, onDragStart, onDragEnd, onDrop, onClick }: ArtistCardProps) {
   const [dragOver, setDragOver] = useState(false)
+  const [justDropped, setJustDropped] = useState(false)
 
   return (
+    <style>{`
+      @keyframes dropBounce {
+        0% { transform: scale(1.08); opacity: 0.7; }
+        60% { transform: scale(0.96); }
+        100% { transform: scale(1); opacity: 1; }
+      }
+      .drop-bounce {
+        animation: dropBounce 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+      }
+    `}</style>
     <button
       draggable
       onDragStart={(e) => {
@@ -269,15 +280,18 @@ function ArtistCard({ artist, index, isDragging, onDragStart, onDragEnd, onDrop,
       onDrop={(e) => {
         e.preventDefault()
         setDragOver(false)
+        setJustDropped(true)
+        setTimeout(() => setJustDropped(false), 600)
         onDrop(index)
       }}
       onClick={onClick}
       className={`group text-left w-full bg-zinc-50 dark:bg-zinc-900
                  border rounded-2xl overflow-hidden
                  hover:border-zinc-400 dark:hover:border-zinc-600
-                 transition-all duration-200 cursor-move
-                 ${isDragging ? 'opacity-50' : ''}
-                 ${dragOver ? 'border-zinc-400 dark:border-zinc-600 scale-[1.02]' : 'border-zinc-200 dark:border-zinc-800'}`}
+                 transition-all duration-500 cursor-move
+                 ${isDragging ? 'opacity-40 scale-95 shadow-none' : ''}
+                 ${dragOver ? 'border-blue-400 dark:border-blue-500 scale-[1.08] shadow-xl dark:shadow-blue-500/20 -translate-y-1' : justDropped ? 'drop-bounce' : 'border-zinc-200 dark:border-zinc-800'}
+                 ${!isDragging && !dragOver && !justDropped ? 'shadow-sm dark:shadow-zinc-900/50' : ''}`}
     >
       {/* Album art mosaic */}
       <div className="grid grid-cols-2 aspect-video w-full overflow-hidden">
