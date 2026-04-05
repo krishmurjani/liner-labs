@@ -30,6 +30,8 @@ export default function Home({ theme, onToggleTheme }: Props) {
   const [megaQuery, setMegaQuery] = useState('')
   const [megaError, setMegaError] = useState<string | null>(null)
   const [draggedIndex, setDraggedIndex] = useState<number | null>(null)
+  const [viewMode, setViewMode] = useState<'card' | 'list'>('card')
+  const [reorderMode, setReorderMode] = useState(false)
   const navigate = useNavigate()
   const { results, totalCount, status } = useSearch(megaIndexData, megaQuery, null)
 
@@ -162,41 +164,182 @@ export default function Home({ theme, onToggleTheme }: Props) {
         </section>
 
         <section className="space-y-4">
-          <div className="space-y-1">
-            <h2 className="text-sm font-semibold text-zinc-900 dark:text-white">Browse Artists</h2>
-            <p className="text-zinc-400 dark:text-zinc-500 text-sm">
-              Jump into a single artist catalog.
-            </p>
+          <div className="space-y-3">
+            <div className="flex items-start justify-between gap-4">
+              <div className="space-y-1">
+                <h2 className="text-sm font-semibold text-zinc-900 dark:text-white">Browse Artists</h2>
+                <p className="text-zinc-400 dark:text-zinc-500 text-sm">
+                  Jump into a single artist catalog.
+                </p>
+              </div>
+
+              <div className="flex items-center gap-2 flex-shrink-0">
+                {/* View Mode Toggle */}
+                <div className="inline-flex rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 p-1">
+                  <button
+                    onClick={() => setViewMode('card')}
+                    className={`px-3 py-1.5 rounded-md text-xs font-medium transition-all duration-300 ${
+                      viewMode === 'card'
+                        ? 'bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white shadow-sm'
+                        : 'text-zinc-500 dark:text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-300'
+                    }`}
+                    title="Card view"
+                  >
+                    ⊞
+                  </button>
+                  <button
+                    onClick={() => setViewMode('list')}
+                    className={`px-3 py-1.5 rounded-md text-xs font-medium transition-all duration-300 ${
+                      viewMode === 'list'
+                        ? 'bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white shadow-sm'
+                        : 'text-zinc-500 dark:text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-300'
+                    }`}
+                    title="List view"
+                  >
+                    ≡
+                  </button>
+                </div>
+
+                {/* Reorder Button */}
+                <button
+                  onClick={() => setReorderMode(!reorderMode)}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all duration-300 ${
+                    reorderMode
+                      ? 'bg-blue-500 text-white shadow-md dark:shadow-blue-500/30'
+                      : 'bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-700'
+                  }`}
+                  title="Toggle reorder mode"
+                >
+                  {reorderMode ? '✓ Reordering' : 'Reorder'}
+                </button>
+
+                {/* Reset to Ascending */}
+                {reorderMode && (
+                  <button
+                    onClick={() => {
+                      const sorted = [...artists].sort((a, b) => a.name.localeCompare(b.name))
+                      setArtists(sorted)
+                      localStorage.setItem('artistOrder', JSON.stringify(sorted.map(a => a.slug)))
+                    }}
+                    className="px-3 py-1.5 rounded-lg text-xs font-medium bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-all duration-300"
+                    title="Reset to alphabetical order"
+                  >
+                    ↑ A-Z
+                  </button>
+                )}
+              </div>
+            </div>
           </div>
 
           {artists.length === 0 ? (
             <p className="text-zinc-400 text-sm">Loading…</p>
-          ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          ) : viewMode === 'card' ? (
+            <div className={`grid grid-cols-1 sm:grid-cols-2 gap-4 transition-all duration-300`}>
               {artists.map((artist, index) => (
-                <ArtistCard
+                <div
                   key={artist.slug}
-                  artist={artist}
-                  index={index}
-                  isDragging={draggedIndex === index}
-                  onDragStart={() => setDraggedIndex(index)}
+                  className="transition-all duration-300"
+                  style={{
+                    animation: 'fadeIn 0.4s ease-out',
+                  }}
+                >
+                  <ArtistCard
+                    artist={artist}
+                    index={index}
+                    isDragging={draggedIndex === index}
+                    isDraggingDisabled={!reorderMode}
+                    onDragStart={() => reorderMode && setDraggedIndex(index)}
+                    onDragEnd={() => setDraggedIndex(null)}
+                    onDrop={(targetIndex) => {
+                      if (!reorderMode || draggedIndex === null || draggedIndex === targetIndex) return
+                      const newArtists = [...artists]
+                      const [draggedArtist] = newArtists.splice(draggedIndex, 1)
+                      newArtists.splice(targetIndex, 0, draggedArtist)
+                      setArtists(newArtists)
+                      setDraggedIndex(null)
+                      localStorage.setItem('artistOrder', JSON.stringify(newArtists.map(a => a.slug)))
+                    }}
+                    onClick={() => navigate(`/${artist.slug}`)}
+                  />
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="space-y-2">
+              {artists.map((artist, index) => (
+                <div
+                  key={artist.slug}
+                  draggable={reorderMode}
+                  onDragStart={(e) => {
+                    if (reorderMode) {
+                      e.dataTransfer!.effectAllowed = 'move'
+                      setDraggedIndex(index)
+                    }
+                  }}
                   onDragEnd={() => setDraggedIndex(null)}
-                  onDrop={(targetIndex) => {
-                    if (draggedIndex === null || draggedIndex === targetIndex) return
+                  onDragOver={(e) => {
+                    if (reorderMode) {
+                      e.preventDefault()
+                      e.dataTransfer!.dropEffect = 'move'
+                    }
+                  }}
+                  onDrop={(e) => {
+                    if (!reorderMode || draggedIndex === null || draggedIndex === index) return
+                    e.preventDefault()
                     const newArtists = [...artists]
                     const [draggedArtist] = newArtists.splice(draggedIndex, 1)
-                    newArtists.splice(targetIndex, 0, draggedArtist)
+                    newArtists.splice(index, 0, draggedArtist)
                     setArtists(newArtists)
                     setDraggedIndex(null)
-                    // Save new order to localStorage
                     localStorage.setItem('artistOrder', JSON.stringify(newArtists.map(a => a.slug)))
                   }}
-                  onClick={() => navigate(`/${artist.slug}`)}
-                />
+                  className={`p-4 rounded-lg border transition-all duration-300 cursor-pointer group
+                    ${draggedIndex === index ? 'opacity-50 scale-95' : 'opacity-100'}
+                    ${reorderMode ? 'cursor-move hover:border-blue-400 dark:hover:border-blue-500' : 'cursor-pointer hover:border-zinc-400 dark:hover:border-zinc-600'}
+                    border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900
+                    hover:shadow-md transition-all duration-300
+                    animation: fadeIn 0.4s ease-out;`}
+                  onClick={() => !reorderMode && navigate(`/${artist.slug}`)}
+                >
+                  <div className="flex items-center gap-3">
+                    {artist.albumCovers[0] && (
+                      <img
+                        src={artist.albumCovers[0]}
+                        alt={artist.name}
+                        className="w-12 h-12 rounded-md object-cover flex-shrink-0"
+                        draggable={false}
+                      />
+                    )}
+                    <div className="flex-1 min-w-0">
+                      <p className="font-semibold text-zinc-900 dark:text-white text-sm truncate">
+                        {artist.name}
+                      </p>
+                      <p className="text-zinc-400 dark:text-zinc-500 text-xs">
+                        {artist.albums.length} albums · {artist.songCount} songs
+                      </p>
+                    </div>
+                    {reorderMode && (
+                      <span className="text-zinc-300 dark:text-zinc-600 flex-shrink-0">⋮⋮</span>
+                    )}
+                  </div>
+                </div>
               ))}
             </div>
           )}
         </section>
+
+        <style>{`
+          @keyframes fadeIn {
+            from {
+              opacity: 0;
+              transform: translateY(8px);
+            }
+            to {
+              opacity: 1;
+              transform: translateY(0);
+            }
+          }
+        `}</style>
       </div>
     </div>
   )
@@ -243,13 +386,14 @@ interface ArtistCardProps {
   artist: ArtistCardData
   index: number
   isDragging: boolean
+  isDraggingDisabled?: boolean
   onDragStart: () => void
   onDragEnd: () => void
   onDrop: (targetIndex: number) => void
   onClick: () => void
 }
 
-function ArtistCard({ artist, index, isDragging, onDragStart, onDragEnd, onDrop, onClick }: ArtistCardProps) {
+function ArtistCard({ artist, index, isDragging, isDraggingDisabled, onDragStart, onDragEnd, onDrop, onClick }: ArtistCardProps) {
   const [dragOver, setDragOver] = useState(false)
   const [justDropped, setJustDropped] = useState(false)
 
@@ -266,32 +410,38 @@ function ArtistCard({ artist, index, isDragging, onDragStart, onDragEnd, onDrop,
         }
       `}</style>
       <button
-      draggable
+      draggable={!isDraggingDisabled}
       onDragStart={(e) => {
-        e.dataTransfer!.effectAllowed = 'move'
-        onDragStart()
+        if (!isDraggingDisabled) {
+          e.dataTransfer!.effectAllowed = 'move'
+          onDragStart()
+        }
       }}
       onDragEnd={onDragEnd}
       onDragOver={(e) => {
-        e.preventDefault()
-        e.dataTransfer!.dropEffect = 'move'
-        setDragOver(true)
+        if (!isDraggingDisabled) {
+          e.preventDefault()
+          e.dataTransfer!.dropEffect = 'move'
+          setDragOver(true)
+        }
       }}
       onDragLeave={() => setDragOver(false)}
       onDrop={(e) => {
-        e.preventDefault()
-        setDragOver(false)
-        setJustDropped(true)
-        setTimeout(() => setJustDropped(false), 600)
-        onDrop(index)
+        if (!isDraggingDisabled) {
+          e.preventDefault()
+          setDragOver(false)
+          setJustDropped(true)
+          setTimeout(() => setJustDropped(false), 600)
+          onDrop(index)
+        }
       }}
       onClick={onClick}
       className={`group text-left w-full bg-zinc-50 dark:bg-zinc-900
                  border rounded-2xl overflow-hidden
                  hover:border-zinc-400 dark:hover:border-zinc-600
-                 transition-all duration-500 cursor-move
+                 transition-all duration-500 ${isDraggingDisabled ? 'cursor-pointer' : 'cursor-move'}
                  ${isDragging ? 'opacity-40 scale-95 shadow-none' : ''}
-                 ${dragOver ? 'border-blue-400 dark:border-blue-500 scale-[1.08] shadow-xl dark:shadow-blue-500/20 -translate-y-1' : justDropped ? 'drop-bounce' : 'border-zinc-200 dark:border-zinc-800'}
+                 ${dragOver && !isDraggingDisabled ? 'border-blue-400 dark:border-blue-500 scale-[1.08] shadow-xl dark:shadow-blue-500/20 -translate-y-1' : justDropped ? 'drop-bounce' : 'border-zinc-200 dark:border-zinc-800'}
                  ${!isDragging && !dragOver && !justDropped ? 'shadow-sm dark:shadow-zinc-900/50' : ''}`}
     >
       {/* Album art mosaic */}
