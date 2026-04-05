@@ -34,8 +34,115 @@ export default function Home({ theme, onToggleTheme }: Props) {
   const [reorderMode, setReorderMode] = useState(false)
   const listContainerRef = useRef<HTMLDivElement>(null)
   const scrollAnimationRef = useRef<number | null>(null)
+  const touchDragRef = useRef<{
+    dragIndex: number
+    overIndex: number | null
+    ghost: HTMLElement | null
+    offsetX: number
+    offsetY: number
+  } | null>(null)
   const navigate = useNavigate()
   const { results, totalCount, status } = useSearch(megaIndexData, megaQuery, null)
+
+  const handleTouchStart = (e: React.TouchEvent<HTMLElement>, index: number) => {
+    if (!reorderMode) return
+    e.stopPropagation()
+    const touch = e.touches[0]
+    const el = e.currentTarget
+    const rect = el.getBoundingClientRect()
+
+    // Clone the element as a ghost
+    const ghost = el.cloneNode(true) as HTMLElement
+    ghost.style.position = 'fixed'
+    ghost.style.left = rect.left + 'px'
+    ghost.style.top = rect.top + 'px'
+    ghost.style.width = rect.width + 'px'
+    ghost.style.opacity = '0.9'
+    ghost.style.pointerEvents = 'none'
+    ghost.style.zIndex = '9999'
+    ghost.style.transform = 'scale(1.03)'
+    ghost.style.boxShadow = '0 8px 30px rgba(0,0,0,0.3)'
+    ghost.style.transition = 'none'
+    ghost.style.borderRadius = '0.5rem'
+    document.body.appendChild(ghost)
+
+    touchDragRef.current = {
+      dragIndex: index,
+      overIndex: null,
+      ghost,
+      offsetX: touch.clientX - rect.left,
+      offsetY: touch.clientY - rect.top,
+    }
+
+    setDraggedIndex(index)
+  }
+
+  const handleTouchMove = (e: React.TouchEvent<HTMLElement>) => {
+    if (!reorderMode || !touchDragRef.current) return
+    e.preventDefault()
+    const touch = e.touches[0]
+    const { ghost, offsetX, offsetY } = touchDragRef.current
+
+    // Move ghost
+    if (ghost) {
+      ghost.style.left = (touch.clientX - offsetX) + 'px'
+      ghost.style.top = (touch.clientY - offsetY) + 'px'
+    }
+
+    // Auto-scroll list container near edges
+    const container = listContainerRef.current
+    if (container) {
+      const rect = container.getBoundingClientRect()
+      const scrollZone = 60
+      const maxSpeed = 10
+      if (scrollAnimationRef.current) {
+        cancelAnimationFrame(scrollAnimationRef.current)
+        scrollAnimationRef.current = null
+      }
+      const distToBottom = rect.bottom - touch.clientY
+      const distToTop = touch.clientY - rect.top
+      const scroll = () => {
+        let delta = 0
+        if (distToBottom < scrollZone && distToBottom > 0) delta = (1 - distToBottom / scrollZone) * maxSpeed
+        else if (distToTop < scrollZone && distToTop > 0) delta = -(1 - distToTop / scrollZone) * maxSpeed
+        if (delta !== 0) { container.scrollTop += delta; scrollAnimationRef.current = requestAnimationFrame(scroll) }
+      }
+      if (distToBottom < scrollZone || distToTop < scrollZone) {
+        scrollAnimationRef.current = requestAnimationFrame(scroll)
+      }
+    }
+
+    // Find which item is under the finger
+    if (ghost) ghost.style.display = 'none'
+    const el = document.elementFromPoint(touch.clientX, touch.clientY)
+    if (ghost) ghost.style.display = ''
+
+    const target = el?.closest('[data-drag-index]')
+    const overIndex = target ? parseInt(target.getAttribute('data-drag-index')!, 10) : null
+    touchDragRef.current.overIndex = overIndex
+  }
+
+  const handleTouchEnd = () => {
+    if (!touchDragRef.current) return
+    const { dragIndex, overIndex, ghost } = touchDragRef.current
+
+    if (ghost) ghost.remove()
+    if (scrollAnimationRef.current) {
+      cancelAnimationFrame(scrollAnimationRef.current)
+      scrollAnimationRef.current = null
+    }
+
+    if (overIndex !== null && overIndex !== dragIndex) {
+      const newArtists = [...artists]
+      const [moved] = newArtists.splice(dragIndex, 1)
+      newArtists.splice(overIndex, 0, moved)
+      setArtists(newArtists)
+      localStorage.setItem('artistOrder', JSON.stringify(newArtists.map(a => a.slug)))
+    }
+
+    touchDragRef.current = null
+    setDraggedIndex(null)
+  }
 
   // Auto-scroll during drag using requestAnimationFrame
   const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
@@ -303,10 +410,12 @@ export default function Home({ theme, onToggleTheme }: Props) {
               {artists.map((artist, index) => (
                 <div
                   key={artist.slug}
+                  data-drag-index={index}
                   className="transition-all duration-300"
-                  style={{
-                    animation: 'fadeIn 0.4s ease-out',
-                  }}
+                  style={{ animation: 'fadeIn 0.4s ease-out' }}
+                  onTouchStart={(e) => handleTouchStart(e, index)}
+                  onTouchMove={handleTouchMove}
+                  onTouchEnd={handleTouchEnd}
                 >
                   <ArtistCard
                     artist={artist}
@@ -339,7 +448,11 @@ export default function Home({ theme, onToggleTheme }: Props) {
               {artists.map((artist, index) => (
                 <div
                   key={artist.slug}
+                  data-drag-index={index}
                   draggable={reorderMode}
+                  onTouchStart={(e) => handleTouchStart(e, index)}
+                  onTouchMove={handleTouchMove}
+                  onTouchEnd={handleTouchEnd}
                   onDragStart={(e) => {
                     if (reorderMode && e.currentTarget) {
                       e.dataTransfer!.effectAllowed = 'move'
