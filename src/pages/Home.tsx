@@ -386,12 +386,16 @@ export default function Home({ theme, onToggleTheme }: Props) {
                       dragImage.appendChild(textDiv)
                       document.body.appendChild(dragImage)
 
-                      e.dataTransfer!.setDragImage(dragImage, 0, 0)
-
-                      // Clean up after a brief moment
-                      setTimeout(() => dragImage.remove(), 0)
+                      e.dataTransfer!.setDragImage(dragImage, 20, 20)
 
                       setDraggedIndex(index)
+
+                      // Clean up after drag ends (store reference and clean up on drag end)
+                      const cleanup = () => {
+                        dragImage.remove()
+                        window.removeEventListener('dragend', cleanup)
+                      }
+                      window.addEventListener('dragend', cleanup, { once: true })
                     }
                   }}
                   onDragEnd={handleDragEnd}
