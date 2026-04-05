@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Navbar } from '../components/Navbar'
 import { ResultsList } from '../components/ResultsList'
@@ -32,8 +32,58 @@ export default function Home({ theme, onToggleTheme }: Props) {
   const [draggedIndex, setDraggedIndex] = useState<number | null>(null)
   const [viewMode, setViewMode] = useState<'card' | 'list'>('card')
   const [reorderMode, setReorderMode] = useState(false)
+  const listContainerRef = useRef<HTMLDivElement>(null)
+  const scrollIntervalRef = useRef<number | null>(null)
   const navigate = useNavigate()
   const { results, totalCount, status } = useSearch(megaIndexData, megaQuery, null)
+
+  // Auto-scroll during drag
+  const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
+    if (!reorderMode || !listContainerRef.current) return
+
+    const container = listContainerRef.current
+    const rect = container.getBoundingClientRect()
+    const scrollZone = 80
+    const scrollSpeed = 5
+
+    // Clear any existing scroll interval
+    if (scrollIntervalRef.current) window.clearInterval(scrollIntervalRef.current)
+
+    // Check if near bottom
+    if (e.clientY > rect.bottom - scrollZone) {
+      scrollIntervalRef.current = window.setInterval(() => {
+        container.scrollTop += scrollSpeed
+      }, 16)
+    }
+    // Check if near top
+    else if (e.clientY < rect.top + scrollZone) {
+      scrollIntervalRef.current = window.setInterval(() => {
+        container.scrollTop -= scrollSpeed
+      }, 16)
+    }
+  }
+
+  const handleDragLeave = () => {
+    if (scrollIntervalRef.current) {
+      window.clearInterval(scrollIntervalRef.current)
+      scrollIntervalRef.current = null
+    }
+  }
+
+  const handleDragEnd = () => {
+    if (scrollIntervalRef.current) {
+      window.clearInterval(scrollIntervalRef.current)
+      scrollIntervalRef.current = null
+    }
+    setDraggedIndex(null)
+  }
+
+  // Cleanup scroll interval on unmount
+  useEffect(() => {
+    return () => {
+      if (scrollIntervalRef.current) window.clearInterval(scrollIntervalRef.current)
+    }
+  }, [])
 
   useEffect(() => {
     let cancelled = false
@@ -265,7 +315,12 @@ export default function Home({ theme, onToggleTheme }: Props) {
               ))}
             </div>
           ) : (
-            <div className="space-y-2">
+            <div
+              ref={listContainerRef}
+              className="space-y-2 max-h-[calc(100vh-400px)] overflow-y-auto"
+              onDragOver={handleDragOver}
+              onDragLeave={handleDragLeave}
+            >
               {artists.map((artist, index) => (
                 <div
                   key={artist.slug}
@@ -276,7 +331,7 @@ export default function Home({ theme, onToggleTheme }: Props) {
                       setDraggedIndex(index)
                     }
                   }}
-                  onDragEnd={() => setDraggedIndex(null)}
+                  onDragEnd={handleDragEnd}
                   onDragOver={(e) => {
                     if (reorderMode) {
                       e.preventDefault()
