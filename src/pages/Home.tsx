@@ -341,8 +341,56 @@ export default function Home({ theme, onToggleTheme }: Props) {
                   key={artist.slug}
                   draggable={reorderMode}
                   onDragStart={(e) => {
-                    if (reorderMode) {
+                    if (reorderMode && e.currentTarget) {
                       e.dataTransfer!.effectAllowed = 'move'
+
+                      // Create custom drag image
+                      const dragImage = document.createElement('div')
+                      dragImage.style.position = 'absolute'
+                      dragImage.style.top = '-9999px'
+                      dragImage.style.left = '-9999px'
+                      dragImage.style.width = e.currentTarget.offsetWidth + 'px'
+                      dragImage.style.padding = '1rem'
+                      dragImage.style.borderRadius = '0.5rem'
+                      dragImage.style.backgroundColor = '#1f2937'
+                      dragImage.style.border = '1px solid #374151'
+                      dragImage.style.color = '#fff'
+                      dragImage.style.fontSize = '0.875rem'
+                      dragImage.style.fontWeight = '600'
+                      dragImage.style.display = 'flex'
+                      dragImage.style.alignItems = 'center'
+                      dragImage.style.gap = '0.75rem'
+                      dragImage.style.zIndex = '-1'
+
+                      if (artist.albumCovers[0]) {
+                        const img = document.createElement('img')
+                        img.src = artist.albumCovers[0]
+                        img.style.width = '48px'
+                        img.style.height = '48px'
+                        img.style.borderRadius = '0.375rem'
+                        img.style.objectFit = 'cover'
+                        img.style.flexShrink = '0'
+                        dragImage.appendChild(img)
+                      }
+
+                      const textDiv = document.createElement('div')
+                      textDiv.style.minWidth = '0'
+                      const nameEl = document.createElement('p')
+                      nameEl.textContent = artist.name
+                      nameEl.style.margin = '0'
+                      nameEl.style.whiteSpace = 'nowrap'
+                      nameEl.style.overflow = 'hidden'
+                      nameEl.style.textOverflow = 'ellipsis'
+                      textDiv.appendChild(nameEl)
+
+                      dragImage.appendChild(textDiv)
+                      document.body.appendChild(dragImage)
+
+                      e.dataTransfer!.setDragImage(dragImage, 0, 0)
+
+                      // Clean up after a brief moment
+                      setTimeout(() => dragImage.remove(), 0)
+
                       setDraggedIndex(index)
                     }
                   }}
