@@ -29,6 +29,7 @@ export default function Home({ theme, onToggleTheme }: Props) {
   const [megaIndexData, setMegaIndexData] = useState<IndexData | null>(null)
   const [megaQuery, setMegaQuery] = useState('')
   const [megaError, setMegaError] = useState<string | null>(null)
+  const [draggedIndex, setDraggedIndex] = useState<number | null>(null)
   const navigate = useNavigate()
   const { results, totalCount, status } = useSearch(megaIndexData, megaQuery, null)
 
@@ -73,7 +74,28 @@ export default function Home({ theme, onToggleTheme }: Props) {
           }
         })
 
-        setArtists(cards)
+        // Sort alphabetically by default
+        const sortedCards = [...cards].sort((a, b) => a.name.localeCompare(b.name))
+
+        // Apply custom order from localStorage if it exists
+        const savedOrder = localStorage.getItem('artistOrder')
+        let orderedCards = sortedCards
+        if (savedOrder) {
+          try {
+            const order = JSON.parse(savedOrder) as string[]
+            const cardMap = new Map(sortedCards.map(c => [c.slug, c]))
+            orderedCards = order
+              .map(slug => cardMap.get(slug))
+              .filter((c): c is ArtistCardData => c !== undefined)
+            // Add any new artists that weren't in saved order
+            const orderedSlugs = new Set(orderedCards.map(c => c.slug))
+            orderedCards.push(...sortedCards.filter(c => !orderedSlugs.has(c.slug)))
+          } catch {
+            orderedCards = sortedCards
+          }
+        }
+
+        setArtists(orderedCards)
 
         const searchableArtists = successfulArtists.filter(
           (artist): artist is LoadedArtistData & { index: IndexData['index'] } => artist.index !== null,
@@ -151,8 +173,26 @@ export default function Home({ theme, onToggleTheme }: Props) {
             <p className="text-zinc-400 text-sm">Loading…</p>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {artists.map(artist => (
-                <ArtistCard key={artist.slug} artist={artist} onClick={() => navigate(`/${artist.slug}`)} />
+              {artists.map((artist, index) => (
+                <ArtistCard
+                  key={artist.slug}
+                  artist={artist}
+                  index={index}
+                  isDragging={draggedIndex === index}
+                  onDragStart={() => setDraggedIndex(index)}
+                  onDragEnd={() => setDraggedIndex(null)}
+                  onDrop={(targetIndex) => {
+                    if (draggedIndex === null || draggedIndex === targetIndex) return
+                    const newArtists = [...artists]
+                    const [draggedArtist] = newArtists.splice(draggedIndex, 1)
+                    newArtists.splice(targetIndex, 0, draggedArtist)
+                    setArtists(newArtists)
+                    setDraggedIndex(null)
+                    // Save new order to localStorage
+                    localStorage.setItem('artistOrder', JSON.stringify(newArtists.map(a => a.slug)))
+                  }}
+                  onClick={() => navigate(`/${artist.slug}`)}
+                />
               ))}
             </div>
           )}
@@ -199,15 +239,45 @@ function buildMergedIndexData(artists: Array<LoadedArtistData & { index: IndexDa
   return { songs, songsById, index }
 }
 
-function ArtistCard({ artist, onClick }: { artist: ArtistCardData; onClick: () => void }) {
+interface ArtistCardProps {
+  artist: ArtistCardData
+  index: number
+  isDragging: boolean
+  onDragStart: () => void
+  onDragEnd: () => void
+  onDrop: (targetIndex: number) => void
+  onClick: () => void
+}
+
+function ArtistCard({ artist, index, isDragging, onDragStart, onDragEnd, onDrop, onClick }: ArtistCardProps) {
+  const [dragOver, setDragOver] = useState(false)
+
   return (
     <button
+      draggable
+      onDragStart={(e) => {
+        e.dataTransfer!.effectAllowed = 'move'
+        onDragStart()
+      }}
+      onDragEnd={onDragEnd}
+      onDragOver={(e) => {
+        e.preventDefault()
+        e.dataTransfer!.dropEffect = 'move'
+        setDragOver(true)
+      }}
+      onDragLeave={() => setDragOver(false)}
+      onDrop={(e) => {
+        e.preventDefault()
+        setDragOver(false)
+        onDrop(index)
+      }}
       onClick={onClick}
-      className="group text-left w-full bg-zinc-50 dark:bg-zinc-900
-                 border border-zinc-200 dark:border-zinc-800
-                 rounded-2xl overflow-hidden
+      className={`group text-left w-full bg-zinc-50 dark:bg-zinc-900
+                 border rounded-2xl overflow-hidden
                  hover:border-zinc-400 dark:hover:border-zinc-600
-                 transition-all duration-200"
+                 transition-all duration-200 cursor-move
+                 ${isDragging ? 'opacity-50' : ''}
+                 ${dragOver ? 'border-zinc-400 dark:border-zinc-600 scale-[1.02]' : 'border-zinc-200 dark:border-zinc-800'}`}
     >
       {/* Album art mosaic */}
       <div className="grid grid-cols-2 aspect-video w-full overflow-hidden">
@@ -218,6 +288,7 @@ function ArtistCard({ artist, onClick }: { artist: ArtistCardData; onClick: () =
               src={artist.albumCovers[i]}
               alt=""
               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+              draggable={false}
             />
           ) : (
             <div key={i} className="w-full h-full bg-zinc-200 dark:bg-zinc-800" />
