@@ -33,55 +33,70 @@ export default function Home({ theme, onToggleTheme }: Props) {
   const [viewMode, setViewMode] = useState<'card' | 'list'>('card')
   const [reorderMode, setReorderMode] = useState(false)
   const listContainerRef = useRef<HTMLDivElement>(null)
-  const scrollIntervalRef = useRef<number | null>(null)
+  const scrollAnimationRef = useRef<number | null>(null)
   const navigate = useNavigate()
   const { results, totalCount, status } = useSearch(megaIndexData, megaQuery, null)
 
-  // Auto-scroll during drag
+  // Auto-scroll during drag using requestAnimationFrame
   const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
     if (!reorderMode || !listContainerRef.current) return
 
     const container = listContainerRef.current
     const rect = container.getBoundingClientRect()
-    const scrollZone = 80
-    const scrollSpeed = 5
+    const scrollZone = 60
+    const maxScrollSpeed = 10
 
-    // Clear any existing scroll interval
-    if (scrollIntervalRef.current) window.clearInterval(scrollIntervalRef.current)
+    // Calculate distance from edges
+    const distToBottom = rect.bottom - e.clientY
+    const distToTop = e.clientY - rect.top
 
-    // Check if near bottom
-    if (e.clientY > rect.bottom - scrollZone) {
-      scrollIntervalRef.current = window.setInterval(() => {
-        container.scrollTop += scrollSpeed
-      }, 16)
+    // Function to perform smooth scroll
+    const scroll = () => {
+      let scrollDelta = 0
+
+      if (distToBottom < scrollZone && distToBottom > 0) {
+        // Near bottom: scroll proportionally faster the closer to edge
+        const intensity = 1 - distToBottom / scrollZone
+        scrollDelta = intensity * maxScrollSpeed
+      } else if (distToTop < scrollZone && distToTop > 0) {
+        // Near top: scroll proportionally faster the closer to edge
+        const intensity = 1 - distToTop / scrollZone
+        scrollDelta = -intensity * maxScrollSpeed
+      }
+
+      if (scrollDelta !== 0) {
+        container.scrollTop += scrollDelta
+        if (scrollAnimationRef.current) {
+          scrollAnimationRef.current = requestAnimationFrame(scroll)
+        }
+      }
     }
-    // Check if near top
-    else if (e.clientY < rect.top + scrollZone) {
-      scrollIntervalRef.current = window.setInterval(() => {
-        container.scrollTop -= scrollSpeed
-      }, 16)
+
+    // Start animation if not already running and need to scroll
+    if (!scrollAnimationRef.current && (distToBottom < scrollZone || distToTop < scrollZone)) {
+      scrollAnimationRef.current = requestAnimationFrame(scroll)
     }
   }
 
   const handleDragLeave = () => {
-    if (scrollIntervalRef.current) {
-      window.clearInterval(scrollIntervalRef.current)
-      scrollIntervalRef.current = null
+    if (scrollAnimationRef.current) {
+      cancelAnimationFrame(scrollAnimationRef.current)
+      scrollAnimationRef.current = null
     }
   }
 
   const handleDragEnd = () => {
-    if (scrollIntervalRef.current) {
-      window.clearInterval(scrollIntervalRef.current)
-      scrollIntervalRef.current = null
+    if (scrollAnimationRef.current) {
+      cancelAnimationFrame(scrollAnimationRef.current)
+      scrollAnimationRef.current = null
     }
     setDraggedIndex(null)
   }
 
-  // Cleanup scroll interval on unmount
+  // Cleanup on unmount
   useEffect(() => {
     return () => {
-      if (scrollIntervalRef.current) window.clearInterval(scrollIntervalRef.current)
+      if (scrollAnimationRef.current) cancelAnimationFrame(scrollAnimationRef.current)
     }
   }, [])
 
