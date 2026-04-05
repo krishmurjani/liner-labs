@@ -207,6 +207,16 @@ export default function Home({ theme, onToggleTheme }: Props) {
     }
   }, [])
 
+  // Non-passive touchmove listener to block page scroll during touch drag
+  useEffect(() => {
+    if (!reorderMode) return
+    const prevent = (e: TouchEvent) => {
+      if (touchDragRef.current) e.preventDefault()
+    }
+    document.addEventListener('touchmove', prevent, { passive: false })
+    return () => document.removeEventListener('touchmove', prevent)
+  }, [reorderMode])
+
   useEffect(() => {
     let cancelled = false
 
