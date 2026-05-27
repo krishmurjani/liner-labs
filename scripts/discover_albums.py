@@ -40,23 +40,54 @@ def get_artist_id(headers: dict, album_id: int) -> int:
     return r.json()["response"]["album"]["artist"]["id"]
 
 
-def get_all_albums(headers: dict, artist_id: int) -> list[dict]:
-    albums, page = [], 1
-    while True:
-        r = requests.get(
-            f"{GENIUS_API}/artists/{artist_id}/albums",
-            headers=headers,
-            params={"page": page, "per_page": 20},
-            timeout=REQUEST_TIMEOUT,
-        )
-        r.raise_for_status()
-        data = r.json()["response"]
-        albums.extend(data.get("albums", []))
-        next_page = data.get("next_page")
-        if not next_page:
-            break
-        page = next_page
-        time.sleep(0.3)
+def get_all_albums(headers: dict, artist_id: int, artist_name: str) -> list[dict]:
+    # Try the direct endpoint first; fall back to search if it's forbidden (free-tier limit).
+    try:
+        albums, page = [], 1
+        while True:
+            r = requests.get(
+                f"{GENIUS_API}/artists/{artist_id}/albums",
+                headers=headers,
+                params={"page": page, "per_page": 20},
+                timeout=REQUEST_TIMEOUT,
+            )
+            r.raise_for_status()
+            data = r.json()["response"]
+            albums.extend(data.get("albums", []))
+            next_page = data.get("next_page")
+            if not next_page:
+                break
+            page = next_page
+            time.sleep(0.3)
+        return albums
+    except requests.HTTPError as e:
+        if e.response is not None and e.response.status_code == 403:
+            print(f"  /artists/albums endpoint forbidden — falling back to search")
+            return _search_albums(headers, artist_id, artist_name)
+        raise
+
+
+def _search_albums(headers: dict, artist_id: int, artist_name: str) -> list[dict]:
+    """Discover albums by searching for the artist's songs and extracting unique album objects."""
+    r = requests.get(
+        f"{GENIUS_API}/search",
+        headers=headers,
+        params={"q": artist_name, "per_page": 20},
+        timeout=REQUEST_TIMEOUT,
+    )
+    r.raise_for_status()
+
+    seen, albums = set(), []
+    for hit in r.json()["response"]["hits"]:
+        song = hit.get("result", {})
+        # Only songs where this is the primary artist
+        if song.get("primary_artist", {}).get("id") != artist_id:
+            continue
+        album = song.get("album")
+        if not album or album["id"] in seen:
+            continue
+        seen.add(album["id"])
+        albums.append(album)
     return albums
 
 
@@ -92,7 +123,7 @@ def main():
         existing_ids  = {a["genius_id"] for a in artist_data["albums"]}
         excluded_ids  = set(artist_data.get("excluded_album_ids", []))
 
-        all_genius_albums = get_all_albums(headers, artist_id)
+        all_genius_albums = get_all_albums(headers, artist_id, artist_data["name"])
         time.sleep(0.3)
 
         added = []
