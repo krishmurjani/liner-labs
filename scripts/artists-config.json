@@ -1,4 +1,19 @@
 {
+  "_skip_album_patterns": [
+    "karaoke",
+    "instrumental",
+    "deluxe edition",
+    "deluxe version",
+    "(deluxe)",
+    "japanese edition",
+    "japanese version",
+    "korean edition",
+    "korean version",
+    "mandarin version",
+    "commentary",
+    "track by track"
+  ],
+
   "bleachers": {
     "name": "Bleachers",
     "albums": [

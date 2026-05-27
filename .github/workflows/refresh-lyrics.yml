@@ -1,6 +1,6 @@
 # This workflow runs every Friday at midnight Eastern time.
-# It fetches fresh lyrics for all artists (skipping songs already in the JSON),
-# rebuilds the search index, and opens a PR if anything changed.
+# It auto-discovers new albums from Genius, fetches lyrics, rebuilds
+# search indexes, and opens a PR if anything changed.
 # Artist slugs are read dynamically from scripts/artists-config.json —
 # adding a new artist there is the only change needed.
 
@@ -12,41 +12,43 @@ on:
     # 0 5 * * 6 = 5:00 AM UTC on Saturday = Friday midnight EST (UTC-5)
     - cron: '0 5 * * 6'
   # This lets you trigger the workflow manually from the GitHub Actions tab
-  # Useful for testing before waiting until Friday
   workflow_dispatch:
 
 jobs:
   refresh:
-    runs-on: ubuntu-latest  # GitHub spins up a fresh Ubuntu VM for every run
+    runs-on: ubuntu-latest
     permissions:
       contents: write       # needed to push the PR branch
       pull-requests: write  # needed to open the PR
 
     steps:
-      # Step 1: Download the repo onto the VM
       - name: Check out repo
         uses: actions/checkout@v4
 
-      # Step 2: Install Python 3.12 on the VM
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.12'
 
-      # Step 3: Install the two Python dependencies (lyricsgenius, python-dotenv)
       - name: Install dependencies
         run: pip install -r scripts/requirements.txt
 
-      # Step 4: Read slugs from artists-config.json so no workflow edits are
-      # needed when adding a new artist — just update the JSON.
+      # Step 1: Check Genius for albums not yet in artists-config.json.
+      # Adds new ones automatically (skipping deluxe editions, karaoke, etc.).
+      # Also resolves and caches genius_artist_id for each artist on first run.
+      - name: Discover new albums
+        working-directory: scripts
+        env:
+          GENIUS_ACCESS_TOKEN: ${{ secrets.GENIUS_ACCESS_TOKEN }}
+        run: python discover_albums.py
+
+      # Step 2: Read slugs dynamically — no workflow edit needed when adding an artist.
       - name: Get artist slugs
         id: slugs
         run: |
-          echo "list=$(python3 -c "import json; print(' '.join(json.load(open('scripts/artists-config.json')).keys()))")" >> $GITHUB_OUTPUT
+          echo "list=$(python3 -c "import json; print(' '.join(k for k in json.load(open('scripts/artists-config.json')) if not k.startswith('_')))")" >> $GITHUB_OUTPUT
 
-      # Step 5: Run fetch_lyrics.py for every artist with --incremental
-      # --incremental means: keep existing lyrics, only add songs that are missing
-      # GENIUS_ACCESS_TOKEN is pulled from the repo's GitHub Secrets (you'll set this once)
+      # Step 3: Fetch lyrics for any new songs (--incremental keeps existing lyrics).
       - name: Fetch lyrics for all artists
         working-directory: scripts
         env:
@@ -57,8 +59,7 @@ jobs:
             python fetch_lyrics.py --slug "$slug" --incremental
           done
 
-      # Step 6: Rebuild the inverted search index for every artist
-      # This must run after fetch so the index reflects any new songs
+      # Step 4: Rebuild the inverted search index for every artist.
       - name: Rebuild search indexes
         working-directory: scripts
         run: |
@@ -67,16 +68,14 @@ jobs:
             python build_index.py --slug "$slug"
           done
 
-      # Step 7: Check if any JSON files in public/data/ actually changed
-      # If nothing changed (no new songs found), we skip the PR entirely
+      # Step 5: Check if any files changed (config or song data).
       - name: Check for changes
         id: diff
         run: |
-          git diff --quiet public/data/ || echo "changed=true" >> $GITHUB_OUTPUT
+          git diff --quiet -- scripts/artists-config.json public/data/ || echo "changed=true" >> $GITHUB_OUTPUT
 
-      # Step 8: Compare old vs new songs.json per artist and build a markdown summary
-      # Uses `git show HEAD:path` to get the committed version before the fetch ran,
-      # then diffs song IDs to find what's new. Output goes into the PR body.
+      # Step 6: Build a markdown summary for the PR body.
+      # Shows newly discovered albums and new songs per artist.
       - name: Build PR summary
         if: steps.diff.outputs.changed == 'true'
         id: summary
@@ -86,24 +85,29 @@ jobs:
 
           with open("scripts/artists-config.json") as f:
               config = json.load(f)
-          SLUGS = [(slug, data["name"]) for slug, data in config.items()]
 
+          # New albums added to the config this run
+          result = subprocess.run(
+              ["git", "diff", "scripts/artists-config.json"],
+              capture_output=True, text=True
+          )
+          new_album_lines = [
+              l[1:].strip() for l in result.stdout.splitlines()
+              if l.startswith("+") and '"genius_id"' in l and '"name"' in l
+          ]
+
+          # New songs per artist
+          SLUGS = [(slug, data["name"]) for slug, data in config.items() if not slug.startswith("_")]
           rows = []
           total_new = 0
 
           for slug, name in SLUGS:
               path = f"public/data/{slug}/songs.json"
-
-              # Get the committed (pre-fetch) version of songs.json
-              result = subprocess.run(
-                  ["git", "show", f"HEAD:{path}"],
-                  capture_output=True, text=True
-              )
+              result = subprocess.run(["git", "show", f"HEAD:{path}"], capture_output=True, text=True)
               old_ids = set()
               if result.returncode == 0:
                   old_ids = {str(s["id"]) for s in json.loads(result.stdout)}
 
-              # Read the freshly fetched version
               try:
                   with open(path) as f:
                       new_songs = json.load(f)
@@ -117,9 +121,20 @@ jobs:
                   rows.append((name, len(added_ids), titles))
                   total_new += len(added_ids)
 
-          # Build the markdown body
+          lines = ["## Lyrics refresh summary", ""]
+
+          if new_album_lines:
+              lines += ["### New albums discovered", ""]
+              for l in new_album_lines:
+                  try:
+                      obj = json.loads("{" + l.rstrip(",") + "}")
+                      lines.append(f"- **{obj['name']}** (genius_id: {obj['genius_id']})")
+                  except Exception:
+                      pass
+              lines.append("")
+
           if rows:
-              lines = ["## Lyrics refresh summary", ""]
+              lines += ["### New songs", ""]
               lines.append("| Artist | New songs | Titles |")
               lines.append("|--------|:---------:|--------|")
               for name, count, titles in rows:
@@ -127,22 +142,19 @@ jobs:
                   lines.append(f"| {name} | {count} | {titles_str} |")
               lines.append("")
               lines.append(f"**{total_new} new song{'s' if total_new != 1 else ''} total** — review the diff then merge to deploy.")
-          else:
-              lines = ["Metadata or index updates only — no new songs added."]
+          elif not new_album_lines:
+              lines.append("Metadata or index updates only — no new albums or songs.")
 
           body = "\n".join(lines)
 
-          # Write multiline output to GITHUB_OUTPUT
           with open(os.environ["GITHUB_OUTPUT"], "a") as f:
               f.write("body<<GHADELIMITER\n")
               f.write(body + "\n")
               f.write("GHADELIMITER\n")
           EOF
 
-      # Step 9: If there were changes, open a pull request
-      # GITHUB_TOKEN is automatically provided by GitHub — no setup needed
-      # The PR branch is always named auto/lyrics-refresh (reused each week)
-      - name: Open PR if lyrics changed
+      # Step 7: Open a PR with everything that changed.
+      - name: Open PR if anything changed
         if: steps.diff.outputs.changed == 'true'
         uses: peter-evans/create-pull-request@v6
         with:
