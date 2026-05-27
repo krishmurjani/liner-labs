@@ -1,6 +1,8 @@
 # This workflow runs every Friday at midnight Eastern time.
 # It fetches fresh lyrics for all artists (skipping songs already in the JSON),
 # rebuilds the search index, and opens a PR if anything changed.
+# Artist slugs are read dynamically from scripts/artists-config.json —
+# adding a new artist there is the only change needed.
 
 name: Refresh Lyrics
 
@@ -35,7 +37,14 @@ jobs:
       - name: Install dependencies
         run: pip install -r scripts/requirements.txt
 
-      # Step 4: Run fetch_lyrics.py for every artist with --incremental
+      # Step 4: Read slugs from artists-config.json so no workflow edits are
+      # needed when adding a new artist — just update the JSON.
+      - name: Get artist slugs
+        id: slugs
+        run: |
+          echo "list=$(python3 -c "import json; print(' '.join(json.load(open('scripts/artists-config.json')).keys()))")" >> $GITHUB_OUTPUT
+
+      # Step 5: Run fetch_lyrics.py for every artist with --incremental
       # --incremental means: keep existing lyrics, only add songs that are missing
       # GENIUS_ACCESS_TOKEN is pulled from the repo's GitHub Secrets (you'll set this once)
       - name: Fetch lyrics for all artists
@@ -43,29 +52,29 @@ jobs:
         env:
           GENIUS_ACCESS_TOKEN: ${{ secrets.GENIUS_ACCESS_TOKEN }}
         run: |
-          for slug in bleachers taylor-swift sabrina-carpenter lana-del-rey olivia-rodrigo ed-sheeran jeremy-zucker gracie-abrams the-weeknd harry-styles; do
+          for slug in ${{ steps.slugs.outputs.list }}; do
             echo "--- Fetching $slug ---"
             python fetch_lyrics.py --slug "$slug" --incremental
           done
 
-      # Step 5: Rebuild the inverted search index for every artist
+      # Step 6: Rebuild the inverted search index for every artist
       # This must run after fetch so the index reflects any new songs
       - name: Rebuild search indexes
         working-directory: scripts
         run: |
-          for slug in bleachers taylor-swift sabrina-carpenter lana-del-rey olivia-rodrigo ed-sheeran jeremy-zucker gracie-abrams the-weeknd harry-styles; do
+          for slug in ${{ steps.slugs.outputs.list }}; do
             echo "--- Indexing $slug ---"
             python build_index.py --slug "$slug"
           done
 
-      # Step 6: Check if any JSON files in public/data/ actually changed
+      # Step 7: Check if any JSON files in public/data/ actually changed
       # If nothing changed (no new songs found), we skip the PR entirely
       - name: Check for changes
         id: diff
         run: |
           git diff --quiet public/data/ || echo "changed=true" >> $GITHUB_OUTPUT
 
-      # Step 7: Compare old vs new songs.json per artist and build a markdown summary
+      # Step 8: Compare old vs new songs.json per artist and build a markdown summary
       # Uses `git show HEAD:path` to get the committed version before the fetch ran,
       # then diffs song IDs to find what's new. Output goes into the PR body.
       - name: Build PR summary
@@ -75,18 +84,9 @@ jobs:
           python3 << 'EOF'
           import json, subprocess, os
 
-          SLUGS = [
-              ("bleachers",          "Bleachers"),
-              ("taylor-swift",       "Taylor Swift"),
-              ("sabrina-carpenter",  "Sabrina Carpenter"),
-              ("lana-del-rey",       "Lana Del Rey"),
-              ("olivia-rodrigo",     "Olivia Rodrigo"),
-              ("ed-sheeran",         "Ed Sheeran"),
-              ("jeremy-zucker",      "Jeremy Zucker"),
-              ("gracie-abrams",      "Gracie Abrams"),
-              ("the-weeknd",         "The Weeknd"),
-              ("harry-styles",       "Harry Styles"),
-          ]
+          with open("scripts/artists-config.json") as f:
+              config = json.load(f)
+          SLUGS = [(slug, data["name"]) for slug, data in config.items()]
 
           rows = []
           total_new = 0
@@ -139,7 +139,7 @@ jobs:
               f.write("GHADELIMITER\n")
           EOF
 
-      # Step 8: If there were changes, open a pull request
+      # Step 9: If there were changes, open a pull request
       # GITHUB_TOKEN is automatically provided by GitHub — no setup needed
       # The PR branch is always named auto/lyrics-refresh (reused each week)
       - name: Open PR if lyrics changed
