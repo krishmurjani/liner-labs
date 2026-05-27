@@ -16,6 +16,9 @@ on:
 jobs:
   refresh:
     runs-on: ubuntu-latest  # GitHub spins up a fresh Ubuntu VM for every run
+    permissions:
+      contents: write       # needed to push the PR branch
+      pull-requests: write  # needed to open the PR
 
     steps:
       # Step 1: Download the repo onto the VM
