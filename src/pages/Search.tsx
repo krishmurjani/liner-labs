@@ -4,12 +4,38 @@ import { SearchBar } from '../components/SearchBar'
 import { ResultsList } from '../components/ResultsList'
 import { Navbar } from '../components/Navbar'
 import { AlbumFilter, albumsFromSongs } from '../components/AlbumFilter'
+import { tokenize } from '../lib/tokenize'
 import { useSearch } from '../hooks/useSearch'
 import type { Artist, IndexData, SongMeta } from '../types'
 
 interface Props {
   theme: 'dark' | 'light'
   onToggleTheme: () => void
+}
+
+async function fetchJson<T>(path: string, label: string): Promise<T> {
+  const response = await fetch(path, { cache: 'no-store' })
+  if (!response.ok) {
+    throw new Error(`Failed to load ${label}.`)
+  }
+  return response.json() as Promise<T>
+}
+
+function buildIndexFromSongs(songs: SongMeta[]): IndexData['index'] {
+  const index: IndexData['index'] = {}
+
+  for (const song of songs) {
+    const songId = String(song.id)
+    for (const [lineIndex, line] of song.lines.entries()) {
+      for (const [wordIndex, token] of tokenize(line).entries()) {
+        if (!index[token]) index[token] = {}
+        if (!index[token][songId]) index[token][songId] = []
+        index[token][songId].push([lineIndex, wordIndex])
+      }
+    }
+  }
+
+  return index
 }
 
 export default function Search({ theme, onToggleTheme }: Props) {
@@ -22,30 +48,53 @@ export default function Search({ theme, onToggleTheme }: Props) {
   const [artistName, setArtistName] = useState('')
 
   useEffect(() => {
+    let cancelled = false
+
     setIndexData(null)
     setQuery('')
     setSelectedAlbums(new Set())
     setLoadError(null)
 
-    fetch('/data/artists.json')
-      .then(r => r.json())
-      .then((list: Artist[]) => {
+    fetchJson<Artist[]>('/data/artists.json', 'artist list')
+      .then(async (list) => {
         const artist = list.find(a => a.slug === artistSlug)
-        if (!artist) { setLoadError(`Artist "${artistSlug}" not found.`); return }
+        if (!artist) {
+          if (!cancelled) setLoadError(`Artist "${artistSlug}" not found.`)
+          return
+        }
+
         setArtistName(artist.name)
-        return Promise.all([
-          fetch(artist.songsPath).then(r => r.json()),
-          fetch(artist.indexPath).then(r => r.json()),
-        ])
+
+        const songs = await fetchJson<SongMeta[]>(artist.songsPath, `${artist.name} songs`)
+
+        let index: IndexData['index']
+        try {
+          index = await fetchJson<IndexData['index']>(artist.indexPath, `${artist.name} index`)
+        } catch {
+          index = buildIndexFromSongs(songs)
+        }
+
+        return { songs, index }
       })
       .then(result => {
-        if (!result) return
-        const [songs, index] = result as [SongMeta[], IndexData['index']]
+        if (cancelled || !result) return
+        const { songs, index } = result
         const songsById: IndexData['songsById'] = {}
         for (const s of songs) songsById[String(s.id)] = s
         setIndexData({ songs, songsById, index })
       })
-      .catch(() => setLoadError('Failed to load data.'))
+      .catch((error: unknown) => {
+        if (cancelled) return
+        if (error instanceof Error) {
+          setLoadError(error.message)
+          return
+        }
+        setLoadError('Failed to load data.')
+      })
+
+    return () => {
+      cancelled = true
+    }
   }, [artistSlug])
 
   const albumFilter = selectedAlbums.size > 0 ? selectedAlbums : null

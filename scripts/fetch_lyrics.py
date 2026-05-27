@@ -166,6 +166,37 @@ ARTISTS = {
             {"name": "Kiss All The Time. Disco, Occasionally.",    "year": 2025, "genius_id": 1552425, "art_override": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/07/41/6a/07416a78-38b9-2d47-7ce8-8a52a44c510f/196874010112.jpg/1000x1000bb.jpg"},
         ],
     },
+    "jeremy-zucker": {
+        "name": "Jeremy Zucker",
+        "albums": [
+            # Release order so dedup keeps the earliest canonical version
+            {"name": "Beach Island",                              "year": 2015, "genius_id": 130602},
+            {"name": "Breathe",                                   "year": 2015, "genius_id": 286292},
+            {"name": "Motions",                                   "year": 2016, "genius_id": 161767},
+            {"name": "idle",                                      "year": 2017, "genius_id": 370214},
+            {"name": "stripped.",                                 "year": 2018, "genius_id": 398910},
+            {"name": "glisten",                                   "year": 2018, "genius_id": 425472},
+            {"name": "summer,",                                   "year": 2018, "genius_id": 459814},
+            {"name": "brent",                                     "year": 2019, "genius_id": 524030},
+            {"name": "love is not dying",                         "year": 2020, "genius_id": 546767},
+            {"name": "brent ii",                                  "year": 2021, "genius_id": 693399},
+            {"name": "CRUSHER",                                   "year": 2021, "genius_id": 783792},
+            {"name": "is nothing sacred?",                        "year": 2023, "genius_id": 1043159},
+            {"name": "brent iii",                                 "year": 2024, "genius_id": 1228602},
+            {"name": "Garden State",                              "year": 2025, "genius_id": 1405049},
+        ],
+        "individual_songs": [
+            {"genius_id": 2821518, "title": "DRAMAMINE", "album": "Non-album single", "year": 2015},
+            {"genius_id": 2407141, "title": "Peace Signs", "album": "Non-album single", "year": 2016},
+            {"genius_id": 2416793, "title": "Weakness", "album": "Non-album single", "year": 2016},
+            {"genius_id": 2965294, "title": "Paradise", "album": "Non-album single", "year": 2016},
+            {"genius_id": 3174431, "title": "When You Wake Up...", "album": "Non-album single", "year": 2016},
+            {"genius_id": 5775122, "title": "supercuts", "album": "Non-album single", "year": 2020},
+            {"genius_id": 8364292, "title": "I'm So Happy", "album": "Non-album single", "year": 2022},
+            {"genius_id": 9454357, "title": "this time", "album": "Non-album single", "year": 2023},
+            {"genius_id": 10392817, "title": "Cozy", "album": NON_ALBUM_COLLABS_NAME, "year": 2024, "search_artist": "Jeremy Zucker, Lauv & Alexander 23"},
+        ],
+    },
     "gracie-abrams": {
         "name": "Gracie Abrams",
         "albums": [
@@ -216,6 +247,7 @@ LRCLIB_API = "https://lrclib.net/api"
 SECTION_RE = re.compile(r'^\[.*\]$')
 DEMO_ALBUM_NAME = "Voice Memos & Demos"
 LONG_POND_ART_URL = "https://is1-ssl.mzstatic.com/image/thumb/Music114/v4/0f/a0/14/0fa0144d-6cd5-792a-1589-3e1f0c25db49/20UM1IM08851.rgb.jpg/600x600bb.jpg"
+REQUEST_TIMEOUT = 30
 # Skip commentary/interview versions — these are not unique songs
 SKIP_PATTERNS = {
     "commentary",
@@ -240,12 +272,12 @@ def clean_lyrics(raw: str) -> list[str]:
 
 
 def get_album_info(headers: dict, album_id: int) -> dict:
-    r = requests.get(f"{GENIUS_API}/albums/{album_id}", headers=headers)
+    r = requests.get(f"{GENIUS_API}/albums/{album_id}", headers=headers, timeout=REQUEST_TIMEOUT)
     r.raise_for_status()
     album = r.json()["response"]["album"]
     art_url = album.get("cover_art_url", "")
 
-    r2 = requests.get(f"{GENIUS_API}/albums/{album_id}/tracks", headers=headers)
+    r2 = requests.get(f"{GENIUS_API}/albums/{album_id}/tracks", headers=headers, timeout=REQUEST_TIMEOUT)
     r2.raise_for_status()
     tracks = [{"id": t["song"]["id"], "title": t["song"]["title"]}
               for t in r2.json()["response"]["tracks"]]
@@ -254,7 +286,7 @@ def get_album_info(headers: dict, album_id: int) -> dict:
 
 def get_song_art(headers: dict, song_id: int) -> str:
     try:
-        r = requests.get(f"{GENIUS_API}/songs/{song_id}", headers=headers)
+        r = requests.get(f"{GENIUS_API}/songs/{song_id}", headers=headers, timeout=REQUEST_TIMEOUT)
         r.raise_for_status()
         song = r.json()["response"]["song"]
         return song.get("song_art_image_url") or song.get("header_image_thumbnail_url", "")
@@ -264,7 +296,8 @@ def get_song_art(headers: dict, song_id: int) -> str:
 
 def fetch_lyrics(artist_name: str, title: str) -> list[str] | None:
     r = requests.get(f"{LRCLIB_API}/search",
-                     params={"artist_name": artist_name, "track_name": title})
+                     params={"artist_name": artist_name, "track_name": title},
+                     timeout=REQUEST_TIMEOUT)
     r.raise_for_status()
     results = r.json()
     if not results:
