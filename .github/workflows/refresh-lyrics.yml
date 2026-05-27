@@ -1,0 +1,79 @@
+# This workflow runs every Friday at midnight Eastern time.
+# It fetches fresh lyrics for all artists (skipping songs already in the JSON),
+# rebuilds the search index, and opens a PR if anything changed.
+
+name: Refresh Lyrics
+
+on:
+  schedule:
+    # Cron format: minute hour day-of-month month day-of-week
+    # 0 5 * * 6 = 5:00 AM UTC on Saturday = Friday midnight EST (UTC-5)
+    - cron: '0 5 * * 6'
+  # This lets you trigger the workflow manually from the GitHub Actions tab
+  # Useful for testing before waiting until Friday
+  workflow_dispatch:
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest  # GitHub spins up a fresh Ubuntu VM for every run
+
+    steps:
+      # Step 1: Download the repo onto the VM
+      - name: Check out repo
+        uses: actions/checkout@v4
+
+      # Step 2: Install Python 3.12 on the VM
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      # Step 3: Install the two Python dependencies (lyricsgenius, python-dotenv)
+      - name: Install dependencies
+        run: pip install -r scripts/requirements.txt
+
+      # Step 4: Run fetch_lyrics.py for every artist with --incremental
+      # --incremental means: keep existing lyrics, only add songs that are missing
+      # GENIUS_ACCESS_TOKEN is pulled from the repo's GitHub Secrets (you'll set this once)
+      - name: Fetch lyrics for all artists
+        working-directory: scripts
+        env:
+          GENIUS_ACCESS_TOKEN: ${{ secrets.GENIUS_ACCESS_TOKEN }}
+        run: |
+          for slug in bleachers taylor-swift sabrina-carpenter lana-del-rey olivia-rodrigo ed-sheeran jeremy-zucker gracie-abrams the-weeknd harry-styles; do
+            echo "--- Fetching $slug ---"
+            python fetch_lyrics.py --slug "$slug" --incremental
+          done
+
+      # Step 5: Rebuild the inverted search index for every artist
+      # This must run after fetch so the index reflects any new songs
+      - name: Rebuild search indexes
+        working-directory: scripts
+        run: |
+          for slug in bleachers taylor-swift sabrina-carpenter lana-del-rey olivia-rodrigo ed-sheeran jeremy-zucker gracie-abrams the-weeknd harry-styles; do
+            echo "--- Indexing $slug ---"
+            python build_index.py --slug "$slug"
+          done
+
+      # Step 6: Check if any JSON files in public/data/ actually changed
+      # If nothing changed (no new songs found), we skip the PR entirely
+      - name: Check for changes
+        id: diff
+        run: |
+          git diff --quiet public/data/ || echo "changed=true" >> $GITHUB_OUTPUT
+
+      # Step 7: If there were changes, open a pull request
+      # GITHUB_TOKEN is automatically provided by GitHub — no setup needed
+      # The PR branch is always named auto/lyrics-refresh (reused each week)
+      - name: Open PR if lyrics changed
+        if: steps.diff.outputs.changed == 'true'
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: auto/lyrics-refresh
+          title: 'chore: weekly lyrics refresh'
+          body: |
+            Automated weekly lyrics refresh.
+
+            Review the diff to see which songs were added or updated before merging.
+          commit-message: 'chore: weekly lyrics refresh'
