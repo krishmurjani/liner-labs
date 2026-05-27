@@ -65,7 +65,81 @@ jobs:
         run: |
           git diff --quiet public/data/ || echo "changed=true" >> $GITHUB_OUTPUT
 
-      # Step 7: If there were changes, open a pull request
+      # Step 7: Compare old vs new songs.json per artist and build a markdown summary
+      # Uses `git show HEAD:path` to get the committed version before the fetch ran,
+      # then diffs song IDs to find what's new. Output goes into the PR body.
+      - name: Build PR summary
+        if: steps.diff.outputs.changed == 'true'
+        id: summary
+        run: |
+          python3 << 'EOF'
+          import json, subprocess, os
+
+          SLUGS = [
+              ("bleachers",          "Bleachers"),
+              ("taylor-swift",       "Taylor Swift"),
+              ("sabrina-carpenter",  "Sabrina Carpenter"),
+              ("lana-del-rey",       "Lana Del Rey"),
+              ("olivia-rodrigo",     "Olivia Rodrigo"),
+              ("ed-sheeran",         "Ed Sheeran"),
+              ("jeremy-zucker",      "Jeremy Zucker"),
+              ("gracie-abrams",      "Gracie Abrams"),
+              ("the-weeknd",         "The Weeknd"),
+              ("harry-styles",       "Harry Styles"),
+          ]
+
+          rows = []
+          total_new = 0
+
+          for slug, name in SLUGS:
+              path = f"public/data/{slug}/songs.json"
+
+              # Get the committed (pre-fetch) version of songs.json
+              result = subprocess.run(
+                  ["git", "show", f"HEAD:{path}"],
+                  capture_output=True, text=True
+              )
+              old_ids = set()
+              if result.returncode == 0:
+                  old_ids = {str(s["id"]) for s in json.loads(result.stdout)}
+
+              # Read the freshly fetched version
+              try:
+                  with open(path) as f:
+                      new_songs = json.load(f)
+              except FileNotFoundError:
+                  continue
+
+              added_ids = {str(s["id"]) for s in new_songs} - old_ids
+              if added_ids:
+                  new_by_id = {str(s["id"]): s["title"] for s in new_songs}
+                  titles = sorted(new_by_id[i] for i in added_ids)
+                  rows.append((name, len(added_ids), titles))
+                  total_new += len(added_ids)
+
+          # Build the markdown body
+          if rows:
+              lines = ["## Lyrics refresh summary", ""]
+              lines.append("| Artist | New songs | Titles |")
+              lines.append("|--------|:---------:|--------|")
+              for name, count, titles in rows:
+                  titles_str = ", ".join(f'"{t}"' for t in titles)
+                  lines.append(f"| {name} | {count} | {titles_str} |")
+              lines.append("")
+              lines.append(f"**{total_new} new song{'s' if total_new != 1 else ''} total** — review the diff then merge to deploy.")
+          else:
+              lines = ["Metadata or index updates only — no new songs added."]
+
+          body = "\n".join(lines)
+
+          # Write multiline output to GITHUB_OUTPUT
+          with open(os.environ["GITHUB_OUTPUT"], "a") as f:
+              f.write("body<<GHADELIMITER\n")
+              f.write(body + "\n")
+              f.write("GHADELIMITER\n")
+          EOF
+
+      # Step 8: If there were changes, open a pull request
       # GITHUB_TOKEN is automatically provided by GitHub — no setup needed
       # The PR branch is always named auto/lyrics-refresh (reused each week)
       - name: Open PR if lyrics changed
@@ -75,8 +149,5 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           branch: auto/lyrics-refresh
           title: 'chore: weekly lyrics refresh'
-          body: |
-            Automated weekly lyrics refresh.
-
-            Review the diff to see which songs were added or updated before merging.
+          body: ${{ steps.summary.outputs.body }}
           commit-message: 'chore: weekly lyrics refresh'
