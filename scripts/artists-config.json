@@ -13,189 +13,1106 @@
     "commentary",
     "track by track"
   ],
-
   "bleachers": {
     "name": "Bleachers",
     "albums": [
-      {"name": "Strange Desire",                             "year": 2014, "genius_id": 108231},
-      {"name": "Gone Now",                                   "year": 2017, "genius_id": 339923},
-      {"name": "Take the Sadness Out of Saturday Night",     "year": 2021, "genius_id": 701041},
-      {"name": "Bleachers",                                  "year": 2024, "genius_id": 1183217},
-      {"name": "everyone for ten minutes",                   "year": 2026, "genius_id": 1581240}
+      {
+        "name": "Strange Desire",
+        "year": 2014,
+        "genius_id": 108231
+      },
+      {
+        "name": "Gone Now",
+        "year": 2017,
+        "genius_id": 339923
+      },
+      {
+        "name": "Take the Sadness Out of Saturday Night",
+        "year": 2021,
+        "genius_id": 701041
+      },
+      {
+        "name": "Bleachers",
+        "year": 2024,
+        "genius_id": 1183217
+      },
+      {
+        "name": "everyone for ten minutes",
+        "year": 2026,
+        "genius_id": 1581240
+      },
+      {
+        "name": "Bleachers - From The Studio To Stage (Live From Madison Square Garden, NYC)",
+        "year": 0,
+        "genius_id": 1511325
+      }
     ],
     "individual_songs": [
-      {"genius_id": 8659765, "title": "Merry Christmas, Please Don't Call", "album": "Non-album single", "year": 2023}
-    ]
+      {
+        "genius_id": 8659765,
+        "title": "Merry Christmas, Please Don't Call",
+        "album": "Non-album single",
+        "year": 2023
+      }
+    ],
+    "genius_artist_id": 158659
   },
   "taylor-swift": {
     "name": "Taylor Swift",
     "albums": [
-      {"name": "Taylor Swift",                               "year": 2006, "genius_id": 1034551, "art_override": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/be/e1/48/bee148d6-d16c-d8f7-0173-d6cf6d684aa1/08PNDIM00678.rgb.jpg/1000x1000bb.jpg"},
-      {"name": "The Taylor Swift Holiday Collection",        "year": 2007, "genius_id": 39094,   "art_override": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/c6/01/8b/c6018b3e-ae83-e5ed-9003-5ddb70f4d237/18OPBMR00132.rgb.jpg/1000x1000bb.jpg"},
-      {"name": "Fearless (Taylor's Version)",                "year": 2008, "genius_id": 734107,  "art_override": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/c3/d0/1c/c3d01c88-73e7-187e-fd62-e1744de979a6/21UMGIM09915.rgb.jpg/1000x1000bb.jpg"},
-      {"name": "Speak Now (Taylor's Version)",               "year": 2010, "genius_id": 1058580, "art_override": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/9f/3c/0a/9f3c0a60-f9e0-a34e-60e5-0be1f182896b/23UMGIM63932.rgb.jpg/1000x1000bb.jpg"},
-      {"name": "Red (Taylor's Version)",                     "year": 2012, "genius_id": 758022,  "art_override": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/c6/27/9c/c6279c07-9329-827d-31c4-f5d4c7d99ff4/21UM1IM25046.rgb.jpg/1000x1000bb.jpg"},
-      {"name": "1989 (Taylor's Version)",                    "year": 2014, "genius_id": 1082316, "art_override": "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/8e/35/6c/8e356cc2-0be4-b83b-d29e-b578623df2ac/23UM1IM34052.rgb.jpg/1000x1000bb.jpg"},
-      {"name": "reputation",                                 "year": 2017, "genius_id": 1492663, "art_override": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/eb/e6/06/ebe606da-e00f-82d3-47f3-b79904eed541/17UM1IM24651.rgb.jpg/1000x1000bb.jpg"},
-      {"name": "Lover",                                      "year": 2019, "genius_id": 832267,  "art_override": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/49/3d/ab/493dab54-f920-9043-6181-80993b8116c9/19UMGIM53909.rgb.jpg/1000x1000bb.jpg"},
-      {"name": "The Taylor Swift Holiday Collection",        "year": 2019, "genius_id": 1271655},
-      {"name": "folklore",                                   "year": 2020, "genius_id": 704621,  "art_override": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/7c/04/ba/7c04ba17-2ff8-21b3-0ac0-7d141f86e924/20UMGIM64216.rgb.jpg/1000x1000bb.jpg"},
-      {"name": "evermore",                                   "year": 2020, "genius_id": 726425,  "art_override": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/18/93/99/189399a7-95e1-324b-e40a-bd9e3ea22a95/20UM1IM14847.rgb.jpg/1000x1000bb.jpg"},
-      {"name": "Midnights",                                  "year": 2022, "genius_id": 1040211, "art_override": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/fb/b7/5d/fbb75d98-3b52-2fa5-ca82-658194f3c498/23UMGIM58157.rgb.jpg/1000x1000bb.jpg"},
-      {"name": "The Tortured Poets Department",              "year": 2024, "genius_id": 1260317, "art_override": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/a3/8a/8d/a38a8de5-ae11-154c-dca5-221e6549caee/24UMGIM44778.rgb.jpg/1000x1000bb.jpg"},
-      {"name": "The Life of a Showgirl",                     "year": 2025, "genius_id": 1517950, "art_override": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/30/0c/5a/300c5a57-d3be-a170-f880-f63380ca6312/25UM1IM19577.rgb.jpg/1000x1000bb.jpg"},
-      {"name": "The Life of a Showgirl (Voice Memos)",       "year": 2025, "genius_id": 1498620, "is_demo": true},
-      {"name": "cardigan voice memo",                        "year": 2020, "genius_id": 681918,  "is_demo": true},
-      {"name": "willow demos",                               "year": 2020, "genius_id": 1513411, "is_demo": true}
+      {
+        "name": "Taylor Swift",
+        "year": 2006,
+        "genius_id": 1034551,
+        "art_override": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/be/e1/48/bee148d6-d16c-d8f7-0173-d6cf6d684aa1/08PNDIM00678.rgb.jpg/1000x1000bb.jpg"
+      },
+      {
+        "name": "The Taylor Swift Holiday Collection",
+        "year": 2007,
+        "genius_id": 39094,
+        "art_override": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/c6/01/8b/c6018b3e-ae83-e5ed-9003-5ddb70f4d237/18OPBMR00132.rgb.jpg/1000x1000bb.jpg"
+      },
+      {
+        "name": "Fearless (Taylor's Version)",
+        "year": 2008,
+        "genius_id": 734107,
+        "art_override": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/c3/d0/1c/c3d01c88-73e7-187e-fd62-e1744de979a6/21UMGIM09915.rgb.jpg/1000x1000bb.jpg"
+      },
+      {
+        "name": "Speak Now (Taylor's Version)",
+        "year": 2010,
+        "genius_id": 1058580,
+        "art_override": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/9f/3c/0a/9f3c0a60-f9e0-a34e-60e5-0be1f182896b/23UMGIM63932.rgb.jpg/1000x1000bb.jpg"
+      },
+      {
+        "name": "Red (Taylor's Version)",
+        "year": 2012,
+        "genius_id": 758022,
+        "art_override": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/c6/27/9c/c6279c07-9329-827d-31c4-f5d4c7d99ff4/21UM1IM25046.rgb.jpg/1000x1000bb.jpg"
+      },
+      {
+        "name": "1989 (Taylor's Version)",
+        "year": 2014,
+        "genius_id": 1082316,
+        "art_override": "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/8e/35/6c/8e356cc2-0be4-b83b-d29e-b578623df2ac/23UM1IM34052.rgb.jpg/1000x1000bb.jpg"
+      },
+      {
+        "name": "reputation",
+        "year": 2017,
+        "genius_id": 1492663,
+        "art_override": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/eb/e6/06/ebe606da-e00f-82d3-47f3-b79904eed541/17UM1IM24651.rgb.jpg/1000x1000bb.jpg"
+      },
+      {
+        "name": "Lover",
+        "year": 2019,
+        "genius_id": 832267,
+        "art_override": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/49/3d/ab/493dab54-f920-9043-6181-80993b8116c9/19UMGIM53909.rgb.jpg/1000x1000bb.jpg"
+      },
+      {
+        "name": "The Taylor Swift Holiday Collection",
+        "year": 2019,
+        "genius_id": 1271655
+      },
+      {
+        "name": "folklore",
+        "year": 2020,
+        "genius_id": 704621,
+        "art_override": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/7c/04/ba/7c04ba17-2ff8-21b3-0ac0-7d141f86e924/20UMGIM64216.rgb.jpg/1000x1000bb.jpg"
+      },
+      {
+        "name": "evermore",
+        "year": 2020,
+        "genius_id": 726425,
+        "art_override": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/18/93/99/189399a7-95e1-324b-e40a-bd9e3ea22a95/20UM1IM14847.rgb.jpg/1000x1000bb.jpg"
+      },
+      {
+        "name": "Midnights",
+        "year": 2022,
+        "genius_id": 1040211,
+        "art_override": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/fb/b7/5d/fbb75d98-3b52-2fa5-ca82-658194f3c498/23UMGIM58157.rgb.jpg/1000x1000bb.jpg"
+      },
+      {
+        "name": "The Tortured Poets Department",
+        "year": 2024,
+        "genius_id": 1260317,
+        "art_override": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/a3/8a/8d/a38a8de5-ae11-154c-dca5-221e6549caee/24UMGIM44778.rgb.jpg/1000x1000bb.jpg"
+      },
+      {
+        "name": "The Life of a Showgirl",
+        "year": 2025,
+        "genius_id": 1517950,
+        "art_override": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/30/0c/5a/300c5a57-d3be-a170-f880-f63380ca6312/25UM1IM19577.rgb.jpg/1000x1000bb.jpg"
+      },
+      {
+        "name": "The Life of a Showgirl (Voice Memos)",
+        "year": 2025,
+        "genius_id": 1498620,
+        "is_demo": true
+      },
+      {
+        "name": "cardigan voice memo",
+        "year": 2020,
+        "genius_id": 681918,
+        "is_demo": true
+      },
+      {
+        "name": "willow demos",
+        "year": 2020,
+        "genius_id": 1513411,
+        "is_demo": true
+      },
+      {
+        "name": "Billions Club Live With Olivia Rodrigo",
+        "year": 0,
+        "genius_id": 1661649
+      },
+      {
+        "name": "A Time To Hurt, A Time To Heal (ATH²)",
+        "year": 0,
+        "genius_id": 1629090
+      },
+      {
+        "name": "American Idol: Season 24 (Celebrating Taylor Swift on American Idol)",
+        "year": 0,
+        "genius_id": 1637934
+      },
+      {
+        "name": "KIDZ BOP 53",
+        "year": 0,
+        "genius_id": 1646068
+      },
+      {
+        "name": "Daily Dose Of Nostalgia",
+        "year": 0,
+        "genius_id": 1609040
+      },
+      {
+        "name": "Opalite (Skream Remix)",
+        "year": 0,
+        "genius_id": 1585375
+      },
+      {
+        "name": "Opalite (BUNT. Remix)",
+        "year": 0,
+        "genius_id": 1585374
+      },
+      {
+        "name": "Opalite (Ely Oaks Remix)",
+        "year": 0,
+        "genius_id": 1585376
+      },
+      {
+        "name": "Opalite (Collector’s Edition CD)",
+        "year": 0,
+        "genius_id": 1569168
+      }
     ],
     "individual_songs": [
-      {"genius_id": 187143,     "title": "Crazier",                          "album": "Non-album Singles & Collaborations", "year": 2009},
-      {"genius_id": 187250,     "title": "I'd Lie",                          "album": "Non-album Singles & Collaborations", "year": 2006},
-      {"genius_id": 187203,     "title": "I Heart ?",                        "album": "Non-album Singles & Collaborations", "year": 2009},
-      {"genius_id": 4968964,    "title": "Beautiful Ghosts",                 "album": "Non-album Singles & Collaborations", "year": 2019},
-      {"genius_id": 1633487944, "title": "Carolina",                         "album": "Non-album Singles & Collaborations", "year": 2022, "art_override": "https://is1-ssl.mzstatic.com/image/thumb/Music122/v4/51/5f/41/515f417f-19d6-ea22-e1fb-acebc2ba4f23/22UMGIM67563.rgb.jpg/600x600bb.jpg"},
-      {"genius_id": 642957,     "title": "Two Is Better Than One",           "album": "Non-album Singles & Collaborations", "year": 2009, "search_artist": "Boys Like Girls"},
-      {"genius_id": 182948,     "title": "Half of My Heart",                 "album": "Non-album Singles & Collaborations", "year": 2010, "search_artist": "John Mayer"},
-      {"genius_id": 70979,      "title": "Both of Us",                       "album": "Non-album Singles & Collaborations", "year": 2012, "search_artist": "B.o.B"},
-      {"genius_id": 154241,     "title": "Highway Don't Care",               "album": "Non-album Singles & Collaborations", "year": 2013, "search_artist": "Tim McGraw"},
-      {"genius_id": 2927948,    "title": "I Don't Wanna Live Forever",       "album": "Non-album Singles & Collaborations", "year": 2017, "search_artist": "ZAYN"},
-      {"genius_id": 6959851,    "title": "Renegade",                         "album": "Non-album Singles & Collaborations", "year": 2021, "search_artist": "Big Red Machine"},
-      {"genius_id": 6959849,    "title": "Birch",                            "album": "Non-album Singles & Collaborations", "year": 2021, "search_artist": "Big Red Machine"},
-      {"genius_id": 8714086,    "title": "The Alcott",                       "album": "Non-album Singles & Collaborations", "year": 2023, "search_artist": "The National"},
-      {"genius_id": 6453633,    "title": "Gasoline (Remix)",                 "album": "Non-album Singles & Collaborations", "year": 2021, "search_artist": "HAIM"},
-      {"genius_id": 5651833,    "title": "All of the Girls You Loved Before","album": "Lover",                              "year": 2019},
-      {"genius_id": 9157489,    "title": "You're Losing Me (From The Vault)","album": "Midnights",                         "year": 2022},
-      {"genius_id": 8924398,    "title": "Eyes Open (Taylor's Version)",     "album": "Red (Taylor's Version)",            "year": 2012},
-      {"genius_id": 8924411,    "title": "Safe & Sound (Taylor's Version)",  "album": "Red (Taylor's Version)",            "year": 2012},
-      {"genius_id": 6688373,    "title": "If This Was a Movie (Taylor's Version)", "album": "Fearless (Taylor's Version)", "year": 2023}
-    ]
+      {
+        "genius_id": 187143,
+        "title": "Crazier",
+        "album": "Non-album Singles & Collaborations",
+        "year": 2009
+      },
+      {
+        "genius_id": 187250,
+        "title": "I'd Lie",
+        "album": "Non-album Singles & Collaborations",
+        "year": 2006
+      },
+      {
+        "genius_id": 187203,
+        "title": "I Heart ?",
+        "album": "Non-album Singles & Collaborations",
+        "year": 2009
+      },
+      {
+        "genius_id": 4968964,
+        "title": "Beautiful Ghosts",
+        "album": "Non-album Singles & Collaborations",
+        "year": 2019
+      },
+      {
+        "genius_id": 1633487944,
+        "title": "Carolina",
+        "album": "Non-album Singles & Collaborations",
+        "year": 2022,
+        "art_override": "https://is1-ssl.mzstatic.com/image/thumb/Music122/v4/51/5f/41/515f417f-19d6-ea22-e1fb-acebc2ba4f23/22UMGIM67563.rgb.jpg/600x600bb.jpg"
+      },
+      {
+        "genius_id": 642957,
+        "title": "Two Is Better Than One",
+        "album": "Non-album Singles & Collaborations",
+        "year": 2009,
+        "search_artist": "Boys Like Girls"
+      },
+      {
+        "genius_id": 182948,
+        "title": "Half of My Heart",
+        "album": "Non-album Singles & Collaborations",
+        "year": 2010,
+        "search_artist": "John Mayer"
+      },
+      {
+        "genius_id": 70979,
+        "title": "Both of Us",
+        "album": "Non-album Singles & Collaborations",
+        "year": 2012,
+        "search_artist": "B.o.B"
+      },
+      {
+        "genius_id": 154241,
+        "title": "Highway Don't Care",
+        "album": "Non-album Singles & Collaborations",
+        "year": 2013,
+        "search_artist": "Tim McGraw"
+      },
+      {
+        "genius_id": 2927948,
+        "title": "I Don't Wanna Live Forever",
+        "album": "Non-album Singles & Collaborations",
+        "year": 2017,
+        "search_artist": "ZAYN"
+      },
+      {
+        "genius_id": 6959851,
+        "title": "Renegade",
+        "album": "Non-album Singles & Collaborations",
+        "year": 2021,
+        "search_artist": "Big Red Machine"
+      },
+      {
+        "genius_id": 6959849,
+        "title": "Birch",
+        "album": "Non-album Singles & Collaborations",
+        "year": 2021,
+        "search_artist": "Big Red Machine"
+      },
+      {
+        "genius_id": 8714086,
+        "title": "The Alcott",
+        "album": "Non-album Singles & Collaborations",
+        "year": 2023,
+        "search_artist": "The National"
+      },
+      {
+        "genius_id": 6453633,
+        "title": "Gasoline (Remix)",
+        "album": "Non-album Singles & Collaborations",
+        "year": 2021,
+        "search_artist": "HAIM"
+      },
+      {
+        "genius_id": 5651833,
+        "title": "All of the Girls You Loved Before",
+        "album": "Lover",
+        "year": 2019
+      },
+      {
+        "genius_id": 9157489,
+        "title": "You're Losing Me (From The Vault)",
+        "album": "Midnights",
+        "year": 2022
+      },
+      {
+        "genius_id": 8924398,
+        "title": "Eyes Open (Taylor's Version)",
+        "album": "Red (Taylor's Version)",
+        "year": 2012
+      },
+      {
+        "genius_id": 8924411,
+        "title": "Safe & Sound (Taylor's Version)",
+        "album": "Red (Taylor's Version)",
+        "year": 2012
+      },
+      {
+        "genius_id": 6688373,
+        "title": "If This Was a Movie (Taylor's Version)",
+        "album": "Fearless (Taylor's Version)",
+        "year": 2023
+      }
+    ],
+    "genius_artist_id": 1177
   },
   "sabrina-carpenter": {
     "name": "Sabrina Carpenter",
     "albums": [
-      {"name": "Eyes Wide Open",                              "year": 2015, "genius_id": 121108},
-      {"name": "EVOLution",                                   "year": 2016, "genius_id": 168270},
-      {"name": "Singular: Act I",                             "year": 2018, "genius_id": 923516},
-      {"name": "Singular: Act II",                            "year": 2019, "genius_id": 927206},
-      {"name": "emails i can't send",                         "year": 2022, "genius_id": 1008706},
-      {"name": "Short n' Sweet",                              "year": 2024, "genius_id": 1330959},
-      {"name": "Man's Best Friend (Bonus Track Version)",     "year": 2025, "genius_id": 1456877}
-    ]
+      {
+        "name": "Eyes Wide Open",
+        "year": 2015,
+        "genius_id": 121108
+      },
+      {
+        "name": "EVOLution",
+        "year": 2016,
+        "genius_id": 168270
+      },
+      {
+        "name": "Singular: Act I",
+        "year": 2018,
+        "genius_id": 923516
+      },
+      {
+        "name": "Singular: Act II",
+        "year": 2019,
+        "genius_id": 927206
+      },
+      {
+        "name": "emails i can't send",
+        "year": 2022,
+        "genius_id": 1008706
+      },
+      {
+        "name": "Short n' Sweet",
+        "year": 2024,
+        "genius_id": 1330959
+      },
+      {
+        "name": "Man's Best Friend (Bonus Track Version)",
+        "year": 2025,
+        "genius_id": 1456877
+      },
+      {
+        "name": "House Tour (7\" Vinyl)",
+        "year": 0,
+        "genius_id": 1621266
+      },
+      {
+        "name": "CONFESSIONS II",
+        "year": 0,
+        "genius_id": 1337019
+      },
+      {
+        "name": "Today’s Hits: February 2026 (DJ Mix)",
+        "year": 0,
+        "genius_id": 1581466
+      },
+      {
+        "name": "Dreams of Caprices",
+        "year": 0,
+        "genius_id": 1481220
+      },
+      {
+        "name": "Tears (7\" Vinyl)",
+        "year": 0,
+        "genius_id": 1479714
+      },
+      {
+        "name": "OT Gala 9 (Operación Triunfo 2025)",
+        "year": 0,
+        "genius_id": 1521179
+      },
+      {
+        "name": "Today’s Hits: November 2025 (DJ Mix)",
+        "year": 0,
+        "genius_id": 1518445
+      },
+      {
+        "name": "KIDZ BOP 52",
+        "year": 0,
+        "genius_id": 1560234
+      },
+      {
+        "name": "The Life of a Showgirl + Acoustic Collection",
+        "year": 0,
+        "genius_id": 1517950
+      }
+    ],
+    "genius_artist_id": 249592
   },
   "lana-del-rey": {
     "name": "Lana Del Rey",
     "albums": [
-      {"name": "Born To Die",                                                "year": 2012, "genius_id": 1298077},
-      {"name": "Ultraviolence",                                              "year": 2014, "genius_id": 1298656},
-      {"name": "Honeymoon",                                                  "year": 2015, "genius_id": 126114},
-      {"name": "Lust for Life",                                              "year": 2017, "genius_id": 331260},
-      {"name": "Norman Fucking Rockwell!",                                   "year": 2019, "genius_id": 459810},
-      {"name": "Chemtrails over the Country Club",                           "year": 2021, "genius_id": 621392},
-      {"name": "Blue Banisters",                                             "year": 2021, "genius_id": 749828},
-      {"name": "Did You Know That There's a Tunnel Under Ocean Blvd",       "year": 2023, "genius_id": 906956},
-      {"name": "Charm",                                                      "year": 2024, "genius_id": 1138487}
-    ]
+      {
+        "name": "Born To Die",
+        "year": 2012,
+        "genius_id": 1298077
+      },
+      {
+        "name": "Ultraviolence",
+        "year": 2014,
+        "genius_id": 1298656
+      },
+      {
+        "name": "Honeymoon",
+        "year": 2015,
+        "genius_id": 126114
+      },
+      {
+        "name": "Lust for Life",
+        "year": 2017,
+        "genius_id": 331260
+      },
+      {
+        "name": "Norman Fucking Rockwell!",
+        "year": 2019,
+        "genius_id": 459810
+      },
+      {
+        "name": "Chemtrails over the Country Club",
+        "year": 2021,
+        "genius_id": 621392
+      },
+      {
+        "name": "Blue Banisters",
+        "year": 2021,
+        "genius_id": 749828
+      },
+      {
+        "name": "Did You Know That There's a Tunnel Under Ocean Blvd",
+        "year": 2023,
+        "genius_id": 906956
+      },
+      {
+        "name": "Charm",
+        "year": 2024,
+        "genius_id": 1138487
+      },
+      {
+        "name": "First Light (Original Video Game Soundtrack)*",
+        "year": 0,
+        "genius_id": 1628566
+      },
+      {
+        "name": "Bleachers - From The Studio To Stage (Live From Madison Square Garden, NYC)",
+        "year": 0,
+        "genius_id": 1511325
+      },
+      {
+        "name": "Spooky Halloween 2025 (DJ Mix)",
+        "year": 0,
+        "genius_id": 1555589
+      },
+      {
+        "name": "Heretics & Lullabies",
+        "year": 0,
+        "genius_id": 1454041
+      },
+      {
+        "name": "Radio",
+        "year": 0,
+        "genius_id": 1433281
+      },
+      {
+        "name": "Covers I",
+        "year": 0,
+        "genius_id": 1384843
+      },
+      {
+        "name": "Ultrasound [Single]",
+        "year": 0,
+        "genius_id": 1329402
+      },
+      {
+        "name": "Hurry Up Tomorrow (Original Motion Picture Score)",
+        "year": 0,
+        "genius_id": 1404199
+      },
+      {
+        "name": "Colors at Dusk",
+        "year": 0,
+        "genius_id": 1385545
+      },
+      {
+        "name": "Covers By Didi",
+        "year": 0,
+        "genius_id": 1364638
+      }
+    ],
+    "genius_artist_id": 15740
   },
   "olivia-rodrigo": {
     "name": "Olivia Rodrigo",
     "albums": [
-      {"name": "SOUR", "year": 2021, "genius_id": 715843},
-      {"name": "GUTS", "year": 2023, "genius_id": 1158939}
-    ]
+      {
+        "name": "SOUR",
+        "year": 2021,
+        "genius_id": 715843
+      },
+      {
+        "name": "GUTS",
+        "year": 2023,
+        "genius_id": 1158939
+      },
+      {
+        "name": "you seem pretty sad for a girl so in love",
+        "year": 0,
+        "genius_id": 1430564
+      },
+      {
+        "name": "Billions Club Live With Olivia Rodrigo",
+        "year": 0,
+        "genius_id": 1661649
+      }
+    ],
+    "genius_artist_id": 1599675
   },
   "ed-sheeran": {
     "name": "Ed Sheeran",
     "albums": [
-      {"name": "+",                              "year": 2011, "genius_id": 970831,  "art_override": "https://is1-ssl.mzstatic.com/image/thumb/Features124/v4/79/76/83/797683fd-dc59-e8a3-68be-fa4799485066/contsched.ptkgkexz.jpg/1000x1000bf-60.jpg"},
-      {"name": "×",                              "year": 2014, "genius_id": 954671,  "art_override": "https://is1-ssl.mzstatic.com/image/thumb/Features125/v4/a7/7b/92/a77b92fc-d331-dd1b-8772-80597dc51fd0/dj.xllwtvne.jpg/1000x1000bb.jpg"},
-      {"name": "÷",                              "year": 2017, "genius_id": 1409684, "art_override": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/15/e6/e8/15e6e8a4-4190-6a8b-86c3-ab4a51b88288/190295851286.jpg/1000x1000bb.jpg"},
-      {"name": "No.6 Collaborations Project",   "year": 2019, "genius_id": 531308,  "art_override": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/e8/09/63/e809636b-2ea8-066e-2749-c0b94ab77052/190295384227.jpg/1000x1000bb.jpg"},
-      {"name": "=",                              "year": 2021, "genius_id": 859330,  "art_override": "https://is1-ssl.mzstatic.com/image/thumb/Music122/v4/53/4a/01/534a01d1-d7c6-db04-7e00-b78cd4e50bfc/5054197180880.jpg/1000x1000bb.jpg"},
-      {"name": "-",                              "year": 2023, "genius_id": 1015321, "art_override": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/c2/4c/36/c24c3631-08b8-b576-345a-259b395f8dbd/5054197591464.jpg/1000x1000bb.jpg"},
-      {"name": "Autumn Variations",             "year": 2023, "genius_id": 1015304, "art_override": "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/a5/48/07/a5480772-8c87-b4f7-7c09-c0c8ca32a90a/5054197787171.jpg/1000x1000bb.jpg"},
-      {"name": "Play",                           "year": 2025, "genius_id": 1391245, "art_override": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/e5/40/89/e54089a9-5bc7-71c0-d7aa-93abadde2eb1/5021732960962.jpg/1000x1000bb.jpg"}
-    ]
+      {
+        "name": "+",
+        "year": 2011,
+        "genius_id": 970831,
+        "art_override": "https://is1-ssl.mzstatic.com/image/thumb/Features124/v4/79/76/83/797683fd-dc59-e8a3-68be-fa4799485066/contsched.ptkgkexz.jpg/1000x1000bf-60.jpg"
+      },
+      {
+        "name": "×",
+        "year": 2014,
+        "genius_id": 954671,
+        "art_override": "https://is1-ssl.mzstatic.com/image/thumb/Features125/v4/a7/7b/92/a77b92fc-d331-dd1b-8772-80597dc51fd0/dj.xllwtvne.jpg/1000x1000bb.jpg"
+      },
+      {
+        "name": "÷",
+        "year": 2017,
+        "genius_id": 1409684,
+        "art_override": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/15/e6/e8/15e6e8a4-4190-6a8b-86c3-ab4a51b88288/190295851286.jpg/1000x1000bb.jpg"
+      },
+      {
+        "name": "No.6 Collaborations Project",
+        "year": 2019,
+        "genius_id": 531308,
+        "art_override": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/e8/09/63/e809636b-2ea8-066e-2749-c0b94ab77052/190295384227.jpg/1000x1000bb.jpg"
+      },
+      {
+        "name": "=",
+        "year": 2021,
+        "genius_id": 859330,
+        "art_override": "https://is1-ssl.mzstatic.com/image/thumb/Music122/v4/53/4a/01/534a01d1-d7c6-db04-7e00-b78cd4e50bfc/5054197180880.jpg/1000x1000bb.jpg"
+      },
+      {
+        "name": "-",
+        "year": 2023,
+        "genius_id": 1015321,
+        "art_override": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/c2/4c/36/c24c3631-08b8-b576-345a-259b395f8dbd/5054197591464.jpg/1000x1000bb.jpg"
+      },
+      {
+        "name": "Autumn Variations",
+        "year": 2023,
+        "genius_id": 1015304,
+        "art_override": "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/a5/48/07/a5480772-8c87-b4f7-7c09-c0c8ca32a90a/5054197787171.jpg/1000x1000bb.jpg"
+      },
+      {
+        "name": "Play",
+        "year": 2025,
+        "genius_id": 1391245,
+        "art_override": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/e5/40/89/e54089a9-5bc7-71c0-d7aa-93abadde2eb1/5021732960962.jpg/1000x1000bb.jpg"
+      },
+      {
+        "name": "MG2*",
+        "year": 0,
+        "genius_id": 1584690
+      },
+      {
+        "name": "FIFA World Cup 2026™ Official Album",
+        "year": 0,
+        "genius_id": 1609453
+      },
+      {
+        "name": "Live From North America - EP",
+        "year": 0,
+        "genius_id": 1650252
+      },
+      {
+        "name": "Cloud 9 (Behind The Song Edition)",
+        "year": 0,
+        "genius_id": 1592926
+      },
+      {
+        "name": "Days Of Ash EP",
+        "year": 0,
+        "genius_id": 1589082
+      },
+      {
+        "name": "The Celtic Tenors: Live at The Empire Theatre",
+        "year": 0,
+        "genius_id": 1609089
+      },
+      {
+        "name": "Back for Good",
+        "year": 0,
+        "genius_id": 1570261
+      },
+      {
+        "name": "KIDZ BOP 52",
+        "year": 0,
+        "genius_id": 1560234
+      },
+      {
+        "name": "Rewind",
+        "year": 0,
+        "genius_id": 1480976
+      },
+      {
+        "name": "Zoo ~君がいるから~ (Zoo ~Kimi ga Iru Kara~) - Single",
+        "year": 0,
+        "genius_id": 1545552
+      },
+      {
+        "name": "A",
+        "year": 0,
+        "genius_id": 1542640
+      },
+      {
+        "name": "Le bal de la promo 2025",
+        "year": 0,
+        "genius_id": 1524018
+      }
+    ],
+    "genius_artist_id": 12418
   },
   "harry-styles": {
     "name": "Harry Styles",
     "albums": [
-      {"name": "Harry Styles",                            "year": 2017, "genius_id": 339829,  "art_override": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/3d/5e/aa/3d5eaaa3-9a86-c264-5cd5-7fac83f99a59/886446451978.jpg/1000x1000bb.jpg"},
-      {"name": "Fine Line",                               "year": 2019, "genius_id": 568792,  "art_override": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/2b/c4/c9/2bc4c9d4-3bc6-ab13-3f71-df0b89b173de/886448022213.jpg/1000x1000bb.jpg"},
-      {"name": "Harry's House",                           "year": 2022, "genius_id": 886451,  "art_override": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/2a/19/fb/2a19fb85-2f70-9e44-f2a9-82abe679b88e/886449990061.jpg/1000x1000bb.jpg"},
-      {"name": "Kiss All The Time. Disco, Occasionally.", "year": 2025, "genius_id": 1552425, "art_override": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/07/41/6a/07416a78-38b9-2d47-7ce8-8a52a44c510f/196874010112.jpg/1000x1000bb.jpg"}
-    ]
+      {
+        "name": "Harry Styles",
+        "year": 2017,
+        "genius_id": 339829,
+        "art_override": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/3d/5e/aa/3d5eaaa3-9a86-c264-5cd5-7fac83f99a59/886446451978.jpg/1000x1000bb.jpg"
+      },
+      {
+        "name": "Fine Line",
+        "year": 2019,
+        "genius_id": 568792,
+        "art_override": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/2b/c4/c9/2bc4c9d4-3bc6-ab13-3f71-df0b89b173de/886448022213.jpg/1000x1000bb.jpg"
+      },
+      {
+        "name": "Harry's House",
+        "year": 2022,
+        "genius_id": 886451,
+        "art_override": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/2a/19/fb/2a19fb85-2f70-9e44-f2a9-82abe679b88e/886449990061.jpg/1000x1000bb.jpg"
+      },
+      {
+        "name": "Kiss All The Time. Disco, Occasionally.",
+        "year": 2025,
+        "genius_id": 1552425,
+        "art_override": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/07/41/6a/07416a78-38b9-2d47-7ce8-8a52a44c510f/196874010112.jpg/1000x1000bb.jpg"
+      },
+      {
+        "name": "Harry Styles: Apple Music Live",
+        "year": 0,
+        "genius_id": 1605028
+      },
+      {
+        "name": "Harry Styles",
+        "year": 0,
+        "genius_id": 1574684
+      },
+      {
+        "name": "KIDZ BOP 53",
+        "year": 0,
+        "genius_id": 1646068
+      },
+      {
+        "name": "Finale (Seizoen 13)",
+        "year": 0,
+        "genius_id": 1652307
+      },
+      {
+        "name": "Aperture (Marryat Sehart Remix)",
+        "year": 0,
+        "genius_id": 1623506
+      }
+    ],
+    "genius_artist_id": 22457
   },
   "jeremy-zucker": {
     "name": "Jeremy Zucker",
     "albums": [
-      {"name": "Beach Island",         "year": 2015, "genius_id": 130602},
-      {"name": "Breathe",              "year": 2015, "genius_id": 286292},
-      {"name": "Motions",              "year": 2016, "genius_id": 161767},
-      {"name": "idle",                 "year": 2017, "genius_id": 370214},
-      {"name": "stripped.",            "year": 2018, "genius_id": 398910},
-      {"name": "glisten",              "year": 2018, "genius_id": 425472},
-      {"name": "summer,",              "year": 2018, "genius_id": 459814},
-      {"name": "brent",                "year": 2019, "genius_id": 524030},
-      {"name": "love is not dying",    "year": 2020, "genius_id": 546767},
-      {"name": "brent ii",             "year": 2021, "genius_id": 693399},
-      {"name": "CRUSHER",              "year": 2021, "genius_id": 783792},
-      {"name": "is nothing sacred?",   "year": 2023, "genius_id": 1043159},
-      {"name": "brent iii",            "year": 2024, "genius_id": 1228602},
-      {"name": "Garden State",         "year": 2025, "genius_id": 1405049}
+      {
+        "name": "Beach Island",
+        "year": 2015,
+        "genius_id": 130602
+      },
+      {
+        "name": "Breathe",
+        "year": 2015,
+        "genius_id": 286292
+      },
+      {
+        "name": "Motions",
+        "year": 2016,
+        "genius_id": 161767
+      },
+      {
+        "name": "idle",
+        "year": 2017,
+        "genius_id": 370214
+      },
+      {
+        "name": "stripped.",
+        "year": 2018,
+        "genius_id": 398910
+      },
+      {
+        "name": "glisten",
+        "year": 2018,
+        "genius_id": 425472
+      },
+      {
+        "name": "summer,",
+        "year": 2018,
+        "genius_id": 459814
+      },
+      {
+        "name": "brent",
+        "year": 2019,
+        "genius_id": 524030
+      },
+      {
+        "name": "love is not dying",
+        "year": 2020,
+        "genius_id": 546767
+      },
+      {
+        "name": "brent ii",
+        "year": 2021,
+        "genius_id": 693399
+      },
+      {
+        "name": "CRUSHER",
+        "year": 2021,
+        "genius_id": 783792
+      },
+      {
+        "name": "is nothing sacred?",
+        "year": 2023,
+        "genius_id": 1043159
+      },
+      {
+        "name": "brent iii",
+        "year": 2024,
+        "genius_id": 1228602
+      },
+      {
+        "name": "Garden State",
+        "year": 2025,
+        "genius_id": 1405049
+      },
+      {
+        "name": "Breaking Through",
+        "year": 0,
+        "genius_id": 1612736
+      },
+      {
+        "name": "Achilles (Anniversary Edition)",
+        "year": 0,
+        "genius_id": 1599281
+      },
+      {
+        "name": "From the horse’s mouth",
+        "year": 0,
+        "genius_id": 1327946
+      }
     ],
     "individual_songs": [
-      {"genius_id": 2821518,  "title": "DRAMAMINE",            "album": "Non-album single",                   "year": 2015},
-      {"genius_id": 2407141,  "title": "Peace Signs",           "album": "Non-album single",                   "year": 2016},
-      {"genius_id": 2416793,  "title": "Weakness",              "album": "Non-album single",                   "year": 2016},
-      {"genius_id": 2965294,  "title": "Paradise",              "album": "Non-album single",                   "year": 2016},
-      {"genius_id": 3174431,  "title": "When You Wake Up...",   "album": "Non-album single",                   "year": 2016},
-      {"genius_id": 5775122,  "title": "supercuts",             "album": "Non-album single",                   "year": 2020},
-      {"genius_id": 8364292,  "title": "I'm So Happy",          "album": "Non-album single",                   "year": 2022},
-      {"genius_id": 9454357,  "title": "this time",             "album": "Non-album single",                   "year": 2023},
-      {"genius_id": 10392817, "title": "Cozy",                  "album": "Non-album Singles & Collaborations", "year": 2024, "search_artist": "Jeremy Zucker, Lauv & Alexander 23"}
-    ]
+      {
+        "genius_id": 2821518,
+        "title": "DRAMAMINE",
+        "album": "Non-album single",
+        "year": 2015
+      },
+      {
+        "genius_id": 2407141,
+        "title": "Peace Signs",
+        "album": "Non-album single",
+        "year": 2016
+      },
+      {
+        "genius_id": 2416793,
+        "title": "Weakness",
+        "album": "Non-album single",
+        "year": 2016
+      },
+      {
+        "genius_id": 2965294,
+        "title": "Paradise",
+        "album": "Non-album single",
+        "year": 2016
+      },
+      {
+        "genius_id": 3174431,
+        "title": "When You Wake Up...",
+        "album": "Non-album single",
+        "year": 2016
+      },
+      {
+        "genius_id": 5775122,
+        "title": "supercuts",
+        "album": "Non-album single",
+        "year": 2020
+      },
+      {
+        "genius_id": 8364292,
+        "title": "I'm So Happy",
+        "album": "Non-album single",
+        "year": 2022
+      },
+      {
+        "genius_id": 9454357,
+        "title": "this time",
+        "album": "Non-album single",
+        "year": 2023
+      },
+      {
+        "genius_id": 10392817,
+        "title": "Cozy",
+        "album": "Non-album Singles & Collaborations",
+        "year": 2024,
+        "search_artist": "Jeremy Zucker, Lauv & Alexander 23"
+      }
+    ],
+    "genius_artist_id": 398381
   },
   "gracie-abrams": {
     "name": "Gracie Abrams",
     "albums": [
-      {"name": "Minor",                       "year": 2020, "genius_id": 637845},
-      {"name": "This Is What It Feels Like",  "year": 2021, "genius_id": 820478},
-      {"name": "Good Riddance",               "year": 2023, "genius_id": 1028415},
-      {"name": "The Secret of Us",            "year": 2024, "genius_id": 1269000}
+      {
+        "name": "Minor",
+        "year": 2020,
+        "genius_id": 637845
+      },
+      {
+        "name": "This Is What It Feels Like",
+        "year": 2021,
+        "genius_id": 820478
+      },
+      {
+        "name": "Good Riddance",
+        "year": 2023,
+        "genius_id": 1028415
+      },
+      {
+        "name": "The Secret of Us",
+        "year": 2024,
+        "genius_id": 1269000
+      },
+      {
+        "name": "Daughter from Hell",
+        "year": 0,
+        "genius_id": 1354667
+      },
+      {
+        "name": "Prizefighter",
+        "year": 0,
+        "genius_id": 1511948
+      },
+      {
+        "name": "find your wings",
+        "year": 0,
+        "genius_id": 1548838
+      },
+      {
+        "name": "Somewhere (Live at The Roxy)",
+        "year": 0,
+        "genius_id": 1541325
+      },
+      {
+        "name": "Apple Music Live: Gracie Abrams",
+        "year": 0,
+        "genius_id": 1506195
+      }
     ],
     "individual_songs": [
-      {"genius_id": 4966804,  "title": "Mean It",                      "album": "Non-album single",                        "year": 2019},
-      {"genius_id": 5035258,  "title": "Stay",                          "album": "Lonely Songs",                            "year": 2019},
-      {"genius_id": 5437170,  "title": "I Miss You, I'm Sorry",         "album": "Non-album single",                        "year": 2020},
-      {"genius_id": 5548061,  "title": "Long Sleeves",                  "album": "Non-album single",                        "year": 2020},
-      {"genius_id": 6257537,  "title": "Brush Fire",                    "album": "Non-album single",                        "year": 2020},
-      {"genius_id": 6780913,  "title": "Mess It Up",                    "album": "Non-album single",                        "year": 2021},
-      {"genius_id": 8444672,  "title": "Where Do We Go Now?",           "album": "Non-album single",                        "year": 2023},
-      {"genius_id": 8250951,  "title": "Difficult",                     "album": "Non-album single",                        "year": 2023},
-      {"genius_id": 9647185,  "title": "Risk",                          "album": "Non-album single",                        "year": 2024},
-      {"genius_id": 11494841, "title": "Call Me When You Break Up",     "album": "Non-album single",                        "year": 2025},
-      {"genius_id": 10541726, "title": "That's So True",                "album": "The Secret of Us (Digital Deluxe)",       "year": 2024},
-      {"genius_id": 11570039, "title": "Death Wish",                    "album": "Non-album single",                        "year": 2025}
-    ]
+      {
+        "genius_id": 4966804,
+        "title": "Mean It",
+        "album": "Non-album single",
+        "year": 2019
+      },
+      {
+        "genius_id": 5035258,
+        "title": "Stay",
+        "album": "Lonely Songs",
+        "year": 2019
+      },
+      {
+        "genius_id": 5437170,
+        "title": "I Miss You, I'm Sorry",
+        "album": "Non-album single",
+        "year": 2020
+      },
+      {
+        "genius_id": 5548061,
+        "title": "Long Sleeves",
+        "album": "Non-album single",
+        "year": 2020
+      },
+      {
+        "genius_id": 6257537,
+        "title": "Brush Fire",
+        "album": "Non-album single",
+        "year": 2020
+      },
+      {
+        "genius_id": 6780913,
+        "title": "Mess It Up",
+        "album": "Non-album single",
+        "year": 2021
+      },
+      {
+        "genius_id": 8444672,
+        "title": "Where Do We Go Now?",
+        "album": "Non-album single",
+        "year": 2023
+      },
+      {
+        "genius_id": 8250951,
+        "title": "Difficult",
+        "album": "Non-album single",
+        "year": 2023
+      },
+      {
+        "genius_id": 9647185,
+        "title": "Risk",
+        "album": "Non-album single",
+        "year": 2024
+      },
+      {
+        "genius_id": 11494841,
+        "title": "Call Me When You Break Up",
+        "album": "Non-album single",
+        "year": 2025
+      },
+      {
+        "genius_id": 10541726,
+        "title": "That's So True",
+        "album": "The Secret of Us (Digital Deluxe)",
+        "year": 2024
+      },
+      {
+        "genius_id": 11570039,
+        "title": "Death Wish",
+        "album": "Non-album single",
+        "year": 2025
+      }
+    ],
+    "genius_artist_id": 631746
   },
   "the-weeknd": {
     "name": "The Weeknd",
     "albums": [
-      {"name": "Kiss Land",                        "year": 2013, "genius_id": 501331},
-      {"name": "Beauty Behind the Madness",        "year": 2015, "genius_id": 828707},
-      {"name": "Starboy",                          "year": 2016, "genius_id": 1011213},
-      {"name": "My Dear Melancholy,",              "year": 2018, "genius_id": 1427990, "art_override": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/db/22/4e/db224ee0-b058-5d06-9a8c-fa10662bd58e/18UMGIM17205.rgb.jpg/1000x1000bb.jpg"},
-      {"name": "After Hours",                      "year": 2020, "genius_id": 828696},
-      {"name": "Dawn FM",                          "year": 2022, "genius_id": 947480},
-      {"name": "Hurry Up Tomorrow (00XO Edition)", "year": 2025, "genius_id": 1322479}
+      {
+        "name": "Kiss Land",
+        "year": 2013,
+        "genius_id": 501331
+      },
+      {
+        "name": "Beauty Behind the Madness",
+        "year": 2015,
+        "genius_id": 828707
+      },
+      {
+        "name": "Starboy",
+        "year": 2016,
+        "genius_id": 1011213
+      },
+      {
+        "name": "My Dear Melancholy,",
+        "year": 2018,
+        "genius_id": 1427990,
+        "art_override": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/db/22/4e/db224ee0-b058-5d06-9a8c-fa10662bd58e/18UMGIM17205.rgb.jpg/1000x1000bb.jpg"
+      },
+      {
+        "name": "After Hours",
+        "year": 2020,
+        "genius_id": 828696
+      },
+      {
+        "name": "Dawn FM",
+        "year": 2022,
+        "genius_id": 947480
+      },
+      {
+        "name": "Hurry Up Tomorrow (00XO Edition)",
+        "year": 2025,
+        "genius_id": 1322479
+      },
+      {
+        "name": "The Marysville EP",
+        "year": 0,
+        "genius_id": 1618420
+      },
+      {
+        "name": "AT1*",
+        "year": 0,
+        "genius_id": 1578474
+      },
+      {
+        "name": "Abel flow",
+        "year": 0,
+        "genius_id": 1608783
+      },
+      {
+        "name": "WHERE WE LEFT OFF: Extended Deluxe",
+        "year": 0,
+        "genius_id": 1600930
+      },
+      {
+        "name": "Back for Good",
+        "year": 0,
+        "genius_id": 1570261
+      },
+      {
+        "name": "LH2*",
+        "year": 0,
+        "genius_id": 1403950
+      },
+      {
+        "name": "chasing harmony",
+        "year": 0,
+        "genius_id": 1506803
+      },
+      {
+        "name": "São Paulo - EP",
+        "year": 0,
+        "genius_id": 1484834
+      },
+      {
+        "name": "AFZL PRESENTS: THE DYSTOPIA",
+        "year": 0,
+        "genius_id": 1395277
+      }
     ],
     "individual_songs": [
-      {"genius_id": 3614919, "title": "Call Out My Name",  "album": "My Dear Melancholy,", "year": 2018},
-      {"genius_id": 3614925, "title": "Try Me",            "album": "My Dear Melancholy,", "year": 2018},
-      {"genius_id": 3614873, "title": "Wasted Times",      "album": "My Dear Melancholy,", "year": 2018},
-      {"genius_id": 3614926, "title": "I Was Never There", "album": "My Dear Melancholy,", "year": 2018},
-      {"genius_id": 3614927, "title": "Hurt You",          "album": "My Dear Melancholy,", "year": 2018},
-      {"genius_id": 3614928, "title": "Privilege",         "album": "My Dear Melancholy,", "year": 2018}
-    ]
+      {
+        "genius_id": 3614919,
+        "title": "Call Out My Name",
+        "album": "My Dear Melancholy,",
+        "year": 2018
+      },
+      {
+        "genius_id": 3614925,
+        "title": "Try Me",
+        "album": "My Dear Melancholy,",
+        "year": 2018
+      },
+      {
+        "genius_id": 3614873,
+        "title": "Wasted Times",
+        "album": "My Dear Melancholy,",
+        "year": 2018
+      },
+      {
+        "genius_id": 3614926,
+        "title": "I Was Never There",
+        "album": "My Dear Melancholy,",
+        "year": 2018
+      },
+      {
+        "genius_id": 3614927,
+        "title": "Hurt You",
+        "album": "My Dear Melancholy,",
+        "year": 2018
+      },
+      {
+        "genius_id": 3614928,
+        "title": "Privilege",
+        "album": "My Dear Melancholy,",
+        "year": 2018
+      }
+    ],
+    "genius_artist_id": 2358
   }
 }
