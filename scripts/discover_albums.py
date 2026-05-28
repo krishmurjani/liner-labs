@@ -68,22 +68,28 @@ def get_all_albums(headers: dict, artist_id: int, artist_name: str) -> list[dict
 
 
 def _search_albums(headers: dict, artist_id: int, artist_name: str) -> list[dict]:
-    """Discover albums by searching for the artist's songs and extracting unique album objects."""
+    """
+    Discover albums via /artists/{id}/songs sorted by release date.
+    The list endpoint omits album data, so we fetch full song details
+    for recent songs to extract their album objects.
+    """
     r = requests.get(
-        f"{GENIUS_API}/search",
+        f"{GENIUS_API}/artists/{artist_id}/songs",
         headers=headers,
-        params={"q": artist_name, "per_page": 20},
+        params={"per_page": 20, "sort": "release_date"},
         timeout=REQUEST_TIMEOUT,
     )
     r.raise_for_status()
+    songs = r.json()["response"]["songs"]
 
     seen, albums = set(), []
-    for hit in r.json()["response"]["hits"]:
-        song = hit.get("result", {})
-        # Only songs where this is the primary artist
-        if song.get("primary_artist", {}).get("id") != artist_id:
+    for song in songs:
+        time.sleep(0.2)
+        r2 = requests.get(f"{GENIUS_API}/songs/{song['id']}", headers=headers, timeout=REQUEST_TIMEOUT)
+        if not r2.ok:
             continue
-        album = song.get("album")
+        full = r2.json()["response"]["song"]
+        album = full.get("album")
         if not album or album["id"] in seen:
             continue
         seen.add(album["id"])
