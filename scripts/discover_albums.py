@@ -40,6 +40,19 @@ def get_artist_id(headers: dict, album_id: int) -> int:
     return r.json()["response"]["album"]["artist"]["id"]
 
 
+def get_artist_id_by_name(headers: dict, artist_name: str) -> int | None:
+    r = requests.get(f"{GENIUS_API}/search", headers=headers,
+                     params={"q": artist_name}, timeout=REQUEST_TIMEOUT)
+    r.raise_for_status()
+    for hit in r.json()["response"]["hits"]:
+        if hit["type"] != "song":
+            continue
+        primary = hit["result"].get("primary_artist", {})
+        if primary.get("name", "").lower() == artist_name.lower():
+            return primary["id"]
+    return None
+
+
 def get_all_albums(headers: dict, artist_id: int, artist_name: str) -> list[dict]:
     # Try the direct endpoint first; fall back to search if it's forbidden (free-tier limit).
     try:
@@ -117,8 +130,14 @@ def main():
 
         # Resolve and cache the Genius artist ID
         if "genius_artist_id" not in artist_data:
-            first_album_id = artist_data["albums"][0]["genius_id"]
-            artist_id = get_artist_id(headers, first_album_id)
+            if artist_data["albums"]:
+                first_album_id = artist_data["albums"][0]["genius_id"]
+                artist_id = get_artist_id(headers, first_album_id)
+            else:
+                artist_id = get_artist_id_by_name(headers, artist_data["name"])
+                if artist_id is None:
+                    print(f"  Could not resolve artist ID by name — skipping")
+                    continue
             artist_data["genius_artist_id"] = artist_id
             print(f"  Resolved artist ID: {artist_id}")
             changed = True
