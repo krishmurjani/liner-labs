@@ -105,6 +105,10 @@ def _search_albums(headers: dict, artist_id: int, artist_name: str) -> list[dict
         album = full.get("album")
         if not album or album["id"] in seen:
             continue
+        # Only include albums where the primary artist matches — avoids picking
+        # up compilations (e.g. KIDZ BOP) that happen to contain the artist's songs.
+        if album.get("artist", {}).get("id") != artist_id:
+            continue
         seen.add(album["id"])
         albums.append(album)
     return albums

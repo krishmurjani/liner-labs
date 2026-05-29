@@ -993,7 +993,8 @@
   "noah-kahan": {
     "name": "Noah Kahan",
     "albums": [],
-    "individual_songs": []
+    "individual_songs": [],
+    "excluded_album_ids": [1646068, 1649073]
   },
   "the-weeknd": {
     "name": "The Weeknd",
