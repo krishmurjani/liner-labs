@@ -74,6 +74,83 @@ def clean_lyrics(raw: str) -> list[str]:
     return lines
 
 
+# ── Variant de-duplication ──────────────────────────────────────────────────
+# A "variant" is a non-canonical recording of a song already in the catalogue
+# (live, remix, acoustic, etc.). We hide variants when the studio original is
+# present, but keep a variant when (a) it's the only version of that song, or
+# (b) it has a guest artist who may add a verse (Genius featured_artists).
+
+# Parenthetical/suffix descriptors that mark a non-canonical variant.
+VARIANT_KEYWORDS = (
+    "remix", "live", "acoustic", "instrumental", "demo", "voice memo",
+    "a cappella", "acapella", "recorded at", "recorded live", "session",
+    "spotify singles", "amazon music", "radio edit", "radio mix",
+    "single version", "rework", "sped up", "slowed",
+)
+# Never strip these — they denote canonical or otherwise-distinct songs.
+PROTECTED_KEYWORDS = ("taylor's version", "from the vault", "extended", "minute version")
+
+_VARIANT_SUFFIX_RE = re.compile(r'\s*(\([^()]*\)|-\s[^-]+)\s*$')
+
+
+def _strip_variant_suffix(title: str) -> str:
+    """Remove trailing '(…)' or '- …' descriptors that contain a variant keyword."""
+    base = title
+    while True:
+        m = _VARIANT_SUFFIX_RE.search(base)
+        if not m:
+            break
+        seg = m.group(0).lower()
+        if any(k in seg for k in PROTECTED_KEYWORDS):
+            break
+        if any(k in seg for k in VARIANT_KEYWORDS):
+            base = base[:m.start()].rstrip()
+            continue
+        break
+    return base
+
+
+def _norm(title: str) -> str:
+    return title.lower().replace("’", "'").strip()
+
+
+def _select_keepers(candidates: list[dict]) -> list[dict]:
+    """Collapse variant recordings to their canonical song.
+
+    Each candidate is a dict with at least: id, title, featured (list[str]),
+    is_individual (bool). Returns the subset to actually publish.
+    """
+    groups: dict[str, list[dict]] = {}
+    for c in candidates:
+        base = _norm(_strip_variant_suffix(c["title"]))
+        c["_is_variant"] = base != _norm(c["title"])
+        groups.setdefault(base, []).append(c)
+
+    keepers, seen_ids = [], set()
+    for group in groups.values():
+        individuals = [c for c in group if c["is_individual"]]
+        album = [c for c in group if not c["is_individual"]]
+        originals = [c for c in album if not c["_is_variant"]]
+
+        chosen = list(individuals)  # curated collabs are always kept
+        if originals:
+            chosen.append(originals[0])
+            # Guest remixes/alts (a feature may add a verse) survive alongside.
+            chosen += [c for c in album if c["_is_variant"] and c["featured"]]
+        elif not individuals:
+            # No studio original and no curated single — keep guest variants,
+            # else a single representative so the song isn't lost entirely.
+            feat = [c for c in album if c["featured"]]
+            chosen += feat if feat else album[:1]
+        # else: only variants remain but a curated single covers them → drop variants
+
+        for c in chosen:
+            if c["id"] not in seen_ids:
+                seen_ids.add(c["id"])
+                keepers.append(c)
+    return keepers
+
+
 def get_album_info(headers: dict, album_id: int) -> dict:
     r = requests.get(f"{GENIUS_API}/albums/{album_id}", headers=headers, timeout=REQUEST_TIMEOUT)
     r.raise_for_status()
@@ -82,7 +159,9 @@ def get_album_info(headers: dict, album_id: int) -> dict:
 
     r2 = requests.get(f"{GENIUS_API}/albums/{album_id}/tracks", headers=headers, timeout=REQUEST_TIMEOUT)
     r2.raise_for_status()
-    tracks = [{"id": t["song"]["id"], "title": t["song"]["title"]}
+    tracks = [{"id": t["song"]["id"],
+               "title": t["song"]["title"],
+               "featured": [a["name"] for a in t["song"].get("featured_artists", [])]}
               for t in r2.json()["response"]["tracks"]]
     return {"art_url": art_url, "tracks": tracks}
 
@@ -110,24 +189,57 @@ def fetch_lyrics(artist_name: str, title: str) -> list[str] | None:
 
 
 _genius_client: lg.Genius | None = None
+# Genius blocks the default lyricsgenius User-Agent (403); a browser UA works.
+_BROWSER_UA = ("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 "
+               "(KHTML, like Gecko) Chrome/124.0 Safari/537.36")
 
 
 def _get_genius_client(token: str) -> lg.Genius:
     global _genius_client
     if _genius_client is None:
-        _genius_client = lg.Genius(token, verbose=False, remove_section_headers=True)
+        _genius_client = lg.Genius(token, verbose=False, remove_section_headers=True,
+                                   timeout=15, retries=2)
+        _genius_client._session.headers["User-Agent"] = _BROWSER_UA
     return _genius_client
+
+
+def _clean_genius_raw(raw: str) -> list[str] | None:
+    """Strip Genius page chrome from a lyricsgenius result.
+
+    The result is prefixed with a one-line header blob
+    ("N Contributors … <Title> Lyrics[<about> Read More]") and suffixed with
+    a "NNNEmbed" marker. Remove both, then the section headers.
+    """
+    if not raw:
+        return None
+    # Header: drop "N Contributors … Lyrics", then any "<about> … Read More".
+    raw = re.sub(r'^\d+\s+Contributor.*?Lyrics', '', raw, count=1, flags=re.DOTALL).lstrip()
+    raw = re.sub(r'^.{0,2000}?Read More', '', raw, count=1, flags=re.DOTALL).lstrip()
+    # Footer: a view-count + "Embed" marker, e.g. "…6.8KEmbed" / "…27Embed" / "…Embed"
+    raw = re.sub(r'\d+(?:\.\d+)?[KM]?Embed\s*$', '', raw)
+    raw = re.sub(r'Embed\s*$', '', raw).strip()
+    return clean_lyrics(raw) or None
+
+
+def fetch_lyrics_by_genius_id(token: str, song_id: int) -> list[str] | None:
+    """Scrape lyrics directly from a known Genius song page.
+
+    Preferred over search_song() because brand-new releases are reachable via
+    the album-tracks API before Genius's search index catches up.
+    """
+    try:
+        genius = _get_genius_client(token)
+        return _clean_genius_raw(genius.lyrics(song_id=song_id))
+    except Exception as e:
+        print(f"    genius fallback error ({song_id}): {e}")
+        return None
 
 
 def fetch_lyrics_from_genius(token: str, artist_name: str, title: str) -> list[str] | None:
     try:
         genius = _get_genius_client(token)
         song = genius.search_song(title, artist_name)
-        if not song or not song.lyrics:
-            return None
-        # Strip the "NNNEmbed" footer that lyricsgenius appends
-        raw = re.sub(r'\d*Embed.*$', '', song.lyrics, flags=re.DOTALL).strip()
-        return clean_lyrics(raw) or None
+        return _clean_genius_raw(song.lyrics) if song else None
     except Exception:
         return None
 
@@ -163,10 +275,9 @@ def main():
                 existing_by_id[str(s["id"])] = s
         print(f"Incremental mode — {len(existing_by_id)} songs cached, skipping lrclib for those\n")
 
-    songs_output = []
-    seen_titles: set[str] = set()
+    # ── Pass 1: gather every candidate track (cheap album-tracks API only) ───
+    candidates: list[dict] = []
 
-    # ── Album-based songs ───────────────────────────────────────────────────
     for album_meta in artist_data["albums"]:
         is_demo = album_meta.get("is_demo", False)
         display_album = DEMO_ALBUM_NAME if is_demo else album_meta["name"]
@@ -183,98 +294,86 @@ def main():
 
         for track in info["tracks"]:
             title = track["title"]
-            title_lower = title.lower()
-            # Skip commentary/studio session versions (not unique songs)
-            if any(pattern in title_lower for pattern in SKIP_PATTERNS):
+            # Skip commentary/interview versions (not unique songs)
+            if any(pattern in title.lower() for pattern in SKIP_PATTERNS):
                 print(f"  SKIP (commentary): {title}")
                 continue
-            canonical = title_lower.strip()
-            if canonical in seen_titles:
-                print(f"  SKIP (duplicate): {title}")
-                continue
-            seen_titles.add(canonical)
-
-            song_id_str = str(track["id"])
-            song_art = resolve_album_art(art, title)
-            if song_id_str in existing_by_id:
-                # Song already fetched — refresh metadata, keep lyrics
-                kept = {**existing_by_id[song_id_str],
-                        "albumArt": song_art, "album": display_album, "year": album_meta["year"]}
-                songs_output.append(kept)
-                print(f"  KEEP {title}")
-                continue
-
-            lines = fetch_lyrics(artist_name, title)
-            if lines is None:
-                lines = fetch_lyrics_from_genius(token, artist_name, title)
-                if lines is not None:
-                    print(f"  (genius fallback)")
-            if lines is None:
-                print(f"  SKIP (no lyrics): {title}")
-                continue
-
-            songs_output.append({
-                "id":       track["id"],
-                "title":    title,
-                "album":    display_album,
-                "year":     album_meta["year"],
-                "albumArt": song_art,
-                "lines":    lines,
+            candidates.append({
+                "id":            track["id"],
+                "title":         title,
+                "album":         display_album,
+                "year":          album_meta["year"],
+                "albumArt":      resolve_album_art(art, title),
+                "featured":      track.get("featured", []),
+                "is_individual": False,
             })
-            print(f"  OK  {title} ({len(lines)} lines)")
-            time.sleep(0.2)
 
-    # ── Individual songs (collabs / features / standalone singles) ───────────
-    if artist_data.get("individual_songs"):
-        print(f"\n── Individual songs ──")
     for song_config in artist_data.get("individual_songs", []):
         title = song_config["title"]
-        title_lower = title.lower()
-        # Skip commentary/studio session versions (not unique songs)
-        if any(pattern in title_lower for pattern in SKIP_PATTERNS):
+        if any(pattern in title.lower() for pattern in SKIP_PATTERNS):
             print(f"  SKIP (commentary): {title}")
             continue
-        canonical = title_lower.strip()
-        if canonical in seen_titles:
-            print(f"  SKIP (duplicate): {title}")
-            continue
-        seen_titles.add(canonical)
+        candidates.append({
+            "id":            song_config["genius_id"],
+            "title":         title,
+            "album":         song_config.get("album", NON_ALBUM_COLLABS_NAME),
+            "year":          song_config.get("year", 0),
+            "albumArt":      None,  # resolved lazily on keep (needs get_song_art)
+            "featured":      [],
+            "is_individual": True,
+            "search_artist": song_config.get("search_artist", artist_name),
+            "art_override":  song_config.get("art_override"),
+        })
 
-        song_id_str = str(song_config["genius_id"])
+    # ── Pass 2: collapse variant recordings to their canonical song ──────────
+    keepers = _select_keepers(candidates)
+    dropped = len(candidates) - len(keepers)
+    print(f"\n── Selected {len(keepers)} songs ({dropped} variant/duplicate dropped) ──")
+
+    # ── Pass 3: fetch lyrics only for the songs we actually keep ─────────────
+    songs_output = []
+    for c in keepers:
+        title = c["title"]
+        song_id_str = str(c["id"])
+
         if song_id_str in existing_by_id:
-            kept = {**existing_by_id[song_id_str],
-                    "albumArt": song_config.get("art_override", existing_by_id[song_id_str].get("albumArt", "")),
-                    "album": song_config.get("album", NON_ALBUM_COLLABS_NAME),
-                    "year":  song_config.get("year", 0)}
-            songs_output.append(kept)
+            # Song already fetched — refresh metadata, keep lyrics
+            if c["is_individual"]:
+                album_art = c["art_override"] or existing_by_id[song_id_str].get("albumArt", "")
+            else:
+                album_art = c["albumArt"]
+            songs_output.append({**existing_by_id[song_id_str],
+                                  "albumArt": album_art, "album": c["album"], "year": c["year"]})
             print(f"  KEEP {title}")
             continue
 
-        search_artist = song_config.get("search_artist", artist_name)
-        lines = fetch_lyrics(search_artist, title)
-        if lines is None:
+        if c["is_individual"]:
+            lines = fetch_lyrics(c["search_artist"], title) or fetch_lyrics(artist_name, title)
+        else:
             lines = fetch_lyrics(artist_name, title)
         if lines is None:
-            lines = fetch_lyrics_from_genius(token, artist_name, title)
+            lines = fetch_lyrics_by_genius_id(token, c["id"])
             if lines is not None:
-                print(f"  (genius fallback)")
-
+                print(f"  (genius fallback) {title}")
         if lines is None:
             print(f"  SKIP (no lyrics): {title}")
             continue
 
-        art = song_config.get("art_override") or get_song_art(headers, song_config["genius_id"])
+        if c["is_individual"]:
+            album_art = c["art_override"] or get_song_art(headers, c["id"])
+        else:
+            album_art = c["albumArt"]
 
         songs_output.append({
-            "id":       song_config["genius_id"],
+            "id":       c["id"],
             "title":    title,
-            "album":    song_config.get("album", NON_ALBUM_COLLABS_NAME),
-            "year":     song_config.get("year", 0),
-            "albumArt": art,
+            "album":    c["album"],
+            "year":     c["year"],
+            "albumArt": album_art,
             "lines":    lines,
         })
         print(f"  OK  {title} ({len(lines)} lines)")
-        time.sleep(0.3)
+        time.sleep(0.2)
 
     with open(output_path, "w", encoding="utf-8") as f:
         json.dump(songs_output, f, ensure_ascii=False, indent=2)
