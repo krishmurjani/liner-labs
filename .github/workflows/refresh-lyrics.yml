@@ -49,15 +49,14 @@ jobs:
           echo "list=$(python3 -c "import json; print(' '.join(k for k in json.load(open('scripts/artists-config.json')) if not k.startswith('_')))")" >> $GITHUB_OUTPUT
 
       # Step 3: Fetch lyrics for any new songs (--incremental keeps existing lyrics).
+      # Runs up to 3 artists in parallel to cut the total time from ~30min to ~10min.
       - name: Fetch lyrics for all artists
         working-directory: scripts
         env:
           GENIUS_ACCESS_TOKEN: ${{ secrets.GENIUS_ACCESS_TOKEN }}
         run: |
-          for slug in ${{ steps.slugs.outputs.list }}; do
-            echo "--- Fetching $slug ---"
-            python fetch_lyrics.py --slug "$slug" --incremental
-          done
+          echo "${{ steps.slugs.outputs.list }}" | tr ' ' '\n' | \
+            xargs -P 3 -I {} sh -c 'echo "--- Fetching {} ---" && python fetch_lyrics.py --slug {} --incremental'
 
       # Step 4: Rebuild the inverted search index for every artist.
       - name: Rebuild search indexes

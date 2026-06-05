@@ -992,7 +992,28 @@
   },
   "noah-kahan": {
     "name": "Noah Kahan",
-    "albums": [],
+    "albums": [
+      {
+        "name": "Busyhead",
+        "year": 2019,
+        "genius_id": 520249
+      },
+      {
+        "name": "Stick Season",
+        "year": 2022,
+        "genius_id": 881474
+      },
+      {
+        "name": "Stick Season (We'll All Be Here Forever)",
+        "year": 2023,
+        "genius_id": 1030025
+      },
+      {
+        "name": "The Great Divide",
+        "year": 2025,
+        "genius_id": 1290609
+      }
+    ],
     "individual_songs": [],
     "excluded_album_ids": [1646068, 1649073]
   },

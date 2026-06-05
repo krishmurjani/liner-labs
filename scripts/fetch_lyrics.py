@@ -31,6 +31,7 @@ individual_songs entry fields:
 import os, json, re, time, argparse
 from pathlib import Path
 import requests
+import lyricsgenius as lg
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -108,6 +109,29 @@ def fetch_lyrics(artist_name: str, title: str) -> list[str] | None:
     return clean_lyrics(plain) if plain else None
 
 
+_genius_client: lg.Genius | None = None
+
+
+def _get_genius_client(token: str) -> lg.Genius:
+    global _genius_client
+    if _genius_client is None:
+        _genius_client = lg.Genius(token, verbose=False, remove_section_headers=True)
+    return _genius_client
+
+
+def fetch_lyrics_from_genius(token: str, artist_name: str, title: str) -> list[str] | None:
+    try:
+        genius = _get_genius_client(token)
+        song = genius.search_song(title, artist_name)
+        if not song or not song.lyrics:
+            return None
+        # Strip the "NNNEmbed" footer that lyricsgenius appends
+        raw = re.sub(r'\d*Embed.*$', '', song.lyrics, flags=re.DOTALL).strip()
+        return clean_lyrics(raw) or None
+    except Exception:
+        return None
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--slug", required=True, help="Artist slug, e.g. taylor-swift")
@@ -182,6 +206,10 @@ def main():
 
             lines = fetch_lyrics(artist_name, title)
             if lines is None:
+                lines = fetch_lyrics_from_genius(token, artist_name, title)
+                if lines is not None:
+                    print(f"  (genius fallback)")
+            if lines is None:
                 print(f"  SKIP (no lyrics): {title}")
                 continue
 
@@ -226,6 +254,10 @@ def main():
         lines = fetch_lyrics(search_artist, title)
         if lines is None:
             lines = fetch_lyrics(artist_name, title)
+        if lines is None:
+            lines = fetch_lyrics_from_genius(token, artist_name, title)
+            if lines is not None:
+                print(f"  (genius fallback)")
 
         if lines is None:
             print(f"  SKIP (no lyrics): {title}")

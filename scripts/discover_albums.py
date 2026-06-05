@@ -86,31 +86,39 @@ def _search_albums(headers: dict, artist_id: int, artist_name: str) -> list[dict
     The list endpoint omits album data, so we fetch full song details
     for recent songs to extract their album objects.
     """
-    r = requests.get(
-        f"{GENIUS_API}/artists/{artist_id}/songs",
-        headers=headers,
-        params={"per_page": 20, "sort": "release_date"},
-        timeout=REQUEST_TIMEOUT,
-    )
-    r.raise_for_status()
-    songs = r.json()["response"]["songs"]
-
     seen, albums = set(), []
-    for song in songs:
-        time.sleep(0.2)
-        r2 = requests.get(f"{GENIUS_API}/songs/{song['id']}", headers=headers, timeout=REQUEST_TIMEOUT)
-        if not r2.ok:
-            continue
-        full = r2.json()["response"]["song"]
-        album = full.get("album")
-        if not album or album["id"] in seen:
-            continue
-        # Only include albums where the primary artist matches — avoids picking
-        # up compilations (e.g. KIDZ BOP) that happen to contain the artist's songs.
-        if album.get("artist", {}).get("id") != artist_id:
-            continue
-        seen.add(album["id"])
-        albums.append(album)
+    page = 1
+    while page <= 5:
+        r = requests.get(
+            f"{GENIUS_API}/artists/{artist_id}/songs",
+            headers=headers,
+            params={"per_page": 20, "sort": "release_date", "page": page},
+            timeout=REQUEST_TIMEOUT,
+        )
+        r.raise_for_status()
+        songs = r.json()["response"]["songs"]
+        if not songs:
+            break
+        for song in songs:
+            time.sleep(0.2)
+            r2 = requests.get(f"{GENIUS_API}/songs/{song['id']}", headers=headers, timeout=REQUEST_TIMEOUT)
+            if not r2.ok:
+                continue
+            full = r2.json()["response"]["song"]
+            album = full.get("album")
+            if not album or album["id"] in seen:
+                continue
+            # Accept albums where the primary artist matches by ID or name.
+            # Matching by name handles cases where Genius uses a different artist
+            # entity for newer releases. Compilations (KIDZ BOP, etc.) fail both.
+            album_artist = album.get("artist", {})
+            if (album_artist.get("id") != artist_id
+                    and album_artist.get("name", "").lower() != artist_name.lower()):
+                continue
+            seen.add(album["id"])
+            albums.append(album)
+        page += 1
+        time.sleep(0.3)
     return albums
 
 
