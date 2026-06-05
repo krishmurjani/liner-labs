@@ -162,11 +162,6 @@
         "is_demo": true
       },
       {
-        "name": "A Time To Hurt, A Time To Heal (ATH²)",
-        "year": 0,
-        "genius_id": 1629090
-      },
-      {
         "name": "Opalite (Skream Remix)",
         "year": 0,
         "genius_id": 1585375
@@ -321,6 +316,7 @@
     "genius_artist_id": 1177,
     "excluded_album_ids": [
       1609040,
+      1629090,
       1637934,
       1646068,
       1661649
@@ -370,16 +366,6 @@
         "genius_id": 1621266
       },
       {
-        "name": "CONFESSIONS II",
-        "year": 0,
-        "genius_id": 1337019
-      },
-      {
-        "name": "Dreams of Caprices",
-        "year": 0,
-        "genius_id": 1481220
-      },
-      {
         "name": "Tears (7\" Vinyl)",
         "year": 0,
         "genius_id": 1479714
@@ -387,6 +373,8 @@
     ],
     "genius_artist_id": 249592,
     "excluded_album_ids": [
+      1337019,
+      1481220,
       1517950,
       1518445,
       1521179,
@@ -441,33 +429,17 @@
         "name": "Charm",
         "year": 2024,
         "genius_id": 1138487
-      },
-      {
-        "name": "Heretics & Lullabies",
-        "year": 0,
-        "genius_id": 1454041
-      },
-      {
-        "name": "Radio",
-        "year": 0,
-        "genius_id": 1433281
-      },
-      {
-        "name": "Ultrasound [Single]",
-        "year": 0,
-        "genius_id": 1329402
-      },
-      {
-        "name": "Colors at Dusk",
-        "year": 0,
-        "genius_id": 1385545
       }
     ],
     "genius_artist_id": 15740,
     "excluded_album_ids": [
+      1329402,
       1364638,
       1384843,
+      1385545,
       1404199,
+      1433281,
+      1454041,
       1511325,
       1555589,
       1628566
@@ -549,56 +521,24 @@
         "art_override": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/e5/40/89/e54089a9-5bc7-71c0-d7aa-93abadde2eb1/5021732960962.jpg/1000x1000bb.jpg"
       },
       {
-        "name": "MG2*",
-        "year": 0,
-        "genius_id": 1584690
-      },
-      {
-        "name": "Live From North America - EP",
-        "year": 0,
-        "genius_id": 1650252
-      },
-      {
-        "name": "Cloud 9 (Behind The Song Edition)",
-        "year": 0,
-        "genius_id": 1592926
-      },
-      {
-        "name": "Days Of Ash EP",
-        "year": 0,
-        "genius_id": 1589082
-      },
-      {
-        "name": "The Celtic Tenors: Live at The Empire Theatre",
-        "year": 0,
-        "genius_id": 1609089
-      },
-      {
-        "name": "Back for Good",
-        "year": 0,
-        "genius_id": 1570261
-      },
-      {
         "name": "Rewind",
         "year": 0,
         "genius_id": 1480976
-      },
-      {
-        "name": "Zoo ~君がいるから~ (Zoo ~Kimi ga Iru Kara~) - Single",
-        "year": 0,
-        "genius_id": 1545552
-      },
-      {
-        "name": "A",
-        "year": 0,
-        "genius_id": 1542640
       }
     ],
     "genius_artist_id": 12418,
     "excluded_album_ids": [
       1524018,
+      1542640,
+      1545552,
       1560234,
-      1609453
+      1570261,
+      1584690,
+      1589082,
+      1592926,
+      1609089,
+      1609453,
+      1650252
     ]
   },
   "harry-styles": {
@@ -627,25 +567,13 @@
         "year": 2025,
         "genius_id": 1552425,
         "art_override": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/07/41/6a/07416a78-38b9-2d47-7ce8-8a52a44c510f/196874010112.jpg/1000x1000bb.jpg"
-      },
-      {
-        "name": "Harry Styles: Apple Music Live",
-        "year": 0,
-        "genius_id": 1605028
-      },
-      {
-        "name": "Harry Styles",
-        "year": 0,
-        "genius_id": 1574684
-      },
-      {
-        "name": "Aperture (Marryat Sehart Remix)",
-        "year": 0,
-        "genius_id": 1623506
       }
     ],
     "genius_artist_id": 22457,
     "excluded_album_ids": [
+      1574684,
+      1605028,
+      1623506,
       1646068,
       1652307
     ]
@@ -722,21 +650,6 @@
         "name": "Garden State",
         "year": 2025,
         "genius_id": 1405049
-      },
-      {
-        "name": "Breaking Through",
-        "year": 0,
-        "genius_id": 1612736
-      },
-      {
-        "name": "Achilles (Anniversary Edition)",
-        "year": 0,
-        "genius_id": 1599281
-      },
-      {
-        "name": "From the horse’s mouth",
-        "year": 0,
-        "genius_id": 1327946
       }
     ],
     "individual_songs": [
@@ -796,7 +709,12 @@
         "search_artist": "Jeremy Zucker, Lauv & Alexander 23"
       }
     ],
-    "genius_artist_id": 398381
+    "genius_artist_id": 398381,
+    "excluded_album_ids": [
+      1327946,
+      1599281,
+      1612736
+    ]
   },
   "gracie-abrams": {
     "name": "Gracie Abrams",
@@ -825,21 +743,6 @@
         "name": "Daughter from Hell",
         "year": 0,
         "genius_id": 1354667
-      },
-      {
-        "name": "Prizefighter",
-        "year": 0,
-        "genius_id": 1511948
-      },
-      {
-        "name": "find your wings",
-        "year": 0,
-        "genius_id": 1548838
-      },
-      {
-        "name": "Somewhere (Live at The Roxy)",
-        "year": 0,
-        "genius_id": 1541325
       },
       {
         "name": "Apple Music Live: Gracie Abrams",
@@ -921,7 +824,12 @@
         "year": 2025
       }
     ],
-    "genius_artist_id": 631746
+    "genius_artist_id": 631746,
+    "excluded_album_ids": [
+      1511948,
+      1541325,
+      1548838
+    ]
   },
   "noah-kahan": {
     "name": "Noah Kahan",
@@ -1008,34 +916,14 @@
         "genius_id": 1608783
       },
       {
-        "name": "WHERE WE LEFT OFF: Extended Deluxe",
-        "year": 0,
-        "genius_id": 1600930
-      },
-      {
-        "name": "Back for Good",
-        "year": 0,
-        "genius_id": 1570261
-      },
-      {
         "name": "LH2*",
         "year": 0,
         "genius_id": 1403950
       },
       {
-        "name": "chasing harmony",
-        "year": 0,
-        "genius_id": 1506803
-      },
-      {
         "name": "São Paulo - EP",
         "year": 0,
         "genius_id": 1484834
-      },
-      {
-        "name": "AFZL PRESENTS: THE DYSTOPIA",
-        "year": 0,
-        "genius_id": 1395277
       }
     ],
     "individual_songs": [
@@ -1076,6 +964,12 @@
         "year": 2018
       }
     ],
-    "genius_artist_id": 2358
+    "genius_artist_id": 2358,
+    "excluded_album_ids": [
+      1395277,
+      1506803,
+      1570261,
+      1600930
+    ]
   }
 }
