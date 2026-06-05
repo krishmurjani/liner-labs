@@ -162,29 +162,9 @@
         "is_demo": true
       },
       {
-        "name": "Billions Club Live With Olivia Rodrigo",
-        "year": 0,
-        "genius_id": 1661649
-      },
-      {
         "name": "A Time To Hurt, A Time To Heal (ATH²)",
         "year": 0,
         "genius_id": 1629090
-      },
-      {
-        "name": "American Idol: Season 24 (Celebrating Taylor Swift on American Idol)",
-        "year": 0,
-        "genius_id": 1637934
-      },
-      {
-        "name": "KIDZ BOP 53",
-        "year": 0,
-        "genius_id": 1646068
-      },
-      {
-        "name": "Daily Dose Of Nostalgia",
-        "year": 0,
-        "genius_id": 1609040
       },
       {
         "name": "Opalite (Skream Remix)",
@@ -205,6 +185,11 @@
         "name": "Opalite (Collector’s Edition CD)",
         "year": 0,
         "genius_id": 1569168
+      },
+      {
+        "name": "I Knew It, I Knew You",
+        "year": 2026,
+        "genius_id": 1668629
       }
     ],
     "individual_songs": [
@@ -333,7 +318,13 @@
         "year": 2023
       }
     ],
-    "genius_artist_id": 1177
+    "genius_artist_id": 1177,
+    "excluded_album_ids": [
+      1609040,
+      1637934,
+      1646068,
+      1661649
+    ]
   },
   "sabrina-carpenter": {
     "name": "Sabrina Carpenter",
@@ -384,11 +375,6 @@
         "genius_id": 1337019
       },
       {
-        "name": "Today’s Hits: February 2026 (DJ Mix)",
-        "year": 0,
-        "genius_id": 1581466
-      },
-      {
         "name": "Dreams of Caprices",
         "year": 0,
         "genius_id": 1481220
@@ -397,29 +383,16 @@
         "name": "Tears (7\" Vinyl)",
         "year": 0,
         "genius_id": 1479714
-      },
-      {
-        "name": "OT Gala 9 (Operación Triunfo 2025)",
-        "year": 0,
-        "genius_id": 1521179
-      },
-      {
-        "name": "Today’s Hits: November 2025 (DJ Mix)",
-        "year": 0,
-        "genius_id": 1518445
-      },
-      {
-        "name": "KIDZ BOP 52",
-        "year": 0,
-        "genius_id": 1560234
-      },
-      {
-        "name": "The Life of a Showgirl + Acoustic Collection",
-        "year": 0,
-        "genius_id": 1517950
       }
     ],
-    "genius_artist_id": 249592
+    "genius_artist_id": 249592,
+    "excluded_album_ids": [
+      1517950,
+      1518445,
+      1521179,
+      1560234,
+      1581466
+    ]
   },
   "lana-del-rey": {
     "name": "Lana Del Rey",
@@ -470,21 +443,6 @@
         "genius_id": 1138487
       },
       {
-        "name": "First Light (Original Video Game Soundtrack)*",
-        "year": 0,
-        "genius_id": 1628566
-      },
-      {
-        "name": "Bleachers - From The Studio To Stage (Live From Madison Square Garden, NYC)",
-        "year": 0,
-        "genius_id": 1511325
-      },
-      {
-        "name": "Spooky Halloween 2025 (DJ Mix)",
-        "year": 0,
-        "genius_id": 1555589
-      },
-      {
         "name": "Heretics & Lullabies",
         "year": 0,
         "genius_id": 1454041
@@ -495,32 +453,25 @@
         "genius_id": 1433281
       },
       {
-        "name": "Covers I",
-        "year": 0,
-        "genius_id": 1384843
-      },
-      {
         "name": "Ultrasound [Single]",
         "year": 0,
         "genius_id": 1329402
       },
       {
-        "name": "Hurry Up Tomorrow (Original Motion Picture Score)",
-        "year": 0,
-        "genius_id": 1404199
-      },
-      {
         "name": "Colors at Dusk",
         "year": 0,
         "genius_id": 1385545
-      },
-      {
-        "name": "Covers By Didi",
-        "year": 0,
-        "genius_id": 1364638
       }
     ],
-    "genius_artist_id": 15740
+    "genius_artist_id": 15740,
+    "excluded_album_ids": [
+      1364638,
+      1384843,
+      1404199,
+      1511325,
+      1555589,
+      1628566
+    ]
   },
   "olivia-rodrigo": {
     "name": "Olivia Rodrigo",
@@ -539,14 +490,12 @@
         "name": "you seem pretty sad for a girl so in love",
         "year": 0,
         "genius_id": 1430564
-      },
-      {
-        "name": "Billions Club Live With Olivia Rodrigo",
-        "year": 0,
-        "genius_id": 1661649
       }
     ],
-    "genius_artist_id": 1599675
+    "genius_artist_id": 1599675,
+    "excluded_album_ids": [
+      1661649
+    ]
   },
   "ed-sheeran": {
     "name": "Ed Sheeran",
@@ -605,11 +554,6 @@
         "genius_id": 1584690
       },
       {
-        "name": "FIFA World Cup 2026™ Official Album",
-        "year": 0,
-        "genius_id": 1609453
-      },
-      {
         "name": "Live From North America - EP",
         "year": 0,
         "genius_id": 1650252
@@ -635,11 +579,6 @@
         "genius_id": 1570261
       },
       {
-        "name": "KIDZ BOP 52",
-        "year": 0,
-        "genius_id": 1560234
-      },
-      {
         "name": "Rewind",
         "year": 0,
         "genius_id": 1480976
@@ -653,14 +592,14 @@
         "name": "A",
         "year": 0,
         "genius_id": 1542640
-      },
-      {
-        "name": "Le bal de la promo 2025",
-        "year": 0,
-        "genius_id": 1524018
       }
     ],
-    "genius_artist_id": 12418
+    "genius_artist_id": 12418,
+    "excluded_album_ids": [
+      1524018,
+      1560234,
+      1609453
+    ]
   },
   "harry-styles": {
     "name": "Harry Styles",
@@ -700,22 +639,16 @@
         "genius_id": 1574684
       },
       {
-        "name": "KIDZ BOP 53",
-        "year": 0,
-        "genius_id": 1646068
-      },
-      {
-        "name": "Finale (Seizoen 13)",
-        "year": 0,
-        "genius_id": 1652307
-      },
-      {
         "name": "Aperture (Marryat Sehart Remix)",
         "year": 0,
         "genius_id": 1623506
       }
     ],
-    "genius_artist_id": 22457
+    "genius_artist_id": 22457,
+    "excluded_album_ids": [
+      1646068,
+      1652307
+    ]
   },
   "jeremy-zucker": {
     "name": "Jeremy Zucker",
@@ -1015,7 +948,10 @@
       }
     ],
     "individual_songs": [],
-    "excluded_album_ids": [1646068, 1649073]
+    "excluded_album_ids": [
+      1646068,
+      1649073
+    ]
   },
   "the-weeknd": {
     "name": "The Weeknd",
