@@ -90,7 +90,9 @@ VARIANT_KEYWORDS = (
 # Never strip these — they denote canonical or otherwise-distinct songs.
 PROTECTED_KEYWORDS = ("taylor's version", "from the vault", "extended", "minute version")
 
-_VARIANT_SUFFIX_RE = re.compile(r'\s*(\([^()]*\)|-\s[^-]+)\s*$')
+# Trailing "(…)" (allowing one level of nesting, e.g. "(Live (BBC Recording))")
+# or "- …" descriptor.
+_VARIANT_SUFFIX_RE = re.compile(r'\s*(\((?:[^()]|\([^()]*\))*\)|-\s[^-]+)\s*$')
 
 
 def _strip_variant_suffix(title: str) -> str:
@@ -135,13 +137,17 @@ def _select_keepers(candidates: list[dict]) -> list[dict]:
         chosen = list(individuals)  # curated collabs are always kept
         if originals:
             chosen.append(originals[0])
-            # Guest remixes/alts (a feature may add a verse) survive alongside.
-            chosen += [c for c in album if c["_is_variant"] and c["featured"]]
+            # A variant survives only if it adds a guest the original doesn't
+            # have (a new feature may add a verse). Live/alt cuts that merely
+            # inherit the original's guest are dropped.
+            orig_feat = {f.lower() for o in originals for f in o["featured"]}
+            chosen += [c for c in album if c["_is_variant"]
+                       and {f.lower() for f in c["featured"]} - orig_feat]
         elif not individuals:
-            # No studio original and no curated single — keep guest variants,
-            # else a single representative so the song isn't lost entirely.
+            # No studio original and no curated single — keep one representative
+            # (prefer a featured cut) so the song isn't lost entirely.
             feat = [c for c in album if c["featured"]]
-            chosen += feat if feat else album[:1]
+            chosen += feat[:1] if feat else album[:1]
         # else: only variants remain but a curated single covers them → drop variants
 
         for c in chosen:
